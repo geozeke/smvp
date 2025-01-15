@@ -1,8 +1,104 @@
 import argparse
 import re
 
+from smvp.utilities import print_docstring
 from smvp.utilities import task_runner
 from smvp.version import get_version
+
+
+def font_size(size: str) -> str:
+    """Validate size inputs.
+
+    Parameters
+    ----------
+    size : str
+        User input for a font size option.
+
+    Returns
+    -------
+    str
+        The validated user input.
+
+    Raises
+    ------
+    argparse.ArgumentTypeError
+        If the input is not a valid integer (for example is a float).
+    argparse.ArgumentTypeError
+        If the input is not between 2 and 100.
+    """
+    for c in size:
+        if not c.isdigit():
+            msg = "Size must be a valid integer"
+            raise argparse.ArgumentTypeError(msg)
+
+    int_size = int(size)
+    min_size = 2
+    max_size = 100
+    if int_size >= min_size and int_size <= max_size:
+        return size
+    else:
+        msg = f"Font size must be between {min_size} and {max_size}"
+        raise argparse.ArgumentTypeError(msg)
+
+
+# ======================================================================
+
+
+def font_family(font: str) -> str:
+    """Validate font_family inputs.
+
+    Parameters
+    ----------
+    font : str
+        User input for a font family.
+
+    Returns
+    -------
+    str
+        The validated user input.
+
+    Raises
+    ------
+    argparse.ArgumentTypeError
+        If the the selected font family is not recognized.
+    """
+    valid_fonts = {
+        "ARIAL": "Arial",
+        "BRUSH SCRIPT MT": "Brush Script MT",
+        "COMIC SANS MS": "Comic Sans MS",
+        "COURIER NEW": "Courier New",
+        "GARAMOND": "Garamond",
+        "GEORGIA": "Georgia",
+        "HELVETICA": "Helvetica",
+        "MONOSPACE": "monospace",
+        "SANS-SERIF": "sans-serif",
+        "SERIF": "serif",
+        "TAHOMA": "Tahoma",
+        "TIMES NEW ROMAN": "Times New Roman",
+        "TREBUCHET MS": "Trebuchet MS",
+        "VERDANA": "Verdana",
+    }
+
+    user_input = " ".join([word.upper() for word in font.split()])
+    if user_input in valid_fonts:
+        return valid_fonts[user_input]
+    else:
+        print()
+        msg = f"""
+        The font you entered ({font}) is not valid. The default
+        font is "Courier New". If you're changing the default font,
+        please enter one of the options below. Check the spelling to
+        make sure it's correct.
+
+        "Arial", "Verdana", "Helvetica", "Tahoma", "Trebuchet MS",
+        "Times New Roman", "Georgia", "Garamond", "Courier New",
+        "Brush Script MT", "Comic Sans MS", "sans-serif", "serif",
+        "monospace"
+        """
+        print_docstring(msg=msg)
+        print()
+        raise argparse.ArgumentTypeError("invalid font family")
+
 
 # ======================================================================
 
@@ -64,6 +160,18 @@ def process_args() -> None:
     """
     parser.add_argument("file", type=argparse.FileType("r"), help=msg)
 
+    msg = """
+    Enter the desired font family (enclosed in quotes). Values here are
+    not case sensitive. See the README.md file for available options.
+    """
+    parser.add_argument("-f", "--font_family", type=font_family, help=msg)
+
+    msg = """
+    Enter the desired font pixel size as an integer. Valid sizes are
+    between 2 and 100.
+    """
+    parser.add_argument("-s", "--font_size", type=font_size, help=msg)
+
     parser.add_argument(
         "-v",
         "--version",
@@ -73,3 +181,4 @@ def process_args() -> None:
 
     args = parser.parse_args()
     task_runner(args=args)
+    return

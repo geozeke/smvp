@@ -9,6 +9,9 @@ from email.mime.text import MIMEText
 
 from ansi2html import Ansi2HTMLConverter
 from bs4 import BeautifulSoup
+from bs4.element import Tag
+
+STYLE = "font-family: FF !important; font-size: FSpx !important;"
 
 
 def print_docstring(msg: str) -> None:
@@ -141,15 +144,48 @@ def task_runner(args: argparse.Namespace) -> None:
     with args.file as f:
         text_in = f.read()
 
-    # Create separate plantext and html versions of the input
+    # Craft an HTML version compatible with Gmail. If it's not HTML,
+    # then filter it through ansi2html to scan for ANSI codes and turn
+    # that into HTML. Plaintext will process fine. The text replacement
+    # below is to ditch the dull-grey default in ansi2html.
     if not file_is_html(text_in):
         converter = Ansi2HTMLConverter(dark_bg=False)
         html_text = converter.convert(text_in, full=True)
-        # Replace the dull-grey default
         html_text = html_text.replace("color: #AAAAAA", "color: #FFFFFF")
     else:
         html_text = text_in
-    plain_text = BeautifulSoup(html_text, "lxml").get_text().strip()
+
+    # Set font family and size, applying defaults if appropriate
+    new_style = STYLE
+    if args.font_family:
+        new_style = new_style.replace("FF", args.font_family)
+    else:
+        new_style = new_style.replace("FF", "Courier New")
+    if args.font_size:
+        new_style = new_style.replace("FS", str(args.font_size))
+    else:
+        new_style = new_style.replace("FS", "12")
+
+    soup = BeautifulSoup(html_text, "lxml")
+    plain_text = soup.get_text().strip()
+
+    # Gmail strips custom css, so we need to apply inline styles with
+    # (!important) to the body tag.
+    body_tag = soup.find("body")
+    if isinstance(body_tag, Tag):
+        body_tag["style"] = new_style
+
+    # Also apply inline styles with (!important) to .ansi2html-content
+    # tags
+    ansi_content_tags = soup.find_all(class_="ansi2html-content")
+    for tag in ansi_content_tags:
+        if isinstance(tag, Tag):
+            tag["style"] = new_style
+
+    # !DEBUG
+    # with open("/Users/nardip/Downloads/junk.html", "w", encoding="utf-8") as f:
+    #     f.write(str(soup))
+    #     return
 
     # Package both parts into a MIME multipart message.
     message = MIMEMultipart("alternative")
@@ -157,7 +193,7 @@ def task_runner(args: argparse.Namespace) -> None:
     message["From"] = sender_email
     message["To"] = receiver_email
     message.attach(MIMEText(plain_text, "plain"))
-    message.attach(MIMEText(html_text, "html"))
+    message.attach(MIMEText(str(soup), "html"))
 
     # Create a secure context for the TLS connection
     context = ssl.create_default_context()
@@ -177,7 +213,6 @@ def task_runner(args: argparse.Namespace) -> None:
         print(e)
     finally:
         server.quit()
-
     return
 
 
