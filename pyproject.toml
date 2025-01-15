@@ -40,7 +40,6 @@ requires-python = ">=3.8"
 dependencies = [
     "ansi2html>=1.9.2",
     "bs4>=0.0.2",
-    "cssutils>=2.11.1",
     "lxml>=5.3.0",
     "tomli>=1.1.0 ; python_full_version < '3.11'",
 ]

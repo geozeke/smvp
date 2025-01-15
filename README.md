@@ -69,6 +69,21 @@ port `587`. Check the SMTP settings for your email provider. This is the
 default TLS port on Gmail, so if you're using your Gmail account to send
 emails, you're good-to-go.
 
+## Styling
+
+_smvp_ offers custom font and size options for your email. The default
+font for formatted HTML email is `Courier New`, `12px`. Beyond the default
+you can choose among these options for fonts:
+
+```text
+"Andale Mono", "Arial", "Brush Script MT", "Comic Sans MS",
+"Courier New", "Garamond", "Georgia", "Helvetica", "Impact",
+"Luminari", "Monaco", "Tahoma", "Times New Roman", "Trebuchet MS",
+"Verdana", "fantasy", "monospace", "sans-serif", "serif"
+```
+
+and any font size from `2px` up to and including `100px`.
+
 ## Usage
 
 ```text

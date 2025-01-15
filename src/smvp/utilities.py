@@ -155,16 +155,9 @@ def task_runner(args: argparse.Namespace) -> None:
     else:
         html_text = text_in
 
-    # Set font family and size, applying defaults if appropriate
-    new_style = STYLE
-    if args.font_family:
-        new_style = new_style.replace("FF", args.font_family)
-    else:
-        new_style = new_style.replace("FF", "Courier New")
-    if args.font_size:
-        new_style = new_style.replace("FS", str(args.font_size))
-    else:
-        new_style = new_style.replace("FS", "12")
+    # Set font family and size
+    new_style = STYLE.replace("FF", args.font_family)
+    new_style = new_style.replace("FS", str(args.font_size))
 
     soup = BeautifulSoup(html_text, "lxml")
     plain_text = soup.get_text().strip()
@@ -183,9 +176,9 @@ def task_runner(args: argparse.Namespace) -> None:
             tag["style"] = new_style
 
     # !DEBUG
-    # with open("/Users/nardip/Downloads/junk.html", "w", encoding="utf-8") as f:
-    #     f.write(str(soup))
-    #     return
+    with open("/Users/nardip/Downloads/junk.html", "w", encoding="utf-8") as f:
+        f.write(str(soup))
+        return
 
     # Package both parts into a MIME multipart message.
     message = MIMEMultipart("alternative")

@@ -1,5 +1,6 @@
 import argparse
 import re
+from typing import List
 
 from smvp.utilities import print_docstring
 from smvp.utilities import task_runner
@@ -63,13 +64,18 @@ def font_family(font: str) -> str:
         If the the selected font family is not recognized.
     """
     valid_fonts = {
+        "ANDALE MONO": "Andale Mono",
         "ARIAL": "Arial",
         "BRUSH SCRIPT MT": "Brush Script MT",
         "COMIC SANS MS": "Comic Sans MS",
         "COURIER NEW": "Courier New",
+        "FANTASY": "fantasy",
         "GARAMOND": "Garamond",
         "GEORGIA": "Georgia",
         "HELVETICA": "Helvetica",
+        "IMPACT": "Impact",
+        "LUMINARI": "Luminari",
+        "MONACO": "Monaco",
         "MONOSPACE": "monospace",
         "SANS-SERIF": "sans-serif",
         "SERIF": "serif",
@@ -78,24 +84,36 @@ def font_family(font: str) -> str:
         "TREBUCHET MS": "Trebuchet MS",
         "VERDANA": "Verdana",
     }
-
     user_input = " ".join([word.upper() for word in font.split()])
     if user_input in valid_fonts:
         return valid_fonts[user_input]
     else:
         print()
+        fonts = [f'"{token}"' for token in list(valid_fonts.values())]
+        fonts.sort()
         msg = f"""
-        The font you entered ({font}) is not valid. The default
-        font is "Courier New". If you're changing the default font,
-        please enter one of the options below. Check the spelling to
-        make sure it's correct.
-
-        "Arial", "Verdana", "Helvetica", "Tahoma", "Trebuchet MS",
-        "Times New Roman", "Georgia", "Garamond", "Courier New",
-        "Brush Script MT", "Comic Sans MS", "sans-serif", "serif",
-        "monospace"
+        The font you entered ({font}) is not valid. The default font is
+        "Courier New". If you're changing the default font, please use
+        one of the options below. Check the spelling to make sure it's
+        correct.
         """
         print_docstring(msg=msg)
+        print()
+        chunk_size = 5
+        start = 0
+        end = 4
+        chunks: List[str] = []
+        for font in fonts:
+            chunk = fonts[start:end]
+            if start > len(fonts) or len(chunk) == 0:
+                break
+            if len(chunk) > 1:
+                chunks.append(", ".join(fonts[start:end]))
+            else:
+                chunks.append(chunk[0])
+            start = end
+            end += chunk_size
+        print(",\n".join(chunks))
         print()
         raise argparse.ArgumentTypeError("invalid font family")
 
@@ -163,14 +181,17 @@ def process_args() -> None:
     msg = """
     Enter the desired font family (enclosed in quotes). Values here are
     not case sensitive. See the README.md file for available options.
+    Default = \"Courier New\".
     """
-    parser.add_argument("-f", "--font_family", type=font_family, help=msg)
+    parser.add_argument(
+        "-f", "--font_family", type=font_family, default="Courier New", help=msg
+    )
 
     msg = """
     Enter the desired font pixel size as an integer. Valid sizes are
-    between 2 and 100.
+    between 2 and 100. Default = 12.
     """
-    parser.add_argument("-s", "--font_size", type=font_size, help=msg)
+    parser.add_argument("-s", "--font_size", type=font_size, default=12, help=msg)
 
     parser.add_argument(
         "-v",
