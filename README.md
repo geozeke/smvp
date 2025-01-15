@@ -16,11 +16,14 @@ contents of the file are put into into the body of the email._
 
 ## Use Case
 
-There are probably many, but I wrote _smvp_ so my cron scripts can email
+There are probably a few, but I wrote _smvp_ so my cron scripts can email
 me status information and the contents of log files. Some of the files
 contain ANSI escape sequences for terminal colors. The _smvp_ utility
 converts those ANSI escape sequences into proper HTML tags, so the
 emails I get are nicely formatted.
+
+_smvp_ is not intended to be a bulk emailer for formatted messages. There
+other (better) tools for that.
 
 ## Installation
 
@@ -71,9 +74,10 @@ emails, you're good-to-go.
 
 ## Styling
 
-_smvp_ offers custom font and size options for your email. The default
-font for formatted HTML email is `Courier New`, `12px`. Beyond the default
-you can choose among these options for fonts:
+_smvp_ offers custom font and font size options for your email. The
+default font for formatted HTML email is `Courier New`, `12px`. Beyond
+the default you can choose any font size from `2px` up to and including
+`100px`, from among these font families:
 
 ```text
 "Andale Mono", "Arial", "Brush Script MT", "Comic Sans MS",
@@ -82,18 +86,21 @@ you can choose among these options for fonts:
 "Verdana", "fantasy", "monospace", "sans-serif", "serif"
 ```
 
-and any font size from `2px` up to and including `100px`.
+_NOTE: Not every font will render properly on every device. When in
+doubt, fonts like: "monospace", "sans-serif", "fantasy" and "serif" are
+pretty safe. You may just have try a few options to land on the right
+one for your use case._
 
 ## Usage
 
 ```text
-usage: smvp [-h] recipient subject file
+usage: smvp [-h] [-f FONT_FAMILY] [-s FONT_SIZE] [-v] recipient subject file
 ```
 
 For example:
 
 ```text
-smvp friend@gmail.com "Hello, Friend" ~/logfile.txt
+smvp friend@gmail.com "Hello, Friend" ~/logfile.txt -f "Trebuchet MS"
 ```
 
 For more details, run:

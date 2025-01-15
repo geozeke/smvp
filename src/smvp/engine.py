@@ -153,9 +153,9 @@ def process_args() -> None:
     msg = """
     Send Mail Via Python (smvp). This tool will send an email from the
     command line, with the body of the email taken from a specified
-    file. There are many use cases. For example, it's handy to use smvp
-    to have automated Linux scripts (i.e. cron jobs) email you status
-    updates and the contents of log files.
+    file. For example, it's handy to use smvp to have automated Linux
+    scripts (i.e. cron jobs) email you status updates and the contents
+    of log files.
     """
     epi = f"Version: {get_version()}"
     parser = argparse.ArgumentParser(description=msg, epilog=epi)
