@@ -176,6 +176,10 @@ def task_runner(args: argparse.Namespace) -> None:
             tag["style"] = new_style
 
     # ! Debug code goes here when testing.
+    # !DEBUG
+    with open("/Users/nardip/Downloads/junk.html", "w", encoding="utf-8") as f:
+        f.write(str(soup))
+        return
 
     # Package both parts into a MIME multipart message.
     message = MIMEMultipart("alternative")
