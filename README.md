@@ -87,7 +87,7 @@ the default you can choose any font size from `2px` up to and including
 ```
 
 _NOTE: Not every font will render properly on every device. When in
-doubt, fonts like: "monospace", "sans-serif", "fantasy" and "serif" are
+doubt, fonts like: "monospace", "sans-serif", "fantasy", and "serif" are
 pretty safe. You may just have try a few options to land on the right
 one for your use case._
 
