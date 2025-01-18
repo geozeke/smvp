@@ -23,7 +23,8 @@ There are probably a few, but I wrote _smvp_ for two primary reasons:
 contents of various log files. Some of the files contain ANSI escape
 sequences for terminal colors. The _smvp_ utility converts those ANSI
 escape sequences into proper HTML tags, so the emails I get are nicely
-formatted.
+formatted. You could set `$MAILTO` in your corntab, but you won't get
+proper handling of ANSI escape sequences, and refer to number 1 above.
 
 _smvp_ is not intended to be a bulk emailer for formatted messages.
 There other (better) tools for that.
