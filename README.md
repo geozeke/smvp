@@ -5,25 +5,28 @@
 <img src="https://lh3.googleusercontent.com/d/1PpjTCw4T1HpHU_TacQSjZptzw67WqwIz"
 alt="smvp logo" width="120"/>
 
-The _smvp_ utility takes a file whose contents will be parsed and packaged
-into the body of an email message, then sent to a designated email
-address. The input file can be a text file with ANSI color codes, HTML,
-or plain text. The resulting email will be sent as a multi-part MIME
-message that renders properly in both plain text and HTML.
+The _smvp_ utility takes a file whose contents will be parsed and
+packaged into the body of an email message, then sent to a designated
+email address. The input file can be a text file with ANSI color codes,
+HTML, or plain text. The resulting email will be sent as a multi-part
+MIME message that renders properly in both plain text and HTML.
 
 _Note: The file itself is not sent as an attachment; instead, the
 contents of the file are put into into the body of the email._
 
 ## Use Case
 
-There are probably a few, but I wrote _smvp_ so my cron scripts can email
-me status information and the contents of log files. Some of the files
-contain ANSI escape sequences for terminal colors. The _smvp_ utility
-converts those ANSI escape sequences into proper HTML tags, so the
-emails I get are nicely formatted.
+There are probably a few, but I wrote _smvp_ for two primary reasons:
 
-_smvp_ is not intended to be a bulk emailer for formatted messages. There
-other (better) tools for that.
+1. I found that fiddling with `postfix` and `sendmail` was a pain.
+2. I want my cron scripts to email me status information and the
+contents of various log files. Some of the files contain ANSI escape
+sequences for terminal colors. The _smvp_ utility converts those ANSI
+escape sequences into proper HTML tags, so the emails I get are nicely
+formatted.
+
+_smvp_ is not intended to be a bulk emailer for formatted messages.
+There other (better) tools for that.
 
 _PRO TIP: If you're sending mail with smvp from within a script, make
 sure to include a line that exports the directory path where your python
@@ -118,7 +121,7 @@ usage: smvp [-h] [-f FONT_FAMILY] [-s FONT_SIZE] [-v] recipient subject file
 For example:
 
 ```text
-smvp friend@gmail.com "Hello, Friend" ~/logfile.txt -f "Trebuchet MS"
+smvp friend@gmail.com "Hello, Friend" ~/logfile.txt -f "Trebuchet MS" -s 14
 ```
 
 For more details, run:
