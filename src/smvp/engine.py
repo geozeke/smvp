@@ -1,18 +1,122 @@
 import argparse
-import os
 import re
-import smtplib
-import ssl
-import sys
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
+from typing import List
 
-from ansi2html import Ansi2HTMLConverter
-from bs4 import BeautifulSoup
-
-from smvp.utilities import file_is_html
-from smvp.utilities import validate_environment
+from smvp.utilities import print_docstring
+from smvp.utilities import task_runner
 from smvp.version import get_version
+
+
+def font_size(size: str) -> str:
+    """Validate size inputs.
+
+    Parameters
+    ----------
+    size : str
+        User input for a font size option.
+
+    Returns
+    -------
+    str
+        The validated user input.
+
+    Raises
+    ------
+    argparse.ArgumentTypeError
+        If the input is not a valid integer (for example is a float).
+    argparse.ArgumentTypeError
+        If the input is not between 2 and 100.
+    """
+    for c in size:
+        if not c.isdigit():
+            msg = "Size must be a valid integer"
+            raise argparse.ArgumentTypeError(msg)
+
+    int_size = int(size)
+    min_size = 2
+    max_size = 100
+    if int_size >= min_size and int_size <= max_size:
+        return size
+    else:
+        msg = f"Font size must be between {min_size} and {max_size}"
+        raise argparse.ArgumentTypeError(msg)
+
+
+# ======================================================================
+
+
+def font_family(font: str) -> str:
+    """Validate font_family inputs.
+
+    Parameters
+    ----------
+    font : str
+        User input for a font family.
+
+    Returns
+    -------
+    str
+        The validated user input.
+
+    Raises
+    ------
+    argparse.ArgumentTypeError
+        If the the selected font family is not recognized.
+    """
+    valid_fonts = {
+        "ANDALE MONO": "Andale Mono",
+        "ARIAL": "Arial",
+        "BRUSH SCRIPT MT": "Brush Script MT",
+        "COMIC SANS MS": "Comic Sans MS",
+        "COURIER NEW": "Courier New",
+        "FANTASY": "fantasy",
+        "GARAMOND": "Garamond",
+        "GEORGIA": "Georgia",
+        "HELVETICA": "Helvetica",
+        "IMPACT": "Impact",
+        "LUMINARI": "Luminari",
+        "MONACO": "Monaco",
+        "MONOSPACE": "monospace",
+        "SANS-SERIF": "sans-serif",
+        "SERIF": "serif",
+        "TAHOMA": "Tahoma",
+        "TIMES NEW ROMAN": "Times New Roman",
+        "TREBUCHET MS": "Trebuchet MS",
+        "VERDANA": "Verdana",
+    }
+    user_input = " ".join([word.upper() for word in font.split()])
+    if user_input in valid_fonts:
+        return valid_fonts[user_input]
+    else:
+        print()
+        fonts = [f'"{token}"' for token in list(valid_fonts.values())]
+        fonts.sort()
+        msg = f"""
+        The font you entered ({font}) is not valid. The default font is
+        "Courier New". If you're changing the default font, please use
+        one of the options below. Check the spelling to make sure it's
+        correct.
+        """
+        print_docstring(msg=msg)
+        print()
+        chunk_size = 5
+        start = 0
+        end = 4
+        chunks: List[str] = []
+        for font in fonts:
+            chunk = fonts[start:end]
+            if start > len(fonts) or len(chunk) == 0:
+                break
+            if len(chunk) > 1:
+                chunks.append(", ".join(fonts[start:end]))
+            else:
+                chunks.append(chunk[0])
+            start = end
+            end += chunk_size
+        print(",\n".join(chunks))
+        print()
+        raise argparse.ArgumentTypeError("invalid font family")
+
 
 # ======================================================================
 
@@ -45,78 +149,13 @@ def email_type(address: str) -> str:
 # ======================================================================
 
 
-def task_runner(args: argparse.Namespace) -> None:
-    """Package email contents and send message
-
-    Parameters
-    ----------
-    args : argparse.Namespace
-        The collection of command line arguments.
-    """
-    if not validate_environment():
-        sys.exit(1)
-
-    # Initialize
-    sender_email = os.environ["SMVP_USER"]
-    email_server = os.environ["SMVP_SERVER"]
-    email_token = os.environ["SMVP_TOKEN"]
-    receiver_email = args.recipient
-    email_subject = args.subject
-    email_port = 587
-
-    with args.file as f:
-        text_in = f.read()
-
-    # Create separate plantext and html versions of the input
-    if not file_is_html(text_in):
-        converter = Ansi2HTMLConverter(dark_bg=False)
-        html_text = converter.convert(text_in, full=True)
-        # Replace the dull-grey default
-        html_text = html_text.replace("color: #AAAAAA", "color: #FFFFFF")
-    else:
-        html_text = text_in
-    plain_text = BeautifulSoup(html_text, "lxml").get_text().strip()
-
-    # Package both parts into a MIME multipart message.
-    message = MIMEMultipart("alternative")
-    message["Subject"] = email_subject
-    message["From"] = sender_email
-    message["To"] = receiver_email
-    message.attach(MIMEText(plain_text, "plain"))
-    message.attach(MIMEText(html_text, "html"))
-
-    # Create a secure context for the TLS connection
-    context = ssl.create_default_context()
-
-    # Send the email
-    try:
-        server = smtplib.SMTP(email_server, email_port)
-        server.starttls(context=context)
-        server.login(sender_email, email_token)
-        server.sendmail(
-            from_addr=sender_email,
-            to_addrs=receiver_email,
-            msg=message.as_string(),
-        )
-        print("Message successfully sent.")
-    except Exception as e:
-        print(e)
-    finally:
-        server.quit()
-
-    return
-
-
-# ======================================================================
-
-
 def process_args() -> None:
     msg = """
     Send Mail Via Python (smvp). This tool will send an email from the
     command line, with the body of the email taken from a specified
-    file. There are many use cases. For example, it's handy to use smvp
-    to have automated Linux scripts (i.e. cron jobs) email you status
-    updates and the contents of log files.
+    file. For example, it's handy to use smvp to have automated Linux
+    scripts (i.e. cron jobs) email you status updates and the contents
+    of log files.
     """
     epi = f"Version: {get_version()}"
     parser = argparse.ArgumentParser(description=msg, epilog=epi)
@@ -139,6 +178,21 @@ def process_args() -> None:
     """
     parser.add_argument("file", type=argparse.FileType("r"), help=msg)
 
+    msg = """
+    Enter the desired font family (enclosed in quotes). Values here are
+    not case sensitive. See the README.md file for available options.
+    Default = \"Courier New\".
+    """
+    parser.add_argument(
+        "-f", "--font_family", type=font_family, default="Courier New", help=msg
+    )
+
+    msg = """
+    Enter the desired font pixel size as an integer. Valid sizes are
+    between 2 and 100. Default = 12.
+    """
+    parser.add_argument("-s", "--font_size", type=font_size, default=12, help=msg)
+
     parser.add_argument(
         "-v",
         "--version",
@@ -148,3 +202,4 @@ def process_args() -> None:
 
     args = parser.parse_args()
     task_runner(args=args)
+    return
