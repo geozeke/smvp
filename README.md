@@ -25,6 +25,16 @@ emails I get are nicely formatted.
 _smvp_ is not intended to be a bulk emailer for formatted messages. There
 other (better) tools for that.
 
+_PRO TIP: If you're sending mail with smvp from within a script, make
+sure to include a line that exports the directory path where your python
+tool installer puts things. For example, if you're using uv, you would
+put somthing like this near the top of your bash script:_
+
+```bash
+# Setup PATH export so the script can find installed python tools
+export PATH="$PATH:/home/<yourhome>/.local/bin"
+```
+
 ## Installation
 
 Use your preferred python package installer for command line tools, for
@@ -38,6 +48,14 @@ or
 
 ```text
 uv tool install smvp
+```
+
+or
+
+```text
+python3 -m venv .venv
+source .venv/bin/activate
+pip3 install smvp
 ```
 
 ## Requirements
