@@ -1,6 +1,6 @@
 [project]
 name = "smvp"
-version = "0.1.3"
+version = "0.2.0"
 description = "Send a formatted email from the command line"
 authors = [
     { name = "Peter Nardi", email = "geozeke@gmail.com" }

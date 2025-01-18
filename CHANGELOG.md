@@ -2,17 +2,11 @@
 
 <!--------------------------------------------------------------------->
 
-## [0.1.3][0.1.3] - 2025-TBD
-
-### Changed
+## [0.2.0][0.2.0] - 2025-01-18
 
 ### Added
 
-* Add option for user to select font family ([#1][issue1])
-
-### Removed
-
-### Fixed
+* Add option for user to select font family and size ([#1][issue1])
 
 <!--------------------------------------------------------------------->
 
@@ -22,4 +16,4 @@ _Beta Release._
 
 [0.1.2]: https://github.com/geozeke/smvp/releases/tag/v0.1.2
 [issue1]: https://github.com/geozeke/smvp/issues/1
-[0.1.3]: https://github.com/geozeke/smvp/releases/tag/v0.1.3
+[0.2.0]: https://github.com/geozeke/smvp/releases/tag/v0.2.0
