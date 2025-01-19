@@ -84,8 +84,17 @@ processes. To confirm you have the environment variables correctly set
 set | grep ^SMVP_
 ```
 
+> [!TIP]
+> I want the readers to read it carefully as it contains many important
+> docs.
+
 _Note: If you make changes to your "rc" file, make sure to "source" it
 or open a new terminal window before running smvp again._
+
+_PRO TIP: If you're sending mail with smvp from within a script, make
+sure to include a line that exports the directory path where your Python
+tool installer puts things. For example, if you're using uv on Ubuntu,
+you would put something like this near the top of your bash script:_
 
 ### Second
 
