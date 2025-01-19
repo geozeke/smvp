@@ -12,7 +12,7 @@ HTML, or plain text. The resulting email will be sent as a multi-part
 MIME message that renders properly in both plain text and HTML.
 
 _Note: The file itself is not sent as an attachment; instead, the
-contents of the file are put into into the body of the email._
+contents of the file are put into the body of the email._
 
 ## Use Case
 
@@ -23,16 +23,16 @@ There are probably a few, but I wrote _smvp_ for two primary reasons:
 contents of various log files. Some of the files contain ANSI escape
 sequences for terminal colors. The _smvp_ utility converts those ANSI
 escape sequences into proper HTML tags, so the emails I get are nicely
-formatted. You could set `$MAILTO` in your corntab, but you won't get
+formatted. You could set `$MAILTO` in your crontab, but you won't get
 proper handling of ANSI escape sequences, and refer to number 1 above.
 
 _smvp_ is not intended to be a bulk emailer for formatted messages.
-There other (better) tools for that.
+There are other (better) tools for that.
 
 _PRO TIP: If you're sending mail with smvp from within a script, make
-sure to include a line that exports the directory path where your python
-tool installer puts things. For example, if you're using uv, you would
-put somthing like this near the top of your bash script:_
+sure to include a line that exports the directory path where your Python
+tool installer puts things. For example, if you're using uv on Ubuntu,
+you would put something like this near the top of your bash script:_
 
 ```bash
 # Setup PATH export so the script can find installed python tools
@@ -92,13 +92,13 @@ or open a new terminal window before running smvp again._
 The `SMVP_SERVER` you select must support secure TLS connections on
 port `587`. Check the SMTP settings for your email provider. This is the
 default TLS port on Gmail, so if you're using your Gmail account to send
-emails, you're good-to-go.
+emails, you're good to go.
 
 ## Styling
 
 _smvp_ offers custom font and font size options for your email. The
 default font for formatted HTML email is `Courier New`, `12px`. Beyond
-the default you can choose any font size from `2px` up to and including
+the default, you can choose any font size from `2px` up to and including
 `100px`, from among these font families:
 
 ```text
@@ -110,7 +110,7 @@ the default you can choose any font size from `2px` up to and including
 
 _NOTE: Not every font will render properly on every device. When in
 doubt, fonts like: "monospace", "sans-serif", "fantasy", and "serif" are
-pretty safe. You may just have try a few options to land on the right
+pretty safe. You may just have to try a few options to land on the right
 one for your use case._
 
 ## Usage
