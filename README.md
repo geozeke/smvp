@@ -11,8 +11,9 @@ email address. The input file can be a text file with ANSI color codes,
 HTML, or plain text. The resulting email will be sent as a multi-part
 MIME message that renders properly in both plain text and HTML.
 
-_Note: The file itself is not sent as an attachment; instead, the
-contents of the file are put into the body of the email._
+> [!Note]
+> The file itself is not sent as an attachment; instead, the contents of
+> the file are put into the body of the email.
 
 ## Use Case
 
@@ -26,13 +27,11 @@ escape sequences into proper HTML tags, so the emails I get are nicely
 formatted. You could set `$MAILTO` in your crontab, but you won't get
 proper handling of ANSI escape sequences, and refer to number 1 above.
 
-_smvp_ is not intended to be a bulk emailer for formatted messages.
-There are other (better) tools for that.
-
-_PRO TIP: If you're sending mail with smvp from within a script, make
-sure to include a line that exports the directory path where your Python
-tool installer puts things. For example, if you're using uv on Ubuntu,
-you would put something like this near the top of your bash script:_
+> [!Tip]
+> If you're sending mail with smvp from within a script, make sure to
+> include a line that exports the directory path where your Python tool
+> installer puts things. For example, if you're using uv on Ubuntu, you
+> would put something like this near the top of your bash script:
 
 ```bash
 # Setup PATH export so the script can find installed python tools
@@ -84,17 +83,16 @@ processes. To confirm you have the environment variables correctly set
 set | grep ^SMVP_
 ```
 
-> [!TIP]
-> I want the readers to read it carefully as it contains many important
-> docs.
+> [!Note]
+> If you make changes to your "rc" file, make sure to "source" it or
+> open a new terminal window before running smvp again.
 
-_Note: If you make changes to your "rc" file, make sure to "source" it
-or open a new terminal window before running smvp again._
+---
 
-_PRO TIP: If you're sending mail with smvp from within a script, make
-sure to include a line that exports the directory path where your Python
-tool installer puts things. For example, if you're using uv on Ubuntu,
-you would put something like this near the top of your bash script:_
+> [!Tip]
+> If you're using cron and sending mail with smvp from within a script,
+> make sure to include your credentials at the top of your crontab so
+> your scripts will have access to them during execution.
 
 ### Second
 
