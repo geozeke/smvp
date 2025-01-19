@@ -91,8 +91,9 @@ set | grep ^SMVP_
 
 > [!Tip]
 > If you're using `cron` and sending mail with _smvp_ from within a
-> script, make sure to include your credentials at the top of your
-> `crontab` so your scripts will have access to them during execution.
+> script, make sure to include the environment variables at the top of
+> your `crontab` so your scripts will have access to them during
+> execution.
 
 ### Second
 
@@ -119,7 +120,7 @@ the default, you can choose any font size from `2px` up to and including
 > Not every font will render properly on every device. When in doubt,
 > fonts like: "monospace", "sans-serif", "fantasy", and "serif" are
 > pretty safe. You may just have to try a few options to land on the
-> right one for your use case._
+> right one for your use case.
 
 ## Usage
 
