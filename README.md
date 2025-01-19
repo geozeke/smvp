@@ -27,17 +27,6 @@ escape sequences into proper HTML tags, so the emails I get are nicely
 formatted. You could set `$MAILTO` in your crontab, but you won't get
 proper handling of ANSI escape sequences, and refer to number 1 above.
 
-> [!Tip]
-> If you're sending mail with _smvp_ from within a script, make sure to
-> include a line that exports the directory path where your Python tool
-> installer puts things. For example, if you're using `uv` on Ubuntu,
-> you would put something like this near the top of your bash script:
-
-```bash
-# Setup PATH export so the script can find installed Python tools
-export PATH="$PATH:/home/<yourhome>/.local/bin"
-```
-
 ## Installation
 
 Use your preferred Python package installer for command line tools, for
@@ -93,7 +82,15 @@ set | grep ^SMVP_
 > If you're using `cron` and sending mail with _smvp_ from within a
 > script, make sure to include the environment variables at the top of
 > your `crontab` so your scripts will have access to them during
-> execution.
+> execution. Also include a line in your script that exports the
+> directory path where your Python tool installer puts things. For
+> example, if you're using `uv` on Ubuntu, you would put something like
+> this near the top of your bash script:
+
+```bash
+# Setup PATH export so the script can find installed Python tools
+export PATH="$PATH:/home/<yourhome>/.local/bin"
+```
 
 ### Second
 
