@@ -28,10 +28,10 @@ formatted. You could set `$MAILTO` in your crontab, but you won't get
 proper handling of ANSI escape sequences, and refer to number 1 above.
 
 > [!Tip]
-> If you're sending mail with smvp from within a script, make sure to
+> If you're sending mail with _smvp_ from within a script, make sure to
 > include a line that exports the directory path where your Python tool
-> installer puts things. For example, if you're using uv on Ubuntu, you
-> would put something like this near the top of your bash script:
+> installer puts things. For example, if you're using `uv` on Ubuntu,
+> you would put something like this near the top of your bash script:
 
 ```bash
 # Setup PATH export so the script can find installed python tools
@@ -84,15 +84,15 @@ set | grep ^SMVP_
 ```
 
 > [!Note]
-> If you make changes to your "rc" file, make sure to "source" it or
-> open a new terminal window before running smvp again.
+> If you make changes to your "rc" file, make sure to `source` it or
+> open a new terminal window before running _smvp_ again.
 
 ---
 
 > [!Tip]
-> If you're using cron and sending mail with smvp from within a script,
-> make sure to include your credentials at the top of your crontab so
-> your scripts will have access to them during execution.
+> If you're using `cron` and sending mail with _smvp_ from within a
+> script, make sure to include your credentials at the top of your
+> `crontab` so your scripts will have access to them during execution.
 
 ### Second
 
@@ -115,10 +115,11 @@ the default, you can choose any font size from `2px` up to and including
 "Verdana", "fantasy", "monospace", "sans-serif", "serif"
 ```
 
-_NOTE: Not every font will render properly on every device. When in
-doubt, fonts like: "monospace", "sans-serif", "fantasy", and "serif" are
-pretty safe. You may just have to try a few options to land on the right
-one for your use case._
+> [!Note]
+> Not every font will render properly on every device. When in doubt,
+> fonts like: "monospace", "sans-serif", "fantasy", and "serif" are
+> pretty safe. You may just have to try a few options to land on the
+> right one for your use case._
 
 ## Usage
 
