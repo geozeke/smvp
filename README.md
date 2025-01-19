@@ -34,13 +34,13 @@ proper handling of ANSI escape sequences, and refer to number 1 above.
 > you would put something like this near the top of your bash script:
 
 ```bash
-# Setup PATH export so the script can find installed python tools
+# Setup PATH export so the script can find installed Python tools
 export PATH="$PATH:/home/<yourhome>/.local/bin"
 ```
 
 ## Installation
 
-Use your preferred python package installer for command line tools, for
+Use your preferred Python package installer for command line tools, for
 example:
 
 ```text
