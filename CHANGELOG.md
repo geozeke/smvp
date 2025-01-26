@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.2.1][0.2.1] - 2025-01-26
+## [0.2.5][0.2.5] - 2025-01-26
 
 _Public Release._
 
@@ -21,4 +21,4 @@ _Beta Release._
 [0.1.2]: https://github.com/geozeke/smvp/releases/tag/v0.1.2
 [issue1]: https://github.com/geozeke/smvp/issues/1
 [0.2.0]: https://github.com/geozeke/smvp/releases/tag/v0.2.0
-[0.2.1]: https://github.com/geozeke/smvp/releases/tag/v0.2.1
+[0.2.5]: https://github.com/geozeke/smvp/releases/tag/v0.2.5

@@ -1,6 +1,6 @@
 [project]
 name = "smvp"
-version = "0.2.3"
+version = "0.2.5"
 description = "Send a formatted email from the command line"
 authors = [
     { name = "Peter Nardi", email = "geozeke@gmail.com" }
@@ -38,6 +38,7 @@ classifiers = [
 	"Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
 ]
+
 requires-python = ">=3.8"
 dependencies = [
     "ansi2html>=1.9.2",
@@ -45,6 +46,11 @@ dependencies = [
     "lxml>=5.3.0",
     "tomli>=1.1.0 ; python_full_version < '3.11'",
 ]
+
+[project.urls]
+"Source Code" = "https://github.com/geozeke/smvp"
+"Bug Tracker" = "https://github.com/geozeke/smvp/issues"
+
 [dependency-groups]
 dev = [
     "mypy>=1.14.1",
