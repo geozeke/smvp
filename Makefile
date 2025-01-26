@@ -44,6 +44,20 @@ endif
 
 # --------------------------------------------
 
+.PHONY: sync
+sync: ## sync dependencies with the lock file (use --frozen)
+ifeq (,$(wildcard .init/setup))
+	@echo "Please run \"make setup\" first" ; exit 1
+endif
+
+ifneq (,$(wildcard .init/dev))
+	uv sync --frozen
+else
+	uv sync --frozen --no-dev
+endif
+
+# --------------------------------------------
+
 .PHONY: reset
 reset: clean ## remove venv, artifacts, and init directory
 	@echo Resetting project state

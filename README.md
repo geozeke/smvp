@@ -72,9 +72,8 @@ processes. To confirm you have the environment variables correctly set
 set | grep ^SMVP_
 ```
 
-> [!Note]
-> If you make changes to your "rc" file, make sure to `source` it or
-> open a new terminal window before running _smvp_ again.
+> **Note:** If you make changes to your "rc" file, make sure to `source`
+> it or open a new terminal window before running _smvp_ again.
 
 ---
 
