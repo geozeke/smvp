@@ -4,7 +4,7 @@
 
 ### Changed
 
-* [lxml](https://lxml.de) library bumped to v5.3.1
+* [lxml][lxml] library bumped to v5.3.1
 
 <!--------------------------------------------------------------------->
 
@@ -31,3 +31,4 @@ _Beta Release._
 [0.2.0]: https://github.com/geozeke/smvp/releases/tag/v0.2.0
 [0.2.5]: https://github.com/geozeke/smvp/releases/tag/v0.2.5
 [0.2.6]: https://github.com/geozeke/smvp/releases/tag/v0.2.6
+[lxml]: https://lxml.de
