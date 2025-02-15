@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.6][0.2.6] - 2025-02-15
+
+### Changed
+
+* [lxml](https://lxml.de) library bumped to v5.3.1
+
+<!--------------------------------------------------------------------->
+
 ## [0.2.5][0.2.5] - 2025-01-26
 
 _Public Release._
@@ -22,3 +30,4 @@ _Beta Release._
 [issue1]: https://github.com/geozeke/smvp/issues/1
 [0.2.0]: https://github.com/geozeke/smvp/releases/tag/v0.2.0
 [0.2.5]: https://github.com/geozeke/smvp/releases/tag/v0.2.5
+[0.2.6]: https://github.com/geozeke/smvp/releases/tag/v0.2.6
