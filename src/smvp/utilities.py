@@ -141,8 +141,17 @@ def task_runner(args: argparse.Namespace) -> None:
     email_subject = args.subject
     email_port = 587
 
-    with args.file as f:
-        text_in = f.read()
+    try:
+        with args.file as f:
+            text_in = f.read()
+    except UnicodeDecodeError:
+        msg=f"""
+        Unable to process: {args.file.name}
+        smvp can only process textfiles (including those with ANSI
+        escape sequences) or html files. No email sent.
+        """
+        print_docstring(msg=msg)
+        sys.exit(1)
 
     # Craft an HTML version compatible with Gmail. If it's not HTML,
     # then filter it through ansi2html to scan for ANSI codes and turn
