@@ -7,10 +7,7 @@ setup: ## setup project with runtime dependencies
 ifeq (,$(wildcard .init/setup))
 	@(which uv > /dev/null 2>&1) || \
 	(echo "smvp requires uv. See README for instructions."; exit 1)
-	@if [ ! -d "./scratch" ]; then \
-		mkdir -p scratch; \
-	fi
-	mkdir .init
+	mkdir -p scratch .init
 	touch .init/setup
 	uv sync --no-dev --frozen
 else
@@ -74,13 +71,20 @@ build: ## build package for publishing
 
 .PHONY: publish-production
 publish-production: build ## publish package to pypi.org for production
-	uv publish  --publish-url https://upload.pypi.org/legacy/ \
-		--token ${PYPITOKEN}
-		
+	@if [ -z "${PYPITOKEN}" ]; then \
+		echo "❌ Error: PYPITOKEN is not set!"; \
+		exit 1; \
+	fi
+	uv publish --publish-url https://upload.pypi.org/legacy/ --token ${PYPITOKEN}
+
 # --------------------------------------------
 
 .PHONY: publish-test
 publish-test: build ## publish package to test.pypi.org for testing
+	@if [ -z "${TESTPYPITOKEN}" ]; then \
+		echo "❌ Error: TESTPYPITOKEN is not set!"; \
+		exit 1; \
+	fi
 	uv publish  --publish-url https://test.pypi.org/legacy/ \
 		--token ${TESTPYPITOKEN}
 
@@ -105,7 +109,9 @@ clean: ## cleanup python runtime and build artifacts
 
 .PHONY: help
 help: ## show help
-	@echo Please specify a target. Choices are:
+	@echo ""
+	@echo "🚀 Available Commands 🚀"
+	@echo "========================"
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk \
 	'BEGIN {FS = ":.*?## "}; \
-	{printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	{printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
