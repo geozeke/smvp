@@ -1,5 +1,15 @@
 # Changelog
 
+<!--------------------------------------------------------------------->
+
+## [0.2.8][0.2.8] - 2025-03-06
+
+### Removed
+
+* Drop support for Python 3.8 ([#5][issue5])
+
+<!--------------------------------------------------------------------->
+
 ## [0.2.7][0.2.7] - 2025-02-19
 
 ### Fixed
@@ -39,6 +49,8 @@ _Beta Release._
 [0.2.5]: https://github.com/geozeke/smvp/releases/tag/v0.2.5
 [0.2.6]: https://github.com/geozeke/smvp/releases/tag/v0.2.6
 [0.2.7]: https://github.com/geozeke/smvp/releases/tag/v0.2.7
+[0.2.8]: https://github.com/geozeke/smvp/releases/tag/v0.2.8
 [issue1]: https://github.com/geozeke/smvp/issues/1
 [issue3]: https://github.com/geozeke/smvp/issues/3
+[issue5]: https://github.com/geozeke/smvp/issues/5
 [lxml]: https://lxml.de
