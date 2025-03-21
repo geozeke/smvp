@@ -40,7 +40,7 @@ def print_docstring(msg: str) -> None:
     lines = clean.split("\n")
     spaces = 0
     for c in lines[0]:
-        if c in ["\n", " ", "\t"]:
+        if c.isspace():
             spaces += 1
         else:
             break
@@ -145,7 +145,7 @@ def task_runner(args: argparse.Namespace) -> None:
         with args.file as f:
             text_in = f.read()
     except UnicodeDecodeError:
-        msg=f"""
+        msg = f"""
         Unable to process: {args.file.name}
         smvp can only process textfiles (including those with ANSI
         escape sequences) or html files. No email sent.
