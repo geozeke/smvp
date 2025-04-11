@@ -71,22 +71,17 @@ build: ## build package for publishing
 
 .PHONY: publish-production
 publish-production: build ## publish package to pypi.org for production
-	@if [ -z "${PYPITOKEN}" ]; then \
-		echo "❌ Error: PYPITOKEN is not set!"; \
-		exit 1; \
-	fi
-	uv publish --publish-url https://upload.pypi.org/legacy/ --token ${PYPITOKEN}
+	@set -a; eval "$$(grep '^PYPI_' $$HOME/.secrets)"; \
+	uv publish --publish-url https://upload.pypi.org/legacy/ \
+		--token "$$PYPI_PROD"
 
 # --------------------------------------------
 
 .PHONY: publish-test
 publish-test: build ## publish package to test.pypi.org for testing
-	@if [ -z "${TESTPYPITOKEN}" ]; then \
-		echo "❌ Error: TESTPYPITOKEN is not set!"; \
-		exit 1; \
-	fi
+	@set -a; eval "$$(grep '^PYPI_' $$HOME/.secrets)"; \
 	uv publish  --publish-url https://test.pypi.org/legacy/ \
-		--token ${TESTPYPITOKEN}
+		--token "$$PYPI_TEST"
 
 # --------------------------------------------
 

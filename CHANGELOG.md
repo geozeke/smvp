@@ -2,6 +2,14 @@
 
 <!--------------------------------------------------------------------->
 
+## [0.2.9][0.2.9] - 2025-04-11
+
+### Changed
+
+* [lxml][lxml] library bumped to v5.3.2
+
+<!--------------------------------------------------------------------->
+
 ## [0.2.8][0.2.8] - 2025-03-06
 
 ### Removed
@@ -50,6 +58,7 @@ _Beta Release._
 [0.2.6]: https://github.com/geozeke/smvp/releases/tag/v0.2.6
 [0.2.7]: https://github.com/geozeke/smvp/releases/tag/v0.2.7
 [0.2.8]: https://github.com/geozeke/smvp/releases/tag/v0.2.8
+[0.2.9]: https://github.com/geozeke/smvp/releases/tag/v0.2.9
 [issue1]: https://github.com/geozeke/smvp/issues/1
 [issue3]: https://github.com/geozeke/smvp/issues/3
 [issue5]: https://github.com/geozeke/smvp/issues/5
