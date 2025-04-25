@@ -1,47 +1,47 @@
 [project]
 name = "smvp"
-version = "0.2.9"
+version = "0.2.10"
 description = "Send a formatted email from the command line"
 authors = [{ name = "Peter Nardi", email = "geozeke@gmail.com" }]
 license = { file = "LICENSE" }
 readme = { file = "README.md", content-type = "text/markdown" }
 keywords = [
-	"ansi",
-	"cron",
-	"html",
-	"logs",
-	"mail",
-	"mime",
-	"python",
-	"scripting",
-	"send",
-	"sendmail",
-	"smvp",
+    "ansi",
+    "cron",
+    "html",
+    "logs",
+    "mail",
+    "mime",
+    "python",
+    "scripting",
+    "send",
+    "sendmail",
+    "smvp",
 ]
 classifiers = [
-	"Development Status :: 4 - Beta",
-	"Intended Audience :: Developers",
-	"License :: OSI Approved :: MIT License",
-	"Natural Language :: English",
-	"Operating System :: POSIX :: Linux",
-	"Operating System :: MacOS :: MacOS X",
-	"Topic :: Utilities",
-	"Topic :: System :: Logging",
-	"Topic :: Text Processing :: Markup :: HTML",
-	"Programming Language :: Python :: 3",
-	"Programming Language :: Python :: 3.9",
-	"Programming Language :: Python :: 3.10",
-	"Programming Language :: Python :: 3.11",
-	"Programming Language :: Python :: 3.12",
-	"Programming Language :: Python :: 3.13",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS :: MacOS X",
+    "Topic :: Utilities",
+    "Topic :: System :: Logging",
+    "Topic :: Text Processing :: Markup :: HTML",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
 ]
 
 requires-python = ">=3.9"
 dependencies = [
-	"ansi2html>=1.9.2",
-	"bs4>=0.0.2",
-	"lxml>=5.3.0",
-	"tomli>=1.1.0 ; python_full_version < '3.11'",
+    "ansi2html>=1.9.2",
+    "bs4>=0.0.2",
+    "lxml>=5.3.0",
+    "tomli>=1.1.0 ; python_full_version < '3.11'",
 ]
 
 [project.urls]

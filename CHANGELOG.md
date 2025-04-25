@@ -2,6 +2,15 @@
 
 <!--------------------------------------------------------------------->
 
+## [0.2.10][0.2.10] - 2025-04-25
+
+### Changed
+
+* [lxml][lxml] library bumped to v5.4.0
+* [soupsieve][soupsieve] library bumped to v2.7
+
+<!--------------------------------------------------------------------->
+
 ## [0.2.9][0.2.9] - 2025-04-11
 
 ### Changed
@@ -54,6 +63,7 @@ _Beta Release._
 
 [0.1.2]: https://github.com/geozeke/smvp/releases/tag/v0.1.2
 [0.2.0]: https://github.com/geozeke/smvp/releases/tag/v0.2.0
+[0.2.10]: https://github.com/geozeke/smvp/releases/tag/v0.2.10
 [0.2.5]: https://github.com/geozeke/smvp/releases/tag/v0.2.5
 [0.2.6]: https://github.com/geozeke/smvp/releases/tag/v0.2.6
 [0.2.7]: https://github.com/geozeke/smvp/releases/tag/v0.2.7
@@ -63,3 +73,4 @@ _Beta Release._
 [issue3]: https://github.com/geozeke/smvp/issues/3
 [issue5]: https://github.com/geozeke/smvp/issues/5
 [lxml]: https://lxml.de
+[soupsieve]: https://pypi.org/project/soupsieve/
