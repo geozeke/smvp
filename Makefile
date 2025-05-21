@@ -48,9 +48,9 @@ ifeq (,$(wildcard .init/setup))
 endif
 
 ifneq (,$(wildcard .init/dev))
-	uv sync --frozen --all-groups
+	uv sync --all-groups --frozen
 else
-	uv sync --frozen --no-dev
+	uv sync --no-dev --frozen
 endif
 
 # --------------------------------------------
@@ -105,7 +105,7 @@ clean: ## cleanup python runtime and build artifacts
 .PHONY: help
 help: ## show help
 	@echo ""
-	@echo "🚀 Available Commands 🚀"
+	@echo "Available Commands"
 	@echo "========================"
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk \
 	'BEGIN {FS = ":.*?## "}; \
