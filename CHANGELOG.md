@@ -2,6 +2,14 @@
 
 <!--------------------------------------------------------------------->
 
+## [0.2.11][0.2.11] - 2025-05-23
+
+### Changed
+
+* Maintenance release to synchronize repository tags.
+
+<!--------------------------------------------------------------------->
+
 ## [0.2.10][0.2.10] - 2025-04-25
 
 ### Changed
@@ -61,9 +69,12 @@ _Public Release._
 
 _Beta Release._
 
+<!--------------------------------------------------------------------->
+
 [0.1.2]: https://github.com/geozeke/smvp/releases/tag/v0.1.2
 [0.2.0]: https://github.com/geozeke/smvp/releases/tag/v0.2.0
 [0.2.10]: https://github.com/geozeke/smvp/releases/tag/v0.2.10
+[0.2.11]: https://github.com/geozeke/smvp/releases/tag/v0.2.11
 [0.2.5]: https://github.com/geozeke/smvp/releases/tag/v0.2.5
 [0.2.6]: https://github.com/geozeke/smvp/releases/tag/v0.2.6
 [0.2.7]: https://github.com/geozeke/smvp/releases/tag/v0.2.7
