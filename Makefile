@@ -7,8 +7,10 @@ setup: ## setup project with runtime dependencies
 ifeq (,$(wildcard .init/setup))
 	@(which uv > /dev/null 2>&1) || \
 	(echo "smvp requires uv. See README for instructions."; exit 1)
-	mkdir -p scratch .init
+	mkdir -p scratch .init run
 	touch .init/setup
+	cp ./scripts/* ./run
+	find ./run -name '*.sh' -exec chmod 755 {} \;
 	uv sync --frozen --no-dev
 else
 	@echo "Initial setup is already complete. If you are having issues, run:"
@@ -58,7 +60,7 @@ endif
 .PHONY: reset
 reset: clean ## remove venv, artifacts, and init directory
 	@echo Resetting project state
-	rm -rf .init .ruff_cache .mypy_cache .venv
+	rm -rf .init .ruff_cache .mypy_cache .venv run
 
 # --------------------------------------------
 
@@ -99,6 +101,12 @@ clean: ## cleanup python runtime and build artifacts
 	@find . -type f -name *.pyc -delete
 	@find . -type f -name *.pyo -delete
 	@find . -type f -name *.coverage -delete
+
+# --------------------------------------------
+
+.PHONY: tags
+tags: ## Update project tags
+	./run/release_tags.sh
 
 # --------------------------------------------
 
