@@ -10,7 +10,7 @@ ifeq (,$(wildcard .init/setup))
 	mkdir -p scratch .init run
 	touch .init/setup
 	cp ./scripts/* ./run
-	find ./run -name '*.sh' -exec chmod 754 {} \;
+	find ./run -name '*.sh' -exec chmod 744 {} \;
 	uv sync --frozen --no-dev
 else
 	@echo "Initial setup is already complete. If you are having issues, run:"
@@ -24,17 +24,21 @@ endif
 
 .PHONY: dev
 dev: ## add development dependencies (run make setup first)
-ifneq (,$(wildcard .init/setup))
-	uv sync --frozen --all-groups
-	@touch .init/dev
-else
-	@echo "Please run \"make setup\" first"
+ifeq (,$(wildcard .init/setup))
+	@echo "Please run \"make setup\" first" ; exit 1
 endif
+	uv sync --all-groups --frozen
+	@touch .init/dev
 
 # --------------------------------------------
 
 .PHONY: upgrade
-upgrade: ## upgrade project dependencies
+upgrade: ## synchronize helper scripts and upgrade project dependencies
+ifeq (,$(wildcard .init/setup))
+	@echo "Please run \"make setup\" first" ; exit 1
+endif
+	cp -f ./scripts/* ./run
+	find ./run -name '*.sh' -exec chmod 744 {} \;
 ifeq (,$(wildcard .init/dev))
 	uv sync --upgrade --no-dev
 else
@@ -57,10 +61,33 @@ endif
 
 # --------------------------------------------
 
+.PHONY: clean
+clean: ## cleanup python runtime and build artifacts
+	@echo Cleaning python runtime and build artifacts
+	@rm -rf build/
+	@rm -rf dist/
+	@find . -type d -name __pycache__ -exec rm -rf {} \; -prune
+	@find . -type d -name .pytest_cache -exec rm -rf {} \; -prune
+	@find . -type d -name .eggs -exec rm -rf {} \; -prune
+	@find . -type d -name htmlcov -exec rm -rf {} \; -prune
+	@find . -type d -name *.egg-info -exec rm -rf {} \; -prune
+	@find . -type f -name *.egg -delete
+	@find . -type f -name *.pyc -delete
+	@find . -type f -name *.pyo -delete
+	@find . -type f -name *.coverage -delete
+
+# --------------------------------------------
+
 .PHONY: reset
 reset: clean ## remove venv, artifacts, and init directory
 	@echo Resetting project state
 	rm -rf .init .ruff_cache .mypy_cache .venv run
+
+# --------------------------------------------
+
+.PHONY: tags
+tags: ## Update project tags
+	./run/release_tags.sh
 
 # --------------------------------------------
 
@@ -84,29 +111,6 @@ publish-test: build ## publish package to test.pypi.org for testing
 	@set -a; eval "$$(grep '^PYPI_' $$HOME/.secrets)"; \
 	uv publish  --publish-url https://test.pypi.org/legacy/ \
 		--token "$$PYPI_TEST"
-
-# --------------------------------------------
-
-.PHONY: clean
-clean: ## cleanup python runtime and build artifacts
-	@echo Cleaning python runtime and build artifacts
-	@rm -rf build/
-	@rm -rf dist/
-	@find . -type d -name __pycache__ -exec rm -rf {} \; -prune
-	@find . -type d -name .pytest_cache -exec rm -rf {} \; -prune
-	@find . -type d -name .eggs -exec rm -rf {} \; -prune
-	@find . -type d -name htmlcov -exec rm -rf {} \; -prune
-	@find . -type d -name *.egg-info -exec rm -rf {} \; -prune
-	@find . -type f -name *.egg -delete
-	@find . -type f -name *.pyc -delete
-	@find . -type f -name *.pyo -delete
-	@find . -type f -name *.coverage -delete
-
-# --------------------------------------------
-
-.PHONY: tags
-tags: ## Update project tags
-	./run/release_tags.sh
 
 # --------------------------------------------
 
