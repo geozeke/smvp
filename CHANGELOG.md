@@ -2,6 +2,14 @@
 
 <!--------------------------------------------------------------------->
 
+## [0.2.13][0.2.13] - 2025-08-29
+
+### Changed
+
+* [beautifulsoup][bs] library bumped to v4.13.5
+
+<!--------------------------------------------------------------------->
+
 ## [0.2.12][0.2.12] - 2025-06-27
 
 ### Changed
@@ -84,11 +92,13 @@ _Beta Release._
 [0.2.10]: https://github.com/geozeke/smvp/releases/tag/v0.2.10
 [0.2.11]: https://github.com/geozeke/smvp/releases/tag/v0.2.11
 [0.2.12]: https://github.com/geozeke/smvp/releases/tag/v0.2.12
+[0.2.13]: https://github.com/geozeke/smvp/releases/tag/v0.2.13
 [0.2.5]: https://github.com/geozeke/smvp/releases/tag/v0.2.5
 [0.2.6]: https://github.com/geozeke/smvp/releases/tag/v0.2.6
 [0.2.7]: https://github.com/geozeke/smvp/releases/tag/v0.2.7
 [0.2.8]: https://github.com/geozeke/smvp/releases/tag/v0.2.8
 [0.2.9]: https://github.com/geozeke/smvp/releases/tag/v0.2.9
+[bs]: https://www.crummy.com/software/BeautifulSoup/
 [issue1]: https://github.com/geozeke/smvp/issues/1
 [issue3]: https://github.com/geozeke/smvp/issues/3
 [issue5]: https://github.com/geozeke/smvp/issues/5
