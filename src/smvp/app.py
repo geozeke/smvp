@@ -1,10 +1,12 @@
 import argparse
 import re
+from importlib.metadata import version
 from typing import List
 
 from smvp.utilities import print_docstring
 from smvp.utilities import task_runner
-from smvp.version import get_version
+
+__version__ = version("smvp")
 
 
 def font_size(size: str) -> str:
@@ -157,7 +159,7 @@ def process_args() -> None:
     scripts (i.e. cron jobs) email you status updates and the contents
     of log files.
     """
-    epi = f"Version: {get_version()}"
+    epi = f"Version: {__version__}"
     parser = argparse.ArgumentParser(description=msg, epilog=epi)
 
     msg = """The email address of the recipient."""
@@ -197,7 +199,7 @@ def process_args() -> None:
         "-v",
         "--version",
         action="version",
-        version=f"smvp {get_version()}",
+        version=f"smvp {__version__}",
     )
 
     args = parser.parse_args()

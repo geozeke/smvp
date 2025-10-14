@@ -1,4 +1,4 @@
-from smvp.engine import process_args
+from smvp.app import process_args
 
 
 def main() -> None:

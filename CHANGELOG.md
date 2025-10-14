@@ -2,6 +2,15 @@
 
 <!--------------------------------------------------------------------->
 
+## [0.2.14][0.2.14] - 2025-10-14
+
+### Changed
+
+* Refactor version numbering.
+* Upgrade build backend from hatchling to uv_build.
+
+<!--------------------------------------------------------------------->
+
 ## [0.2.13][0.2.13] - 2025-08-29
 
 ### Changed
@@ -93,6 +102,7 @@ _Beta Release._
 [0.2.11]: https://github.com/geozeke/smvp/releases/tag/v0.2.11
 [0.2.12]: https://github.com/geozeke/smvp/releases/tag/v0.2.12
 [0.2.13]: https://github.com/geozeke/smvp/releases/tag/v0.2.13
+[0.2.14]: https://github.com/geozeke/smvp/releases/tag/v0.2.14
 [0.2.5]: https://github.com/geozeke/smvp/releases/tag/v0.2.5
 [0.2.6]: https://github.com/geozeke/smvp/releases/tag/v0.2.6
 [0.2.7]: https://github.com/geozeke/smvp/releases/tag/v0.2.7
