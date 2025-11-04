@@ -4,9 +4,19 @@
 
 ## Next update
 
+### Development Dependency Updates
+
+* Bump ruff from 0.14.2 to 0.14.3 [#8][pull8]
+
+### Runtime Dependency Updates
+
 ### Changed
 
-* Bump ruff from 0.14.2 to 0.14.3
+### Added
+
+### Removed
+
+### Fixed
 
 <!--------------------------------------------------------------------->
 
@@ -121,4 +131,5 @@ _Beta Release._
 [issue3]: https://github.com/geozeke/smvp/issues/3
 [issue5]: https://github.com/geozeke/smvp/issues/5
 [lxml]: https://lxml.de
+[pull8]: https://github.com/geozeke/smvp/pull/8
 [soupsieve]: https://pypi.org/project/soupsieve/
