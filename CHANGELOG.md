@@ -2,28 +2,7 @@
 
 <!--------------------------------------------------------------------->
 
-## Next update
-
-### Development Dependency Updates
-
-* Bump ruff from 0.14.3 to 0.14.4 ([#9][pull9])
-* Bump ruff from 0.14.2 to 0.14.3 ([#8][pull8])
-
-### Runtime Dependency Updates
-
-### Changed
-
-### Added
-
-* Force uv sync to prefer managed python versions.
-
-### Removed
-
-### Fixed
-
-<!--------------------------------------------------------------------->
-
-## [0.2.14][0.2.14] - 2025-10-14
+## [0.2.14][0.2.14] - 2025-10-14 (latest)
 
 ### Changed
 
@@ -134,6 +113,4 @@ _Beta Release._
 [issue3]: https://github.com/geozeke/smvp/issues/3
 [issue5]: https://github.com/geozeke/smvp/issues/5
 [lxml]: https://lxml.de
-[pull8]: https://github.com/geozeke/smvp/pull/8
-[pull9]: https://github.com/geozeke/smvp/pull/9
 [soupsieve]: https://pypi.org/project/soupsieve/
