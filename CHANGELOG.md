@@ -1,8 +1,32 @@
 # Changelog
+<!--------------------------------------------------------------------->
+
+## [0.2.15][0.2.15] - 2026-01-09 (latest)
+
+## What's Changed
+
+* Update copyright years on LICENSE.
+* Force uv sync to prefer managed python versions.
+* Bump ruff from 0.14.2 to 0.14.3 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/8>
+* Bump ruff from 0.14.3 to 0.14.4 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/9>
+* Bump ruff from 0.14.4 to 0.14.5 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/10>
+* Bump ruff from 0.14.5 to 0.14.6 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/11>
+* Bump ruff from 0.14.6 to 0.14.8 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/13>
+* Bump mypy from 1.18.2 to 1.19.0 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/12>
+* Bump ruff from 0.14.8 to 0.14.9 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/14>
+* Bump ruff from 0.14.9 to 0.14.10 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/16>
+* Bump mypy from 1.19.0 to 1.19.1 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/15>
+* Bump ruff from 0.14.10 to 0.14.11 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/17>
+
+## New Contributors
+
+* @dependabot[bot] made their first contribution in <https://github.com/geozeke/smvp/pull/8>
+
+**Full Changelog**: <https://github.com/geozeke/smvp/compare/v0.2.14...v0.2.15>
 
 <!--------------------------------------------------------------------->
 
-## [0.2.14][0.2.14] - 2025-10-14 (latest)
+## [0.2.14][0.2.14] - 2025-10-14
 
 ### Changed
 
@@ -103,6 +127,7 @@ _Beta Release._
 [0.2.12]: https://github.com/geozeke/smvp/releases/tag/v0.2.12
 [0.2.13]: https://github.com/geozeke/smvp/releases/tag/v0.2.13
 [0.2.14]: https://github.com/geozeke/smvp/releases/tag/v0.2.14
+[0.2.15]: https://github.com/geozeke/smvp/releases/tag/v0.2.15
 [0.2.5]: https://github.com/geozeke/smvp/releases/tag/v0.2.5
 [0.2.6]: https://github.com/geozeke/smvp/releases/tag/v0.2.6
 [0.2.7]: https://github.com/geozeke/smvp/releases/tag/v0.2.7
