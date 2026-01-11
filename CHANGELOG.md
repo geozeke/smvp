@@ -1,7 +1,14 @@
 # Changelog
+
+## 0.2.16 (2026-01-11) - latest
+
+### 🚀 New Features
+
+* Add release.yml for formatted release messages by @geozeke in <https://github.com/geozeke/smvp/pull/18>
+
 <!--------------------------------------------------------------------->
 
-## [0.2.15][0.2.15] - 2026-01-09 (latest)
+## [0.2.15][0.2.15] - 2026-01-09
 
 ## What's Changed
 
