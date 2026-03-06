@@ -1,6 +1,36 @@
 # Changelog
 
-## 0.2.16 (2026-01-11) - latest
+<!--------------------------------------------------------------------->
+
+## 0.3.0 (2026-03-06) - latest
+
+## ⛓️‍💥 BREAKING
+
+* This release drops support for python 3.9
+
+## What's Changed
+
+### 🚀 New Features
+
+* Add docs label to release.yml by @geozeke in <https://github.com/geozeke/smvp/pull/19>
+
+### 🐛 Bug Fixes
+
+* Pin upper bound for uv-build by @geozeke in <https://github.com/geozeke/smvp/pull/26>
+
+### 📦 Dependency Updates
+
+* Bump ruff from 0.14.11 to 0.14.13 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/20>
+* Bump ruff from 0.14.13 to 0.14.14 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/21>
+* Bump ruff from 0.14.14 to 0.15.0 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/22>
+* Bump ruff from 0.15.0 to 0.15.1 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/23>
+* Bump ruff from 0.15.1 to 0.15.2 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/24>
+* Bump ruff from 0.15.2 to 0.15.4 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/25>
+* Bump ruff from 0.15.4 to 0.15.5 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/27>
+
+<!--------------------------------------------------------------------->
+
+## 0.2.16 (2026-01-11)
 
 ### 🚀 New Features
 
