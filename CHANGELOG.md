@@ -6,27 +6,27 @@
 
 ## ⛓️‍💥 BREAKING
 
-* This release drops support for python 3.9
+- This release drops support for python 3.9
 
 ## What's Changed
 
 ### 🚀 New Features
 
-* Add docs label to release.yml by @geozeke in <https://github.com/geozeke/smvp/pull/19>
+- Add docs label to release.yml by @geozeke in <https://github.com/geozeke/smvp/pull/19>
 
 ### 🐛 Bug Fixes
 
-* Pin upper bound for uv-build by @geozeke in <https://github.com/geozeke/smvp/pull/26>
+- Pin upper bound for uv-build by @geozeke in <https://github.com/geozeke/smvp/pull/26>
 
 ### 📦 Dependency Updates
 
-* Bump ruff from 0.14.11 to 0.14.13 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/20>
-* Bump ruff from 0.14.13 to 0.14.14 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/21>
-* Bump ruff from 0.14.14 to 0.15.0 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/22>
-* Bump ruff from 0.15.0 to 0.15.1 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/23>
-* Bump ruff from 0.15.1 to 0.15.2 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/24>
-* Bump ruff from 0.15.2 to 0.15.4 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/25>
-* Bump ruff from 0.15.4 to 0.15.5 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/27>
+- Bump ruff from 0.14.11 to 0.14.13 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/20>
+- Bump ruff from 0.14.13 to 0.14.14 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/21>
+- Bump ruff from 0.14.14 to 0.15.0 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/22>
+- Bump ruff from 0.15.0 to 0.15.1 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/23>
+- Bump ruff from 0.15.1 to 0.15.2 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/24>
+- Bump ruff from 0.15.2 to 0.15.4 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/25>
+- Bump ruff from 0.15.4 to 0.15.5 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/27>
 
 <!--------------------------------------------------------------------->
 
@@ -34,7 +34,7 @@
 
 ### 🚀 New Features
 
-* Add release.yml for formatted release messages by @geozeke in <https://github.com/geozeke/smvp/pull/18>
+- Add release.yml for formatted release messages by @geozeke in <https://github.com/geozeke/smvp/pull/18>
 
 <!--------------------------------------------------------------------->
 
@@ -42,22 +42,22 @@
 
 ## What's Changed
 
-* Update copyright years on LICENSE.
-* Force uv sync to prefer managed python versions.
-* Bump ruff from 0.14.2 to 0.14.3 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/8>
-* Bump ruff from 0.14.3 to 0.14.4 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/9>
-* Bump ruff from 0.14.4 to 0.14.5 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/10>
-* Bump ruff from 0.14.5 to 0.14.6 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/11>
-* Bump ruff from 0.14.6 to 0.14.8 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/13>
-* Bump mypy from 1.18.2 to 1.19.0 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/12>
-* Bump ruff from 0.14.8 to 0.14.9 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/14>
-* Bump ruff from 0.14.9 to 0.14.10 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/16>
-* Bump mypy from 1.19.0 to 1.19.1 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/15>
-* Bump ruff from 0.14.10 to 0.14.11 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/17>
+- Update copyright years on LICENSE.
+- Force uv sync to prefer managed python versions.
+- Bump ruff from 0.14.2 to 0.14.3 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/8>
+- Bump ruff from 0.14.3 to 0.14.4 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/9>
+- Bump ruff from 0.14.4 to 0.14.5 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/10>
+- Bump ruff from 0.14.5 to 0.14.6 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/11>
+- Bump ruff from 0.14.6 to 0.14.8 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/13>
+- Bump mypy from 1.18.2 to 1.19.0 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/12>
+- Bump ruff from 0.14.8 to 0.14.9 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/14>
+- Bump ruff from 0.14.9 to 0.14.10 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/16>
+- Bump mypy from 1.19.0 to 1.19.1 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/15>
+- Bump ruff from 0.14.10 to 0.14.11 by @dependabot[bot] in <https://github.com/geozeke/smvp/pull/17>
 
 ## New Contributors
 
-* @dependabot[bot] made their first contribution in <https://github.com/geozeke/smvp/pull/8>
+- @dependabot[bot] made their first contribution in <https://github.com/geozeke/smvp/pull/8>
 
 **Full Changelog**: <https://github.com/geozeke/smvp/compare/v0.2.14...v0.2.15>
 
@@ -67,8 +67,8 @@
 
 ### Changed
 
-* Refactor version numbering.
-* Upgrade build backend from hatchling to uv_build.
+- Refactor version numbering.
+- Upgrade build backend from hatchling to uv_build.
 
 <!--------------------------------------------------------------------->
 
@@ -76,7 +76,7 @@
 
 ### Changed
 
-* [beautifulsoup][bs] library bumped to v4.13.5
+- [beautifulsoup][bs] library bumped to v4.13.5
 
 <!--------------------------------------------------------------------->
 
@@ -84,7 +84,7 @@
 
 ### Changed
 
-* [lxml][lxml] library bumped to v6.0.0
+- [lxml][lxml] library bumped to v6.0.0
 
 <!--------------------------------------------------------------------->
 
@@ -92,7 +92,7 @@
 
 ### Changed
 
-* Maintenance release to synchronize repository tags.
+- Maintenance release to synchronize repository tags.
 
 <!--------------------------------------------------------------------->
 
@@ -100,8 +100,8 @@
 
 ### Changed
 
-* [lxml][lxml] library bumped to v5.4.0
-* [soupsieve][soupsieve] library bumped to v2.7
+- [lxml][lxml] library bumped to v5.4.0
+- [soupsieve][soupsieve] library bumped to v2.7
 
 <!--------------------------------------------------------------------->
 
@@ -109,7 +109,7 @@
 
 ### Changed
 
-* [lxml][lxml] library bumped to v5.3.2
+- [lxml][lxml] library bumped to v5.3.2
 
 <!--------------------------------------------------------------------->
 
@@ -117,7 +117,7 @@
 
 ### Removed
 
-* Drop support for Python 3.8 ([#5][issue5])
+- Drop support for Python 3.8 ([#5][issue5])
 
 <!--------------------------------------------------------------------->
 
@@ -125,7 +125,7 @@
 
 ### Fixed
 
-* \[BUG\] Fix crashing with unknown file types ([#3][issue3])
+- \[BUG\] Fix crashing with unknown file types ([#3][issue3])
 
 <!--------------------------------------------------------------------->
 
@@ -133,7 +133,7 @@
 
 ### Changed
 
-* [lxml][lxml] library bumped to v5.3.1
+- [lxml][lxml] library bumped to v5.3.1
 
 <!--------------------------------------------------------------------->
 
@@ -147,7 +147,7 @@ _Public Release._
 
 ### Added
 
-* Add option for user to select font family and size ([#1][issue1])
+- Add option for user to select font family and size ([#1][issue1])
 
 <!--------------------------------------------------------------------->
 
