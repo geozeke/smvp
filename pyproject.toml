@@ -3,7 +3,8 @@ name = "smvp"
 version = "0.3.0"
 description = "Send a formatted email from the command line"
 authors = [{ name = "Peter Nardi", email = "geozeke@gmail.com" }]
-license = { file = "LICENSE" }
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
 readme = { file = "README.md", content-type = "text/markdown" }
 keywords = [
     "ansi",
@@ -21,7 +22,6 @@ keywords = [
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
     "Operating System :: POSIX :: Linux",
     "Operating System :: MacOS :: MacOS X",
@@ -57,7 +57,7 @@ smvp = "smvp:main"
 smvp = { workspace = true }
 
 [build-system]
-requires = ["uv-build>=0.10,<0.11"]
+requires = ["uv-build>=0.10,<0.12"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
