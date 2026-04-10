@@ -2,7 +2,44 @@
 
 <!--------------------------------------------------------------------->
 
-## 0.3.0 (2026-03-06) - latest
+## 0.3.1 (2026-04-10) - latest
+
+### 🛠️ Changes
+
+- Migrate release generation to cliff (82443e7)
+
+### 📦 Runtime Dependencies
+
+- Bump lxml from 6.0.2 to 6.0.3 (8b2b103)
+
+### 🛠️ 📦 Development Dependencies
+
+- Bump ruff from 0.15.5 to 0.15.6 (1913357)
+- Bump ruff from 0.15.6 to 0.15.7 (7172021)
+- Update LICENSE metadata (3cd225f)
+- Bump ruff from 0.15.7 to 0.15.8 (da3cc3d)
+- Bump ruff from 0.15.8 to 0.15.9 (03d7ba3)
+- Bump mypy from 1.19.1 to 1.20.0 (f24d3dc)
+- Bump ruff from 0.15.9 to 0.15.10 (c885018)
+
+### 📚 Documentation
+
+- Lint CHANGELOG for markdown errors (199f729)
+- Lint config.toml (75c6f64)
+- Standardize changelog header format (f497c2c)
+
+### 🚀 Features
+
+- Allow for selective tagging (a9c1ad6)
+
+### ⚙️ Miscellaneous Tasks
+
+- Lint justfile (71d5a75)
+- Lint justfile (2b472b6)
+
+<!--------------------------------------------------------------------->
+
+## 0.3.0 (2026-03-06)
 
 ## ⛓️‍💥 BREAKING
 
