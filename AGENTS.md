@@ -14,6 +14,10 @@ or HTML file as a multipart email body over SMTP with STARTTLS.
   `src/smvp/` first.
 - Use `rg` for searches and `just` or `uv` for common
   project tasks when needed.
+- When asked to review or modify `.gitignore`, also check
+  whether Git global excludes are configured (for example,
+  `git config --global core.excludesfile`) and factor that
+  into recommendations.
 - Preserve the existing simple CLI structure unless a change
   clearly requires a larger refactor.
 - Wrap Markdown prose to 72 characters when practical, but do
