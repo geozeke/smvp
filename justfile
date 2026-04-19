@@ -43,7 +43,7 @@ setup:
         fi
         mkdir -p scratch .init run
         touch .init/setup
-        cp ./scripts/* ./run
+        cp ./scripts/*.sh ./run
         find ./run -name '*.sh' -exec chmod 744 {} \;
         export UV_PYTHON_PREFERENCE=only-managed
         uv sync --frozen --no-dev
@@ -69,7 +69,7 @@ dev: _require_setup
 # Upgrade dependencies
 upgrade: _require_setup
     #!/usr/bin/env bash
-    cp -f ./scripts/* ./run
+    cp -f ./scripts/*.sh ./run
     find ./run -name '*.sh' -exec chmod 744 {} \;
 
     if [ -f .init/dev ]; then
@@ -173,7 +173,21 @@ publish-test: build
 
 # Bump the project version and generate changelog
 bump version:
-    uv run run/bump.py {{version}}
+    #!/usr/bin/env bash
+    new_version="{{version}}"
+    new_version="${new_version#v}"
+    git cliff --unreleased --tag "$new_version" --prepend CHANGELOG.md
+    tmp_file="$(mktemp)"
+    awk -v version="$new_version" '
+        BEGIN { replaced = 0 }
+        /^version = "/ && !replaced {
+            print "version = \"" version "\""
+            replaced = 1
+            next
+        }
+        { print }
+    ' pyproject.toml > "$tmp_file"
+    mv "$tmp_file" pyproject.toml
     just sync
 
 # --------------------------------------------
