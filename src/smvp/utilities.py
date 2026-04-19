@@ -15,24 +15,21 @@ STYLE = "font-family: FF !important; font-size: FSpx !important;"
 
 
 def print_docstring(msg: str) -> None:
-    """Print a formatted docstring.
+    """Print a normalized multiline help message.
 
-    This function assumes the docstring is in a very specific format:
-
-    >>> msg = \"\"\"
-    >>> First line (non-blank)
-    >>>
-    >>> Subsequent lines
-    >>> Subsequent lines
-    >>> Subsequent lines
-    >>> ...
-    >>> Can include empty lines after the first.
-    >>> \"\"\"
+    Notes
+    -----
+    The input string is expected to start with a newline and use
+    consistent indentation across lines.
 
     Parameters
     ----------
     msg : str
-        The docstring to be printed.
+        Message text to normalize and print.
+
+    Returns
+    -------
+    None
     """
     # Delete the first line ('\n' by itself), then strip any trailing
     # spaces. Remove leading padding, then print.
@@ -53,17 +50,17 @@ def print_docstring(msg: str) -> None:
 
 
 def file_is_html(file_to_test: str) -> bool:
-    """Determine if a file is HTML
+    """Determine whether text appears to be HTML.
 
     Parameters
     ----------
     file_to_test : str
-        The text of a file to test.
+        Text content to inspect.
 
     Returns
     -------
     bool
-        True if the file is HTML; else False
+        ``True`` if HTML markers are detected; otherwise, ``False``.
     """
     if re.search(
         r"<!DOCTYPE\s+html>|<(html|head|body|title|div|p|span)",
@@ -78,12 +75,12 @@ def file_is_html(file_to_test: str) -> bool:
 
 
 def validate_environment() -> bool:
-    """Ensure the correct environment variables are in place.
+    """Validate required SMTP environment variables.
 
     Returns
     -------
     bool
-        True if the correct variables are set; else False.
+        ``True`` if all required variables are set; otherwise, ``False``.
     """
     try:
         os.environ["SMVP_USER"]
@@ -123,12 +120,16 @@ def validate_environment() -> bool:
 
 
 def task_runner(args: argparse.Namespace) -> None:
-    """Package email contents and send message
+    """Build and send an email message from parsed arguments.
 
     Parameters
     ----------
     args : argparse.Namespace
-        The collection of command line arguments.
+        Parsed command-line arguments.
+
+    Returns
+    -------
+    None
     """
     if not validate_environment():
         sys.exit(1)

@@ -8,24 +8,24 @@ __version__ = version("smvp")
 
 
 def font_size(size: str) -> str:
-    """Validate size inputs.
+    """Validate a font size argument.
 
     Parameters
     ----------
     size : str
-        User input for a font size option.
+        User-provided font size value.
 
     Returns
     -------
     str
-        The validated user input.
+        Validated font size value.
 
     Raises
     ------
     argparse.ArgumentTypeError
-        If the input is not a valid integer (for example is a float).
+        If ``size`` is not an integer string.
     argparse.ArgumentTypeError
-        If the input is not between 2 and 100.
+        If ``size`` is outside the inclusive range ``[2, 100]``.
     """
     for c in size:
         if not c.isdigit():
@@ -46,22 +46,22 @@ def font_size(size: str) -> str:
 
 
 def font_family(font: str) -> str:
-    """Validate font_family inputs.
+    """Validate a font family argument.
 
     Parameters
     ----------
     font : str
-        User input for a font family.
+        User-provided font family value.
 
     Returns
     -------
     str
-        The validated user input.
+        Canonical font family value.
 
     Raises
     ------
     argparse.ArgumentTypeError
-        If the the selected font family is not recognized.
+        If ``font`` is not a supported font family.
     """
     valid_fonts = {
         "ANDALE MONO": "Andale Mono",
@@ -97,22 +97,22 @@ def font_family(font: str) -> str:
 
 
 def email_type(address: str) -> str:
-    """Validate user input of email addresses.
+    """Validate an email address argument.
 
     Parameters
     ----------
     address : str
-        An email address.
+        Email address to validate.
 
     Returns
     -------
     str
-        If the address is valid, it's returned.
+        Validated email address.
 
     Raises
     ------
     argparse.ArgumentTypeError
-        This is raised for an invalid email address.
+        If ``address`` does not match the expected email format.
     """
     S = r"[a-zA-Z"
     email = re.compile(rf"^{S}0-9._%+-]+@{S}0-9.-]+\.{S}]{{2,}}$")
@@ -125,6 +125,12 @@ def email_type(address: str) -> str:
 
 
 def process_args() -> None:
+    """Parse command-line arguments and run the mail task.
+
+    Returns
+    -------
+    None
+    """
     msg = """
     Send an email whose body is read from a text or HTML file.
     """

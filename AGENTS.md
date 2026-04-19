@@ -14,6 +14,8 @@ or HTML file as a multipart email body over SMTP with STARTTLS.
   `src/smvp/` first.
 - Use `rg` for searches and `just` or `uv` for common
   project tasks when needed.
+- Use strict NumPy-style docstrings for all function, class, and
+  module docstrings.
 - When asked to review or modify `.gitignore`, also check
   whether Git global excludes are configured (for example,
   `git config --global core.excludesfile`) and factor that

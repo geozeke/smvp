@@ -2,8 +2,10 @@ from smvp.app import process_args
 
 
 def main() -> None:
-    """Entry point.
+    """Run the CLI entry point.
 
-    Pass control to process commandline arguments.
+    Returns
+    -------
+    None
     """
     process_args()
