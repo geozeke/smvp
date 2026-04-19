@@ -186,3 +186,29 @@ def test_task_runner_plaintext_uses_ansi_converter(monkeypatch: pytest.MonkeyPat
     assert "color: #AAAAAA" not in html_payload
     assert "font-family: Verdana !important" in html_payload
     assert "font-size: 14px !important" in html_payload
+
+
+def test_task_runner_prints_smtp_error(monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]) -> None:
+    monkeypatch.setenv("SMVP_USER", "sender@example.com")
+    monkeypatch.setenv("SMVP_TOKEN", "token")
+    monkeypatch.setenv("SMVP_SERVER", "smtp.example.com")
+
+    class FailingSMTP(DummySMTP):
+        def sendmail(self, from_addr: str, to_addrs: str, msg: str) -> None:
+            raise RuntimeError("smtp send failed")
+
+    sent_servers: list[FailingSMTP] = []
+
+    def smtp_factory(host: str, port: int) -> FailingSMTP:
+        server = FailingSMTP(host, port)
+        sent_servers.append(server)
+        return server
+
+    monkeypatch.setattr(utilities.smtplib, "SMTP", smtp_factory)
+
+    args = _build_args(content="<html><body><p>Hello</p></body></html>")
+    utilities.task_runner(args)
+
+    captured = capsys.readouterr()
+    assert "smtp send failed" in captured.out
+    assert sent_servers[0].quit_called is True

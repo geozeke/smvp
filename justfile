@@ -5,6 +5,18 @@ project_name := "smvp"
 default: help
 
 # --------------------------------------------
+_display_webpage web_path:
+    #!/usr/bin/env python3
+    import webbrowser
+    from pathlib import Path
+    p = Path(".").resolve()/"{{web_path}}"
+    if not p.exists():
+        raise SystemExit(f"File not found: {p}")
+    url = f"file://{p}"
+    print(f"Coverage report: {url}")
+    webbrowser.open(url, new=2)
+
+# --------------------------------------------
 
 # Require initial setup to be complete
 _require_setup:
@@ -94,7 +106,7 @@ sync: _require_setup
 # Clean python runtime and build artifacts
 clean:
     echo "Cleaning python runtime and build artifacts"
-    rm -rf build dist .mypy_cache .ruff_cache
+    rm -rf build dist .*_cache htmlcov
     find . -type d -name __pycache__ -exec rm -rf {} \; -prune
     find . -type d -name .ipynb_checkpoints -exec rm -rf {} \; -prune
     find . -type d -name .pytest_cache -exec rm -rf {} \; -prune
@@ -118,6 +130,18 @@ reset: clean
 # Run pytest with --tb=short option
 test:
     uv run pytest --tb=short
+
+# --------------------------------------------
+
+# Run tests with 100% coverage requirement
+coverage:
+    uv run pytest --tb=short --cov=smvp --cov-report=term-missing --cov-report=html --cov-fail-under=100
+
+# --------------------------------------------
+
+# Run coverage and open HTML report in browser
+coverage-open: coverage
+    just _display_webpage "htmlcov/index.html"
 
 # --------------------------------------------
 

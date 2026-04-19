@@ -123,6 +123,9 @@ cython_debug/
 #  following to ignore the entire idea folder.
 #.idea/
 
+# uv stuff
+.uv-cache
+
 # Custom exclusions
 .DS_Store
 .vscode/
