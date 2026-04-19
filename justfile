@@ -177,6 +177,13 @@ bump version:
     new_version="{{version}}"
     new_version="${new_version#v}"
     git cliff --unreleased --tag "$new_version" --prepend CHANGELOG.md
+    tmp_changelog="$(mktemp)"
+    awk '
+        NR == 1 { print; prev = $0; next }
+        /^## / && prev !~ /^[[:space:]]*$/ { print "" }
+        { print; prev = $0 }
+    ' CHANGELOG.md > "$tmp_changelog"
+    mv "$tmp_changelog" CHANGELOG.md
     tmp_file="$(mktemp)"
     awk -v version="$new_version" '
         BEGIN { replaced = 0 }
