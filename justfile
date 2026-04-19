@@ -6,17 +6,30 @@ default: help
 
 # --------------------------------------------
 
+# Require initial setup to be complete
+_require_setup:
+    #!/usr/bin/env bash
+    if [ ! -f .init/setup ]; then
+        echo 'Please run "just setup" first'
+        exit 1
+    fi
+
+# --------------------------------------------
+
 # Private handler for commits
 _commit latest:
     #!/usr/bin/env bash
-    git add .
+    if git diff --cached --quiet; then
+        echo "No staged changes found. Stage changes before running commit."
+        exit 1
+    fi
     git commit -m "Bump version"
-    git push origin main
     if [[ "{{latest}}" == "true" ]]; then
         ./run/release_tags.sh --latest
     else
         ./run/release_tags.sh
     fi
+    git push origin main
 
 # --------------------------------------------
 
@@ -45,12 +58,8 @@ setup:
 # --------------------------------------------
 
 # Provision development dependencies
-dev:
+dev: _require_setup
     #!/usr/bin/env bash
-    if [ ! -f .init/setup ]; then
-        echo 'Please run "just setup" first'
-        exit 1
-    fi
     export UV_PYTHON_PREFERENCE=only-managed
     uv sync --all-groups --frozen
     touch .init/dev
@@ -58,13 +67,8 @@ dev:
 # --------------------------------------------
 
 # Upgrade dependencies
-upgrade:
+upgrade: _require_setup
     #!/usr/bin/env bash
-    if [ ! -f .init/setup ]; then
-        echo 'Please run "just setup" first'
-        exit 1
-    fi
-
     cp -f ./scripts/* ./run
     find ./run -name '*.sh' -exec chmod 744 {} \;
 
@@ -77,17 +81,12 @@ upgrade:
 # --------------------------------------------
 
 # Sync dependencies with the lockfile (frozen)
-sync:
+sync: _require_setup
     #!/usr/bin/env bash
-    if [ ! -f .init/setup ]; then
-        echo 'Please run "just setup" first'
-        exit 1
-    fi
-
     if [ -f .init/dev ]; then
-        uv sync --all-groups
+        uv sync --all-groups --frozen
     else
-        uv sync --no-dev
+        uv sync --no-dev --frozen
     fi
 
 # --------------------------------------------
@@ -119,22 +118,40 @@ reset: clean
 
 # Run pytest with --tb=short option
 test:
-    pytest --tb=short
+    uv run pytest --tb=short
+
+# --------------------------------------------
+
+# Run lint checks
+lint:
+    uv run ruff check .
+
+# --------------------------------------------
+
+# Run static type checks
+typecheck:
+    uv run mypy src
 
 # --------------------------------------------
 
 # Build package for publishing
-build: 
-	rm -rf dist
-	uv build
+build:
+    rm -rf dist
+    uv build
 
 # --------------------------------------------
 
 # Publish package to pypi.org for production
 publish-production: build
     #!/usr/bin/env bash
+    if [ ! -f "$HOME/.secrets" ]; then
+        echo 'Missing "$HOME/.secrets"'
+        exit 1
+    fi
     set -a
-    eval $(grep '^PYPI_' "$HOME/.secrets")
+    . "$HOME/.secrets"
+    set +a
+    : "${PYPI_PROD:?Missing PYPI_PROD in $HOME/.secrets}"
     uv publish --publish-url https://upload.pypi.org/legacy/ -t "$PYPI_PROD"
 
 # --------------------------------------------
@@ -142,8 +159,14 @@ publish-production: build
 # Publish package to test.pypi.org for testing
 publish-test: build
     #!/usr/bin/env bash
+    if [ ! -f "$HOME/.secrets" ]; then
+        echo 'Missing "$HOME/.secrets"'
+        exit 1
+    fi
     set -a
-    eval $(grep '^PYPI_' "$HOME/.secrets")
+    . "$HOME/.secrets"
+    set +a
+    : "${PYPI_TEST:?Missing PYPI_TEST in $HOME/.secrets}"
     uv publish --publish-url https://test.pypi.org/legacy/ -t "$PYPI_TEST"
 
 # --------------------------------------------
@@ -155,13 +178,13 @@ bump version:
 
 # --------------------------------------------
 
-# Commit, push, update symantic version, EXCLUDE the "latest" tag
+# Commit, push, update semantic version, EXCLUDE the "latest" tag
 commit:
     just _commit false
 
 # --------------------------------------------
 
-# Commit, push, update symantic version, INCLUDE the "latest" tag
+# Commit, push, update semantic version, INCLUDE the "latest" tag
 commit-latest:
     just _commit true
 
