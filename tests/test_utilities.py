@@ -58,6 +58,7 @@ def test_file_is_html_detects_common_cases() -> None:
     assert utilities.file_is_html("<!DOCTYPE html><html><body>ok</body></html>")
     assert utilities.file_is_html("<div>Hello</div>")
     assert not utilities.file_is_html("plain text with no tags")
+    assert not utilities.file_is_html("1 < 2 and 3 > 1")
 
 
 def test_validate_environment_requires_all_variables(monkeypatch: pytest.MonkeyPatch) -> None:

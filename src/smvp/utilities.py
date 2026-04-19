@@ -1,6 +1,5 @@
 import argparse
 import os
-import re
 import smtplib
 import ssl
 import sys
@@ -62,13 +61,8 @@ def file_is_html(file_to_test: str) -> bool:
     bool
         ``True`` if HTML markers are detected; otherwise, ``False``.
     """
-    if re.search(
-        r"<!DOCTYPE\s+html>|<(html|head|body|title|div|p|span)",
-        file_to_test,
-        re.IGNORECASE,
-    ):
-        return True
-    return False
+    soup = BeautifulSoup(file_to_test, "html.parser")
+    return soup.find(True) is not None
 
 
 # ======================================================================
