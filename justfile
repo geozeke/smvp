@@ -94,8 +94,7 @@ sync: _require_setup
 # Clean python runtime and build artifacts
 clean:
     echo "Cleaning python runtime and build artifacts"
-    rm -rf build/
-    rm -rf dist/
+    rm -rf build dist .mypy_cache .ruff_cache
     find . -type d -name __pycache__ -exec rm -rf {} \; -prune
     find . -type d -name .ipynb_checkpoints -exec rm -rf {} \; -prune
     find . -type d -name .pytest_cache -exec rm -rf {} \; -prune
