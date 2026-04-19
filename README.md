@@ -1,5 +1,11 @@
 # Send Mail Via Python (smvp)
 
+[![PyPI version](https://img.shields.io/pypi/v/smvp)](https://pypi.org/project/smvp/)
+[![Python versions](https://img.shields.io/pypi/pyversions/smvp)](https://pypi.org/project/smvp/)
+[![License](https://img.shields.io/pypi/l/smvp)](https://github.com/geozeke/smvp/blob/main/LICENSE)
+[![Status](https://img.shields.io/badge/status-beta-blue)](https://pypi.org/project/smvp/)
+[![PyPI downloads](https://img.shields.io/pypi/dm/smvp)](https://pypi.org/project/smvp/)
+
 <br>
 
 <img src="https://lh3.googleusercontent.com/d/1PpjTCw4T1HpHU_TacQSjZptzw67WqwIz"
