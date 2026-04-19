@@ -49,7 +49,12 @@ dependencies = [
 "Bug Tracker" = "https://github.com/geozeke/smvp/issues"
 
 [dependency-groups]
-dev = ["mypy>=1.14.1", "ruff>=0.8.6", "types-beautifulsoup4>=4.12.0.20241020"]
+dev = [
+    "mypy>=1.14.1",
+    "pytest>=8.3.5",
+    "ruff>=0.8.6",
+    "types-beautifulsoup4>=4.12.0.20241020",
+]
 [project.scripts]
 smvp = "smvp:main"
 

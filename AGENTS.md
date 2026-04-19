@@ -31,10 +31,10 @@ or HTML file as a multipart email body over SMTP with STARTTLS.
 
 - For syntax checks, prefer
   `python3 -m py_compile src/smvp/*.py`.
+- Unit tests live in `tests/` and run with `uv run pytest`.
 - If dependencies are available, use the existing `uv`/`just`
   workflow instead of inventing a new one.
 
 ## Notes
 
-- There are currently no automated tests in the repository.
 - Treat SMTP credentials and any local secrets as sensitive.

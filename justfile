@@ -117,6 +117,12 @@ reset: clean
 
 # --------------------------------------------
 
+# Run pytest with --tb=short option
+test:
+    pytest --tb=short
+
+# --------------------------------------------
+
 # Build package for publishing
 build: 
 	rm -rf dist
