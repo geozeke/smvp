@@ -8,6 +8,7 @@ or HTML file as a multipart email body over SMTP with STARTTLS.
 ## Working Rules
 
 - Keep changes focused and minimal.
+- Use snake case for variable names (all words lowercase).
 - Do not traverse or modify `.venv/`.
 - Prefer reading `README.md`, `pyproject.toml`, and files under
   `src/smvp/` first.
