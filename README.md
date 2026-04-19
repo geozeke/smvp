@@ -7,24 +7,28 @@ alt="smvp logo" width="120"/>
 
 The _smvp_ utility takes a file whose contents will be parsed and
 packaged into the body of an email message, then sent to a designated
-email address. The input file can be a text file with ANSI color codes,
-HTML, or plain text. The resulting email will be sent as a multi-part
-MIME message that renders properly in both plain text and HTML.
+email address. The input file can be a text file with ANSI
+color codes, HTML, or plain text. The resulting email will be
+sent as a multi-part MIME message that renders properly in
+both plain text and HTML.
 
-> **Note:** The file itself is not sent as an attachment; instead, the
-> contents of the file are put into the body of the email.
+> **Note:** The file itself is not sent as an attachment;
+> instead, the contents of the file are put into the body of
+> the email.
 
 ## Use Case
 
 There are probably a few, but I wrote _smvp_ for two primary reasons:
 
 1. I found that fiddling with `postfix` and `sendmail` was a pain.
-2. I want my cron scripts to email me status information and the
-contents of various log files. Some of the files contain ANSI escape
-sequences for terminal colors. The _smvp_ utility converts those ANSI
-escape sequences into proper HTML tags, so the emails I get are nicely
-formatted. You could set `$MAILTO` in your crontab, but you won't get
-proper handling of ANSI escape sequences, and refer to number 1 above.
+2. I want my cron scripts to email me status information and
+   the contents of various log files. Some of the files
+   contain ANSI escape sequences for terminal colors. The
+   _smvp_ utility converts those ANSI escape sequences into
+   proper HTML tags, so the emails I get are nicely
+   formatted. You could set `$MAILTO` in your crontab, but you
+   won't get proper handling of ANSI escape sequences, and
+   refer to number 1 above.
 
 ## Installation
 
@@ -92,16 +96,17 @@ export PATH="$PATH:/home/<yourhome>/.local/bin"
 ### Second
 
 The `SMVP_SERVER` you select must support secure TLS connections on
-port `587`. Check the SMTP settings for your email provider. This is the
-default TLS port on Gmail, so if you're using your Gmail account to send
-emails, you're good to go.
+port `587`. Check the SMTP settings for your email provider.
+This is the default TLS port on Gmail, so if you're using
+your Gmail account to send emails, you're good to go.
 
 ## Styling
 
 _smvp_ offers custom font and font size options for your email. The
-default font for formatted HTML email is `Courier New`, `12px`. Beyond
-the default, you can choose any font size from `2px` up to and including
-`100px`, from among these font families:
+default font for formatted HTML email is `Courier New`,
+`12px`. Beyond the default, you can choose any font size from
+`2px` up to and including `100px`, from among these font
+families:
 
 ```text
 "Andale Mono", "Arial", "Brush Script MT", "Comic Sans MS",
@@ -110,10 +115,11 @@ the default, you can choose any font size from `2px` up to and including
 "Verdana", "fantasy", "monospace", "sans-serif", "serif"
 ```
 
-> **Note:** Not every font will render properly on every device. When in
-> doubt, fonts like: "monospace", "sans-serif", "fantasy", and "serif"
-> are pretty safe. You may just have to try a few options to land on the
-> right one for your use case.
+> **Note:** Not every font will render properly on every
+> device. When in doubt, fonts like: "monospace",
+> "sans-serif", "fantasy", and "serif" are pretty safe. You
+> may just have to try a few options to land on the right one
+> for your use case.
 
 ## Usage
 
