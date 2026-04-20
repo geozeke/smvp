@@ -1,30 +1,39 @@
 # Send Mail Via Python (smvp)
 
+[![PyPI version](https://img.shields.io/pypi/v/smvp)](https://pypi.org/project/smvp/)
+[![Python versions](https://img.shields.io/pypi/pyversions/smvp)](https://pypi.org/project/smvp/)
+[![License](https://img.shields.io/pypi/l/smvp)](https://github.com/geozeke/smvp/blob/main/LICENSE)
+[![Status](https://img.shields.io/badge/status-beta-blue)](https://pypi.org/project/smvp/)
+[![PyPI downloads](https://img.shields.io/pypi/dm/smvp)](https://pypi.org/project/smvp/)
+
 <br>
 
 <img src="https://lh3.googleusercontent.com/d/1PpjTCw4T1HpHU_TacQSjZptzw67WqwIz"
 alt="smvp logo" width="120"/>
 
-The _smvp_ utility takes a file whose contents will be parsed and
-packaged into the body of an email message, then sent to a designated
-email address. The input file can be a text file with ANSI color codes,
-HTML, or plain text. The resulting email will be sent as a multi-part
-MIME message that renders properly in both plain text and HTML.
+The _smvp_ utility reads a file, uses its contents as the body of an
+email, and sends it to a specified recipient. The input file can be a
+text file with ANSI color codes, HTML, or plain text. The resulting
+message is sent as a multipart MIME email that renders properly in both
+plain text and HTML. The `--content-type` option can auto-detect the
+input type or force it to be handled as plain text or HTML.
 
 > **Note:** The file itself is not sent as an attachment; instead, the
 > contents of the file are put into the body of the email.
 
 ## Use Case
 
-There are probably a few, but I wrote _smvp_ for two primary reasons:
+There are probably several use cases, but I wrote _smvp_ for two
+primary reasons:
 
-1. I found that fiddling with `postfix` and `sendmail` was a pain.
+1. Configuring `postfix` and `sendmail` was more trouble than I wanted.
 2. I want my cron scripts to email me status information and the
-contents of various log files. Some of the files contain ANSI escape
-sequences for terminal colors. The _smvp_ utility converts those ANSI
-escape sequences into proper HTML tags, so the emails I get are nicely
-formatted. You could set `$MAILTO` in your crontab, but you won't get
-proper handling of ANSI escape sequences, and refer to number 1 above.
+   contents of various log files. Some of the files contain ANSI escape
+   sequences for terminal colors. The _smvp_ utility converts those ANSI
+   escape sequences into styled HTML, so the emails I get are nicely
+   formatted. You could set `$MAILTO` in your crontab, but you would not
+   get proper handling of ANSI escape sequences, and you would still
+   have the problem mentioned in item 1.
 
 ## Installation
 
@@ -62,10 +71,10 @@ export SMVP_TOKEN="<your token>"   # e.g. "<gmail app password>"
 export SMVP_SERVER="<smtp server>" # e.g. "smtp.gmail.com"
 ```
 
-It is recommended that you put the lines above in your "rc" file
-(`.bashrc`, `.zshrc`, etc.) for use across multiple shell sessions and
-processes. To confirm you have the environment variables correctly set
-(with the correct spellings), run this in a terminal:
+It is recommended that you add the lines above to your shell startup
+file (`.bashrc`, `.zshrc`, etc.) so they are available across multiple
+shell sessions and processes. To confirm that the environment variables
+are set correctly, run this in a terminal:
 
 ```text
 set | grep ^SMVP_
@@ -80,8 +89,8 @@ set | grep ^SMVP_
 > within a script, make sure to include the environment variables at the
 > top of your `crontab` so your scripts will have access to them during
 > execution. Also include a line in your script that exports the
-> directory path where your Python tool installer puts things. For
-> example, if you're using `uv` on Ubuntu, you would put something like
+> directory where your Python tool installer places executables. For
+> example, if you're using `uv` on Ubuntu, you could put something like
 > this near the top of your bash script:
 
 ```bash
@@ -91,17 +100,17 @@ export PATH="$PATH:/home/<yourhome>/.local/bin"
 
 ### Second
 
-The `SMVP_SERVER` you select must support secure TLS connections on
-port `587`. Check the SMTP settings for your email provider. This is the
-default TLS port on Gmail, so if you're using your Gmail account to send
-emails, you're good to go.
+The `SMVP_SERVER` you select must support secure TLS connections on port
+`587`. Check the SMTP settings for your email provider. This is the
+default TLS port on Gmail, so if you are using your Gmail account to
+send email, this requirement is usually already satisfied.
 
 ## Styling
 
 _smvp_ offers custom font and font size options for your email. The
 default font for formatted HTML email is `Courier New`, `12px`. Beyond
-the default, you can choose any font size from `2px` up to and including
-`100px`, from among these font families:
+the default, you can choose any font size from `2px` up to and
+including `100px`, from the following font families:
 
 ```text
 "Andale Mono", "Arial", "Brush Script MT", "Comic Sans MS",
@@ -115,16 +124,44 @@ the default, you can choose any font size from `2px` up to and including
 > are pretty safe. You may just have to try a few options to land on the
 > right one for your use case.
 
+## Content Type
+
+By default, _smvp_ uses `--content-type auto`, which inspects the input
+and decides whether to treat it as plain text or HTML. You can override
+that behavior when needed:
+
+```text
+auto  Auto-detect whether the input should be treated as text or HTML
+text  Always treat the input as plain text, including HTML-like content
+html  Always treat the input as HTML
+```
+
+This is useful when the input contains angle brackets that should be
+sent literally, or when you want to force HTML rendering for a file that
+would not otherwise be detected as HTML.
+
 ## Usage
 
 ```text
-usage: smvp [-h] [-f FONT_FAMILY] [-s FONT_SIZE] [-v] recipient subject file
+usage: smvp [-h] [-c {auto,text,html}] [-f FONT_FAMILY] [-s FONT_SIZE] [-v] recipient subject file
 ```
 
 For example:
 
 ```text
 smvp friend@gmail.com "Hello, Friend" ~/logfile.txt -f "Trebuchet MS" -s 14
+```
+
+Force plain-text handling for HTML-like input:
+
+```text
+smvp friend@gmail.com "Raw Markup" ./snippet.txt --content-type text
+```
+
+Force HTML handling:
+
+```text
+smvp friend@gmail.com "Rendered Markup" ./fragment.txt --content-type html
 ```
 
 For more details, run:

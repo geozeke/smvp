@@ -29,7 +29,6 @@ classifiers = [
     "Topic :: System :: Logging",
     "Topic :: Text Processing :: Markup :: HTML",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -49,7 +48,13 @@ dependencies = [
 "Bug Tracker" = "https://github.com/geozeke/smvp/issues"
 
 [dependency-groups]
-dev = ["mypy>=1.14.1", "ruff>=0.8.6", "types-beautifulsoup4>=4.12.0.20241020"]
+dev = [
+    "mypy>=1.14.1",
+    "pytest>=8.3.5",
+    "pytest-cov>=6.2.1",
+    "ruff>=0.8.6",
+    "types-beautifulsoup4>=4.12.0.20241020",
+]
 [project.scripts]
 smvp = "smvp:main"
 

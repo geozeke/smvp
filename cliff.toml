@@ -95,6 +95,8 @@ fail_on_unmatched_commit = false
 link_parsers = []
 # Include only the tags that belong to the current branch.
 use_branch_tags = false
+# Ignore non-version tags used for convenience.
+ignore_tags = "latest"
 # Order releases topologically instead of chronologically.
 topo_order = false
 # Order commits topologically instead of chronologically.
