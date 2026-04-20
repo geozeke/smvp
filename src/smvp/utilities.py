@@ -84,24 +84,25 @@ def validate_environment() -> bool:
     except KeyError:
         msg = """
         One or more credentials for sending email are missing from your
-        environment. Make sure the following environment variables are
-        set and exported in your current shell:
-        
-        export SMVP_USER="<your email>"    # e.g. "myemail@gmail.com"
-        export SMVP_TOKEN="<your token>"   # e.g. "<gmail app password>"
-        export SMVP_SERVER="<smtp server>" # e.g. "smtp.gmail.com"
+        environment. Set the following environment variables in the
+        shell you are using before running smvp:
 
-        It's recommended that you put the lines above in your "rc" file
-        (.bashrc, .zshrc, etc.) for use across multiple shell sessions
-        and processes. To confirm you have the environment variables
-        correctly set (with the correct spellings), run this in a
-        terminal:
+        Linux / macOS shells:
+        export SMVP_USER="<your email>"
+        export SMVP_TOKEN="<your token>"
+        export SMVP_SERVER="<smtp server>"
 
-        set | grep ^SMVP_
+        Windows PowerShell:
+        $env:SMVP_USER = "<your email>"
+        $env:SMVP_TOKEN = "<your token>"
+        $env:SMVP_SERVER = "<smtp server>"
 
-        Note: If you make changes to your "rc" file, make sure to
-        "source" it before running smvp again. Also, the SMVP_SERVER you
-        select must support secure TLS connections on port 587.
+        Windows Command Prompt:
+        set SMVP_USER=<your email>
+        set SMVP_TOKEN=<your token>
+        set SMVP_SERVER=<smtp server>
+
+        The SMTP server must support STARTTLS on port 587.
         """
         print()
         print_docstring(msg=msg)

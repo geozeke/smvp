@@ -45,3 +45,5 @@ or HTML file as a multipart email body over SMTP with STARTTLS.
 ## Notes
 
 - Treat SMTP credentials and any local secrets as sensitive.
+- Runtime support targets Windows and Linux; repo tooling remains
+  Linux-only.

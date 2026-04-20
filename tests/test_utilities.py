@@ -1,6 +1,8 @@
 import argparse
 import io
 from email import message_from_string
+from email.message import Message
+from typing import cast
 
 import pytest
 
@@ -61,6 +63,25 @@ def _build_args(
     )
 
 
+def _multipart_parts(message_text: str) -> tuple[Message, Message]:
+    parsed = message_from_string(message_text)
+    payload = parsed.get_payload()
+    assert isinstance(payload, list)
+    assert len(payload) == 2
+
+    plain_part = payload[0]
+    html_part = payload[1]
+    assert isinstance(plain_part, Message)
+    assert isinstance(html_part, Message)
+    return plain_part, html_part
+
+
+def _decoded_payload(part: Message) -> str:
+    payload = part.get_payload(decode=True)
+    assert isinstance(payload, bytes)
+    return payload.decode()
+
+
 def test_file_is_html_detects_common_cases() -> None:
     assert utilities.file_is_html("<!DOCTYPE html><html><body>ok</body></html>")
     assert utilities.file_is_html("<div>Hello</div>")
@@ -76,6 +97,23 @@ def test_validate_environment_requires_all_variables(monkeypatch: pytest.MonkeyP
 
     monkeypatch.delenv("SMVP_TOKEN")
     assert utilities.validate_environment() is False
+
+
+def test_validate_environment_prints_cross_platform_shell_guidance(
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    monkeypatch.delenv("SMVP_USER", raising=False)
+    monkeypatch.delenv("SMVP_TOKEN", raising=False)
+    monkeypatch.delenv("SMVP_SERVER", raising=False)
+
+    assert utilities.validate_environment() is False
+
+    captured = capsys.readouterr()
+    assert "Linux / macOS shells" in captured.out
+    assert "Windows PowerShell" in captured.out
+    assert "Windows Command Prompt" in captured.out
+    assert "STARTTLS on port 587" in captured.out
 
 
 def test_task_runner_exits_when_environment_is_invalid(
@@ -139,14 +177,14 @@ def test_task_runner_sends_multipart_message_for_html_input(
     assert to_addr == "friend@example.com"
 
     parsed = message_from_string(raw_message)
-    assert parsed["Subject"] == "Test Subject"
+    assert cast(str, parsed["Subject"]) == "Test Subject"
     assert parsed.is_multipart()
-    parts = parsed.get_payload()
-    assert len(parts) == 2
-    assert parts[0].get_content_type() == "text/plain"
-    assert parts[0].get_payload(decode=True).decode().strip() == "Hello"
-    assert parts[1].get_content_type() == "text/html"
-    html_payload = parts[1].get_payload(decode=True).decode()
+
+    plain_part, html_part = _multipart_parts(raw_message)
+    assert plain_part.get_content_type() == "text/plain"
+    assert _decoded_payload(plain_part).strip() == "Hello"
+    assert html_part.get_content_type() == "text/html"
+    html_payload = _decoded_payload(html_part)
     assert "font-family: Courier New !important" in html_payload
     assert "font-size: 12px !important" in html_payload
 
@@ -174,11 +212,13 @@ def test_task_runner_plaintext_uses_ansi_converter(monkeypatch: pytest.MonkeyPat
 
     sent_servers: list[DummySMTP] = []
     monkeypatch.setattr(utilities, "Ansi2HTMLConverter", DummyConverter)
-    monkeypatch.setattr(
-        utilities.smtplib,
-        "SMTP",
-        lambda host, port: sent_servers.append(DummySMTP(host, port)) or sent_servers[-1],
-    )
+
+    def smtp_factory(host: str, port: int) -> DummySMTP:
+        server = DummySMTP(host, port)
+        sent_servers.append(server)
+        return server
+
+    monkeypatch.setattr(utilities.smtplib, "SMTP", smtp_factory)
 
     args = _build_args(content="plain", font_family="Verdana", font_size=14)
     utilities.task_runner(args)
@@ -190,8 +230,8 @@ def test_task_runner_plaintext_uses_ansi_converter(monkeypatch: pytest.MonkeyPat
 
     server = sent_servers[0]
     assert server.sent is not None
-    parsed = message_from_string(server.sent[2])
-    html_payload = parsed.get_payload()[1].get_payload(decode=True).decode()
+    _, html_part = _multipart_parts(server.sent[2])
+    html_payload = _decoded_payload(html_part)
     assert "color: #AAAAAA" not in html_payload
     assert "font-family: Verdana !important" in html_payload
     assert "font-size: 14px !important" in html_payload
@@ -219,11 +259,13 @@ def test_task_runner_forces_text_mode_for_html_like_input(
 
     sent_servers: list[DummySMTP] = []
     monkeypatch.setattr(utilities, "Ansi2HTMLConverter", DummyConverter)
-    monkeypatch.setattr(
-        utilities.smtplib,
-        "SMTP",
-        lambda host, port: sent_servers.append(DummySMTP(host, port)) or sent_servers[-1],
-    )
+
+    def smtp_factory(host: str, port: int) -> DummySMTP:
+        server = DummySMTP(host, port)
+        sent_servers.append(server)
+        return server
+
+    monkeypatch.setattr(utilities.smtplib, "SMTP", smtp_factory)
 
     args = _build_args(content="<div>Hello</div>", content_type="text")
     utilities.task_runner(args)
@@ -231,8 +273,8 @@ def test_task_runner_forces_text_mode_for_html_like_input(
     assert len(DummyConverter.instances) == 1
     server = sent_servers[0]
     assert server.sent is not None
-    parsed = message_from_string(server.sent[2])
-    html_payload = parsed.get_payload()[1].get_payload(decode=True).decode()
+    _, html_part = _multipart_parts(server.sent[2])
+    html_payload = _decoded_payload(html_part)
     assert "&lt;div&gt;Hello&lt;/div&gt;" in html_payload
 
 
@@ -256,8 +298,8 @@ def test_task_runner_forces_html_mode_for_plaintext_input(
 
     server = sent_servers[0]
     assert server.sent is not None
-    parsed = message_from_string(server.sent[2])
-    html_payload = parsed.get_payload()[1].get_payload(decode=True).decode()
+    _, html_part = _multipart_parts(server.sent[2])
+    html_payload = _decoded_payload(html_part)
     assert "plain text only" in html_payload
 
 
