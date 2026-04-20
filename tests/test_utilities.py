@@ -42,13 +42,20 @@ class BrokenTextFile:
         raise UnicodeDecodeError("utf-8", b"\xff", 0, 1, "invalid start byte")
 
 
-def _build_args(*, content: str, font_family: str = "Courier New", font_size: int = 12):
+def _build_args(
+    *,
+    content: str,
+    content_type: str = "auto",
+    font_family: str = "Courier New",
+    font_size: int = 12,
+):
     text_file = io.StringIO(content)
     text_file.name = "input.txt"  # type: ignore[attr-defined]
     return argparse.Namespace(
         recipient="friend@example.com",
         subject="Test Subject",
         file=text_file,
+        content_type=content_type,
         font_family=font_family,
         font_size=font_size,
     )
@@ -91,6 +98,7 @@ def test_task_runner_exits_on_unicode_decode_error(
         recipient="friend@example.com",
         subject="Test Subject",
         file=BrokenTextFile(),
+        content_type="auto",
         font_family="Courier New",
         font_size=12,
     )
@@ -187,6 +195,70 @@ def test_task_runner_plaintext_uses_ansi_converter(monkeypatch: pytest.MonkeyPat
     assert "color: #AAAAAA" not in html_payload
     assert "font-family: Verdana !important" in html_payload
     assert "font-size: 14px !important" in html_payload
+
+
+def test_task_runner_forces_text_mode_for_html_like_input(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("SMVP_USER", "sender@example.com")
+    monkeypatch.setenv("SMVP_TOKEN", "token")
+    monkeypatch.setenv("SMVP_SERVER", "smtp.example.com")
+
+    class DummyConverter:
+        instances: list["DummyConverter"] = []
+
+        def __init__(self, dark_bg: bool) -> None:
+            self.dark_bg = dark_bg
+            self.called_with_full = False
+            DummyConverter.instances.append(self)
+
+        def convert(self, text: str, full: bool) -> str:
+            assert text == "<div>Hello</div>"
+            self.called_with_full = full
+            return "<html><body><pre>&lt;div&gt;Hello&lt;/div&gt;</pre></body></html>"
+
+    sent_servers: list[DummySMTP] = []
+    monkeypatch.setattr(utilities, "Ansi2HTMLConverter", DummyConverter)
+    monkeypatch.setattr(
+        utilities.smtplib,
+        "SMTP",
+        lambda host, port: sent_servers.append(DummySMTP(host, port)) or sent_servers[-1],
+    )
+
+    args = _build_args(content="<div>Hello</div>", content_type="text")
+    utilities.task_runner(args)
+
+    assert len(DummyConverter.instances) == 1
+    server = sent_servers[0]
+    assert server.sent is not None
+    parsed = message_from_string(server.sent[2])
+    html_payload = parsed.get_payload()[1].get_payload(decode=True).decode()
+    assert "&lt;div&gt;Hello&lt;/div&gt;" in html_payload
+
+
+def test_task_runner_forces_html_mode_for_plaintext_input(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("SMVP_USER", "sender@example.com")
+    monkeypatch.setenv("SMVP_TOKEN", "token")
+    monkeypatch.setenv("SMVP_SERVER", "smtp.example.com")
+
+    sent_servers: list[DummySMTP] = []
+
+    def smtp_factory(host: str, port: int) -> DummySMTP:
+        server = DummySMTP(host, port)
+        sent_servers.append(server)
+        return server
+
+    monkeypatch.setattr(utilities.smtplib, "SMTP", smtp_factory)
+    args = _build_args(content="plain text only", content_type="html")
+    utilities.task_runner(args)
+
+    server = sent_servers[0]
+    assert server.sent is not None
+    parsed = message_from_string(server.sent[2])
+    html_payload = parsed.get_payload()[1].get_payload(decode=True).decode()
+    assert "plain text only" in html_payload
 
 
 def test_task_runner_prints_smtp_error(monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]) -> None:

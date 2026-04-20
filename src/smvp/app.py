@@ -155,6 +155,17 @@ def process_args() -> None:
     parser.add_argument("file", type=argparse.FileType("r"), help=msg)
 
     msg = """
+    how to interpret the input file: auto-detect, plain text, or HTML
+    """
+    parser.add_argument(
+        "-c",
+        "--content-type",
+        choices=("auto", "text", "html"),
+        default="auto",
+        help=msg,
+    )
+
+    msg = """
     font family for HTML output; case-insensitive; see README for
     supported values
     """

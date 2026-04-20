@@ -148,11 +148,16 @@ def task_runner(args: argparse.Namespace) -> None:
         print_docstring(msg=msg)
         sys.exit(1)
 
-    # Craft an HTML version compatible with Gmail. If it's not HTML,
-    # then filter it through ansi2html to scan for ANSI codes and turn
-    # that into HTML. Plaintext will process fine. The text replacement
-    # below is to ditch the dull-grey default in ansi2html.
-    if not file_is_html(text_in):
+    # Craft an HTML version compatible with Gmail. Plain-text input is
+    # filtered through ansi2html so ANSI escape sequences become HTML.
+    # The text replacement below removes ansi2html's dull-grey default.
+    content_type = args.content_type
+    if content_type == "auto":
+        treat_as_html = file_is_html(text_in)
+    else:
+        treat_as_html = content_type == "html"
+
+    if not treat_as_html:
         converter = Ansi2HTMLConverter(dark_bg=False)
         html_text = converter.convert(text_in, full=True)
         html_text = html_text.replace("color: #AAAAAA", "color: #FFFFFF")

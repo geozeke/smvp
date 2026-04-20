@@ -80,6 +80,8 @@ def test_process_args_parses_values_and_calls_task_runner(
             "friend@example.com",
             "Hello There",
             str(input_file),
+            "--content-type",
+            "html",
             "--font_family",
             "verdana",
             "--font_size",
@@ -94,6 +96,7 @@ def test_process_args_parses_values_and_calls_task_runner(
     assert args.subject == "Hello There"
     assert isinstance(args.file, io.TextIOWrapper)
     assert args.file.name == str(input_file)
+    assert args.content_type == "html"
     assert args.font_family == "Verdana"
     assert args.font_size == "14"
 

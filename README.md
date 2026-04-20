@@ -15,7 +15,8 @@ The _smvp_ utility reads a file, uses its contents as the body of an
 email, and sends it to a specified recipient. The input file can be a
 text file with ANSI color codes, HTML, or plain text. The resulting
 message is sent as a multipart MIME email that renders properly in both
-plain text and HTML.
+plain text and HTML. The `--content-type` option can auto-detect the
+input type or force it to be handled as plain text or HTML.
 
 > **Note:** The file itself is not sent as an attachment; instead, the
 > contents of the file are put into the body of the email.
@@ -123,16 +124,44 @@ including `100px`, from the following font families:
 > are pretty safe. You may just have to try a few options to land on the
 > right one for your use case.
 
+## Content Type
+
+By default, _smvp_ uses `--content-type auto`, which inspects the input
+and decides whether to treat it as plain text or HTML. You can override
+that behavior when needed:
+
+```text
+auto  Auto-detect whether the input should be treated as text or HTML
+text  Always treat the input as plain text, including HTML-like content
+html  Always treat the input as HTML
+```
+
+This is useful when the input contains angle brackets that should be
+sent literally, or when you want to force HTML rendering for a file that
+would not otherwise be detected as HTML.
+
 ## Usage
 
 ```text
-usage: smvp [-h] [-f FONT_FAMILY] [-s FONT_SIZE] [-v] recipient subject file
+usage: smvp [-h] [-c {auto,text,html}] [-f FONT_FAMILY] [-s FONT_SIZE] [-v] recipient subject file
 ```
 
 For example:
 
 ```text
 smvp friend@gmail.com "Hello, Friend" ~/logfile.txt -f "Trebuchet MS" -s 14
+```
+
+Force plain-text handling for HTML-like input:
+
+```text
+smvp friend@gmail.com "Raw Markup" ./snippet.txt --content-type text
+```
+
+Force HTML handling:
+
+```text
+smvp friend@gmail.com "Rendered Markup" ./fragment.txt --content-type html
 ```
 
 For more details, run:
