@@ -14,6 +14,8 @@ or HTML file as a multipart email body over SMTP with STARTTLS.
   `src/smvp/` first.
 - Use `rg` for searches and `just` or `uv` for common
   project tasks when needed.
+- Prefer `pathlib.Path` objects over raw path strings where
+  practical.
 - Use strict NumPy-style docstrings for all function, class, and
   module docstrings.
 - When asked to review or modify `.gitignore`, also check
