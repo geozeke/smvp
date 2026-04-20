@@ -1,5 +1,6 @@
 import argparse
 import io
+from pathlib import Path
 from email import message_from_string
 from email.message import Message
 from typing import cast
@@ -143,6 +144,65 @@ def test_task_runner_exits_on_unicode_decode_error(
     with pytest.raises(SystemExit) as excinfo:
         utilities.task_runner(args)
     assert excinfo.value.code == 1
+
+
+def test_task_runner_reads_path_input(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    monkeypatch.setenv("SMVP_USER", "sender@example.com")
+    monkeypatch.setenv("SMVP_TOKEN", "token")
+    monkeypatch.setenv("SMVP_SERVER", "smtp.example.com")
+
+    input_file = tmp_path / "input.html"
+    input_file.write_text("<html><body><p>Hello</p></body></html>", encoding="utf-8")
+
+    sent_servers: list[DummySMTP] = []
+
+    def smtp_factory(host: str, port: int) -> DummySMTP:
+        server = DummySMTP(host, port)
+        sent_servers.append(server)
+        return server
+
+    monkeypatch.setattr(utilities.smtplib, "SMTP", smtp_factory)
+
+    args = argparse.Namespace(
+        recipient="friend@example.com",
+        subject="Test Subject",
+        file=input_file,
+        content_type="auto",
+        font_family="Courier New",
+        font_size=12,
+    )
+    utilities.task_runner(args)
+
+    assert len(sent_servers) == 1
+    assert sent_servers[0].sent is not None
+
+
+def test_task_runner_exits_on_file_os_error(
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    monkeypatch.setenv("SMVP_USER", "sender@example.com")
+    monkeypatch.setenv("SMVP_TOKEN", "token")
+    monkeypatch.setenv("SMVP_SERVER", "smtp.example.com")
+
+    args = argparse.Namespace(
+        recipient="friend@example.com",
+        subject="Test Subject",
+        file=Path("missing.txt"),
+        content_type="auto",
+        font_family="Courier New",
+        font_size=12,
+    )
+
+    with pytest.raises(SystemExit) as excinfo:
+        utilities.task_runner(args)
+
+    assert excinfo.value.code == 1
+    captured = capsys.readouterr()
+    assert "missing.txt" in captured.out
 
 
 def test_task_runner_sends_multipart_message_for_html_input(
