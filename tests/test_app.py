@@ -1,4 +1,3 @@
-import io
 import sys
 from pathlib import Path
 
@@ -94,8 +93,7 @@ def test_process_args_parses_values_and_calls_task_runner(
     assert isinstance(args, argparse.Namespace)
     assert args.recipient == "friend@example.com"
     assert args.subject == "Hello There"
-    assert isinstance(args.file, io.TextIOWrapper)
-    assert args.file.name == str(input_file)
+    assert args.file == input_file
     assert args.content_type == "html"
     assert args.font_family == "Verdana"
     assert args.font_size == "14"

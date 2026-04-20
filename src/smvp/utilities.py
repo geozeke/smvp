@@ -84,24 +84,25 @@ def validate_environment() -> bool:
     except KeyError:
         msg = """
         One or more credentials for sending email are missing from your
-        environment. Make sure the following environment variables are
-        set and exported in your current shell:
-        
-        export SMVP_USER="<your email>"    # e.g. "myemail@gmail.com"
-        export SMVP_TOKEN="<your token>"   # e.g. "<gmail app password>"
-        export SMVP_SERVER="<smtp server>" # e.g. "smtp.gmail.com"
+        environment. Set the following environment variables in the
+        shell you are using before running smvp:
 
-        It's recommended that you put the lines above in your "rc" file
-        (.bashrc, .zshrc, etc.) for use across multiple shell sessions
-        and processes. To confirm you have the environment variables
-        correctly set (with the correct spellings), run this in a
-        terminal:
+        Linux / macOS shells:
+        export SMVP_USER="<your email>"
+        export SMVP_TOKEN="<your token>"
+        export SMVP_SERVER="<smtp server>"
 
-        set | grep ^SMVP_
+        Windows PowerShell:
+        $env:SMVP_USER = "<your email>"
+        $env:SMVP_TOKEN = "<your token>"
+        $env:SMVP_SERVER = "<smtp server>"
 
-        Note: If you make changes to your "rc" file, make sure to
-        "source" it before running smvp again. Also, the SMVP_SERVER you
-        select must support secure TLS connections on port 587.
+        Windows Command Prompt:
+        set SMVP_USER=<your email>
+        set SMVP_TOKEN=<your token>
+        set SMVP_SERVER=<smtp server>
+
+        The SMTP server must support STARTTLS on port 587.
         """
         print()
         print_docstring(msg=msg)
@@ -137,15 +138,22 @@ def task_runner(args: argparse.Namespace) -> None:
     email_port = 587
 
     try:
-        with args.file as f:
-            text_in = f.read()
+        if isinstance(args.file, (str, os.PathLike)):
+            with open(args.file, "r", encoding="utf-8") as f:
+                text_in = f.read()
+        else:
+            with args.file as f:
+                text_in = f.read()
     except UnicodeDecodeError:
         msg = f"""
-        Unable to process: {args.file.name}
+        Unable to process: {getattr(args.file, 'name', args.file)}
         smvp can only process textfiles (including those with ANSI
         escape sequences) or html files. No email sent.
         """
         print_docstring(msg=msg)
+        sys.exit(1)
+    except OSError as exc:
+        print(exc)
         sys.exit(1)
 
     # Craft an HTML version compatible with Gmail. Plain-text input is

@@ -21,6 +21,14 @@ input type or force it to be handled as plain text or HTML.
 > **Note:** The file itself is not sent as an attachment; instead, the
 > contents of the file are put into the body of the email.
 
+## Compatibility
+
+The `smvp` runtime is supported on Windows and Linux.
+
+Project tooling remains Linux-only. That includes the `just` recipes,
+the Bash scripts in `scripts/`, the release workflow, and the `cron`
+examples below.
+
 ## Use Case
 
 There are probably several use cases, but I wrote _smvp_ for two
@@ -53,37 +61,57 @@ uv tool install smvp
 or
 
 ```text
-python3 -m venv .venv
+python -m venv .venv
+
+# Linux / macOS
 source .venv/bin/activate
-pip3 install smvp
+
+# Windows PowerShell
+.venv\Scripts\Activate.ps1
+
+# Windows Command Prompt
+.venv\Scripts\activate.bat
+
+python -m pip install smvp
 ```
 
 ## Requirements
 
-### First
+### SMTP Environment Variables
 
-Make sure the following environment variables are set and exported in
-your current shell:
+Set the following environment variables in the shell you are using
+before running `smvp`.
 
-```text
+Linux / macOS shells:
+
+```bash
 export SMVP_USER="<your email>"    # e.g. "myemail@gmail.com"
 export SMVP_TOKEN="<your token>"   # e.g. "<gmail app password>"
 export SMVP_SERVER="<smtp server>" # e.g. "smtp.gmail.com"
 ```
 
-It is recommended that you add the lines above to your shell startup
-file (`.bashrc`, `.zshrc`, etc.) so they are available across multiple
-shell sessions and processes. To confirm that the environment variables
-are set correctly, run this in a terminal:
+Windows PowerShell:
 
-```text
-set | grep ^SMVP_
+```powershell
+$env:SMVP_USER = "<your email>"
+$env:SMVP_TOKEN = "<your token>"
+$env:SMVP_SERVER = "<smtp server>"
 ```
 
-> **Note:** If you make changes to your "rc" file, make sure to `source`
-> it or open a new terminal window before running _smvp_ again.
+Windows Command Prompt:
+
+```text
+set SMVP_USER=<your email>
+set SMVP_TOKEN=<your token>
+set SMVP_SERVER=<smtp server>
+```
+
+If you want these variables to persist across sessions, add them to
+your shell profile or your Windows user environment settings.
 
 ---
+
+Linux automation note:
 
 > **Tip:** If you're using `cron` and sending mail with _smvp_ from
 > within a script, make sure to include the environment variables at the
@@ -98,7 +126,7 @@ set | grep ^SMVP_
 export PATH="$PATH:/home/<yourhome>/.local/bin"
 ```
 
-### Second
+### SMTP Server
 
 The `SMVP_SERVER` you select must support secure TLS connections on port
 `587`. Check the SMTP settings for your email provider. This is the
@@ -150,6 +178,13 @@ For example:
 
 ```text
 smvp friend@gmail.com "Hello, Friend" ~/logfile.txt -f "Trebuchet MS" -s 14
+```
+
+On Windows, the same command works after installation. The only
+difference is the path style, for example:
+
+```text
+smvp friend@gmail.com "Hello, Friend" .\logfile.txt -f "Trebuchet MS" -s 14
 ```
 
 Force plain-text handling for HTML-like input:

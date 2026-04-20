@@ -1,6 +1,7 @@
 import argparse
 import re
 from importlib.metadata import version
+from pathlib import Path
 
 from smvp.utilities import task_runner
 
@@ -152,7 +153,7 @@ def process_args() -> None:
     msg = """
     text or HTML file to use as the email body
     """
-    parser.add_argument("file", type=argparse.FileType("r"), help=msg)
+    parser.add_argument("file", type=Path, help=msg)
 
     msg = """
     how to interpret the input file: auto-detect, plain text, or HTML
