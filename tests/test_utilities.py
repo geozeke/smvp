@@ -327,3 +327,23 @@ def test_task_runner_prints_smtp_error(monkeypatch: pytest.MonkeyPatch, capsys: 
     captured = capsys.readouterr()
     assert "smtp send failed" in captured.out
     assert sent_servers[0].quit_called is True
+
+
+def test_task_runner_prints_smtp_constructor_error_without_cleanup_crash(
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    monkeypatch.setenv("SMVP_USER", "sender@example.com")
+    monkeypatch.setenv("SMVP_TOKEN", "token")
+    monkeypatch.setenv("SMVP_SERVER", "smtp.example.com")
+
+    def smtp_factory(host: str, port: int) -> DummySMTP:
+        raise RuntimeError("smtp connect failed")
+
+    monkeypatch.setattr(utilities.smtplib, "SMTP", smtp_factory)
+
+    args = _build_args(content="<html><body><p>Hello</p></body></html>")
+    utilities.task_runner(args)
+
+    captured = capsys.readouterr()
+    assert "smtp connect failed" in captured.out

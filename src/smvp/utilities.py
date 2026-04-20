@@ -146,7 +146,7 @@ def task_runner(args: argparse.Namespace) -> None:
                 text_in = f.read()
     except UnicodeDecodeError:
         msg = f"""
-        Unable to process: {getattr(args.file, 'name', args.file)}
+        Unable to process: {getattr(args.file, "name", args.file)}
         smvp can only process textfiles (including those with ANSI
         escape sequences) or html files. No email sent.
         """
@@ -206,6 +206,7 @@ def task_runner(args: argparse.Namespace) -> None:
     context = ssl.create_default_context()
 
     # Send the email
+    server: smtplib.SMTP | None = None
     try:
         server = smtplib.SMTP(email_server, email_port)
         server.starttls(context=context)
@@ -219,7 +220,8 @@ def task_runner(args: argparse.Namespace) -> None:
     except Exception as e:
         print(e)
     finally:
-        server.quit()
+        if server:
+            server.quit()
     return
 
 
