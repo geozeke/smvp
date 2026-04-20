@@ -10,6 +10,9 @@ or HTML file as a multipart email body over SMTP with STARTTLS.
 - Keep changes focused and minimal.
 - Use snake case for variable names (all words lowercase).
 - Do not traverse or modify `.venv/`.
+- Do not traverse cache or generated-state directories such as
+  `.pytest_cache/`, `.mypy_cache/`, `.ruff_cache/`, `__pycache__/`,
+  or `.cache/` unless the task explicitly requires it.
 - Prefer reading `README.md`, `pyproject.toml`, and files under
   `src/smvp/` first.
 - Use `rg` for searches and `just` or `uv` for common
