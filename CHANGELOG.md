@@ -1,3 +1,44 @@
+## 0.4.0 (2026-04-20)
+
+### 🐛 Bug Fixes
+
+- Improve html detection (309d25d)
+- Fix justfile workflow for release (60a309d)
+
+### 🛠️ Changes
+
+- Build codex tooling (3fbac8f)
+- Add snake case requirement to AGENTS.md (63f69fd)
+- Modernize changelog management (195ad58)
+- Remove python 3.9 from pyproject.toml (ed7b7e2)
+
+### 🧪 Testing
+
+- Implement unit tests (a2c1cf7)
+
+### 📚 Documentation
+
+- Lint README file (ca3ddfc)
+- Lint argparse messages (1149a8d)
+- Lint LICENSE (ba19e45)
+- Lint docstrings. (727ae3a)
+- Add shields.io badges (e2b7a2f)
+
+### 🚀 Features
+
+- Selectable content type (f237877)
+
+### ⚙️ Miscellaneous Tasks
+
+- Lint .gitignore (3d40dad)
+- Add .gitignore instruction to AGENTS.md (ace1b71)
+- Lint justfile (150aea5)
+- Lint CHANGELOG (4a03e7a)
+- Lint justfile (fa596ab)
+- Lint justfile (092684c)
+- Add support for code coverage (f90fe33)
+- Lint justfile (b20ceb0)
+
 ## 0.3.2 (2026-04-17) - latest
 
 ### 📦 Runtime Dependencies
