@@ -31,8 +31,9 @@ _require_setup:
 # Private handler for commits
 _commit latest:
     #!/usr/bin/env bash
+    git add --update CHANGELOG.md pyproject.toml uv.lock
     if git diff --cached --quiet; then
-        echo "No staged changes found. Stage changes before running commit."
+        echo "No release changes found in CHANGELOG.md, pyproject.toml, or uv.lock."
         exit 1
     fi
     git commit -m "Bump version"
