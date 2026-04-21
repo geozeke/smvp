@@ -131,4 +131,3 @@ cython_debug/
 .vscode/
 scratch/
 .init/
-run/
