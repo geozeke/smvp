@@ -68,7 +68,7 @@ requires = ["uv-build>=0.10,<0.12"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
-exclude = [".gitignore", "Makefile", "uv.lock"]
+exclude = [".gitignore", "uv.lock"]
 
 [tool.ruff.lint.isort]
 force-single-line = true
