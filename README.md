@@ -8,7 +8,8 @@
 
 <br>
 
-<img src="https://lh3.googleusercontent.com/d/1PpjTCw4T1HpHU_TacQSjZptzw67WqwIz"
+<img
+src="https://raw.githubusercontent.com/geozeke/smvp/main/assets/smvp-logo.png"
 alt="smvp logo" width="120"/>
 
 The _smvp_ utility reads a file, uses its contents as the body of an
