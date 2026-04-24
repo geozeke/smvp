@@ -1,3 +1,36 @@
+## 0.4.1 (2026-04-24)
+
+### 🐛 Bug Fixes
+
+- Fix runtime.yml (e38bd90)
+
+### 🧪 Testing
+
+- Add new tests for Path change (e02194b)
+
+### 🛠️ 📦 Development Dependencies
+
+- Bump mypy from 1.20.1 to 1.20.2 (6de3b68)
+- Bump lxml from 6.0.4 to 6.1.0 in the uv group across 1 directory (e89c80f)
+
+### 🚀 Features
+
+- Ensure runtime is compatible with Windows (c72d640)
+- Confirm support for Python 3.14 (34b6cc0)
+
+### ⚙️ Miscellaneous Tasks
+
+- Conduct code review (9c9c48f)
+- Add AGENTS rule to avoid cache directories (f4e8962)
+- Make "bug" and "fix" equivalent (8aef306)
+- Lint rebaseline.sh (5346715)
+- Remove /run directory (617108d)
+- Cleanup justfile (44df59d)
+- Move logo to a local asset (e321163)
+- Conduct metadata audit (44dac6a)
+- Add truthiness to AGENTS.md (296c91a)
+- Unfreeze syncing in justfile (3f57b04)
+
 ## 0.4.0 (2026-04-20)
 
 ### 🐛 Bug Fixes
