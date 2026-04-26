@@ -42,6 +42,13 @@ or HTML file as a multipart email body over SMTP with STARTTLS.
   conversion, MIME assembly, and SMTP delivery.
 - `scripts/`: release and maintenance helpers.
 
+## Documentation
+
+- When making changes, ensure documentation and metadata remain
+  consistent. This includes documents in instructions/ and todo/ (if
+  they exist), and files like README.md and AGENTS.md. Also include
+  argparse messages, docstrings, and code comments.
+
 ## Validation
 
 - For syntax checks, prefer
