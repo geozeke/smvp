@@ -1,3 +1,24 @@
+## 0.4.2 (2026-05-08)
+
+### 🐛 Bug Fixes
+
+- Fix environment leak in justfile (883d170)
+- Remove duplicates from changelogs (25c0589)
+
+### 🛠️ Changes
+
+- Improve tagging and release workflow (ecb62ab)
+
+### 🛠️ 📦 Development Dependencies
+
+- Bump ruff from 0.15.11 to 0.15.12 (a05e8ef)
+- Bump mypy from 1.20.2 to 2.0.0 (2fb20f4)
+
+### ⚙️ Miscellaneous Tasks
+
+- Add documentation consistency check (6ebe589)
+- Set default codex model to 5.5 medium (e4f6730)
+
 ## 0.4.1 (2026-04-24)
 
 ### 🐛 Bug Fixes
