@@ -30,6 +30,10 @@ fi
 script_dir="$(cd "$(dirname "$0")" && pwd)"
 project_root="$(dirname "$script_dir")"
 changelog="$project_root/CHANGELOG.md"
+major="${version%%.*}"
+minor_patch="${version#*.}"
+minor="${minor_patch%%.*}"
+archive_changelog="$project_root/changelogs/v$major.$minor.x.md"
 
 if [ ! -f "$changelog" ]; then
   echo "Error: CHANGELOG.md not found." >&2
@@ -42,7 +46,10 @@ cleanup() {
 }
 trap cleanup EXIT
 
-awk -v version="$version" '
+extract_notes() {
+  input_file="$1"
+
+  awk -v version="$version" '
   BEGIN {
     in_section = 0
     found = 0
@@ -67,12 +74,26 @@ awk -v version="$version" '
       exit 2
     }
   }
-' "$changelog" > "$tmp_file" || {
+  ' "$input_file"
+}
+
+extract_notes "$changelog" > "$tmp_file" || {
   status=$?
-  if [ "$status" -eq 2 ]; then
-    echo "Error: release notes for '$tag' not found in CHANGELOG.md." >&2
+  if [ "$status" -ne 2 ]; then
+    exit "$status"
   fi
-  exit "$status"
+  if [ -f "$archive_changelog" ]; then
+    extract_notes "$archive_changelog" > "$tmp_file" || {
+      archive_status=$?
+      if [ "$archive_status" -eq 2 ]; then
+        echo "Error: release notes for '$tag' not found in CHANGELOG.md or $archive_changelog." >&2
+      fi
+      exit "$archive_status"
+    }
+  else
+    echo "Error: release notes for '$tag' not found in CHANGELOG.md or $archive_changelog." >&2
+    exit "$status"
+  fi
 }
 
 if [ ! -s "$tmp_file" ]; then

@@ -62,9 +62,10 @@ or HTML file as a multipart email body over SMTP with STARTTLS.
   `just tag-release-latest` when the mutable `latest` tag should also
   move.
 - Pushing a `v...` version tag starts the GitHub Actions release
-  workflow, which creates a GitHub Release from the matching
-  `CHANGELOG.md` section. The workflow uses GitHub Actions'
-  built-in `GITHUB_TOKEN` with `contents: write`.
+  workflow, which creates a GitHub Release from matching notes in
+  `CHANGELOG.md` or the appropriate `changelogs/v<major>.<minor>.x.md`
+  archive. The workflow uses GitHub Actions' built-in `GITHUB_TOKEN`
+  with `contents: write`.
 - The `latest` tag is mutable and must not be treated as an immutable
   release record. Use it only when that version should become the
   default install target.
