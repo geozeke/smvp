@@ -29,13 +29,11 @@ def test_patch_bump_does_not_archive_existing_old_sections(tmp_path: Path) -> No
 
 - Previous patch.
 
-## [0.3.2][0.3.2] - 2026-04-17
+## 0.3.2 (2026-04-17)
 
 ### Changed
 
 - Older minor entry.
-
-[0.3.2]: https://example.test/releases/v0.3.2
 """
     changelog.write_text(original, encoding="utf-8")
 
@@ -62,13 +60,12 @@ def test_minor_bump_archives_old_sections_and_moves_links(tmp_path: Path) -> Non
 
 - Previous minor entry.
 
-## [0.3.2][0.3.2] - 2026-04-17
+## 0.3.2 (2026-04-17)
 
 ### Changed
 
 - Older linked entry using [pkg][pkg].
 
-[0.3.2]: https://example.test/releases/v0.3.2
 [pkg]: https://example.test/pkg
 """,
         encoding="utf-8",
@@ -86,8 +83,7 @@ def test_minor_bump_archives_old_sections_and_moves_links(tmp_path: Path) -> Non
     assert "## 0.4.2" in archive_04
 
     archive_03 = (archive_dir / "v0.3.x.md").read_text(encoding="utf-8")
-    assert "## [0.3.2][0.3.2]" in archive_03
-    assert "[0.3.2]: https://example.test/releases/v0.3.2" in archive_03
+    assert "## 0.3.2 (2026-04-17)" in archive_03
     assert "[pkg]: https://example.test/pkg" in archive_03
 
 

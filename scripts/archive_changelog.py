@@ -15,9 +15,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 
-HEADING_RE = re.compile(
-    r"^##\s+(?:\[)?v?(?P<version>\d+\.\d+\.\d+)(?:\])?(?:\[[^\]]+\])?.*$"
-)
+HEADING_RE = re.compile(r"^##\s+(?P<version>\d+\.\d+\.\d+)(?:\s|$)")
 LINK_DEFINITION_RE = re.compile(r"^\[([^\]]+)\]:\s+\S+", re.MULTILINE)
 REFERENCE_RE = re.compile(r"\[([^\]\n]+)\](?:\[([^\]\n]+)\])?")
 
