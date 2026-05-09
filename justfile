@@ -139,12 +139,6 @@ publish-test: build
 
 # --------------------------------------------
 
-# Rebase to the main branch
-rebase:
-    bash ./scripts/rebaseline.sh
-
-# --------------------------------------------
-
 # Reset the project state
 reset: clean
     echo "Resetting project state"

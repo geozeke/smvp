@@ -44,7 +44,6 @@
 - Conduct code review (9c9c48f)
 - Add AGENTS rule to avoid cache directories (f4e8962)
 - Make "bug" and "fix" equivalent (8aef306)
-- Lint rebaseline.sh (5346715)
 - Remove /run directory (617108d)
 - Cleanup justfile (44df59d)
 - Move logo to a local asset (e321163)
