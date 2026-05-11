@@ -32,8 +32,8 @@ examples below.
 
 ## Use Case
 
-There are probably several use cases, but I wrote _smvp_ for two
-primary reasons:
+There are several use cases, but _smvp_ was developed for two primary
+purposes:
 
 1. Configuring `postfix` and `sendmail` was more trouble than I wanted.
 2. I want my cron scripts to email me status information and the
