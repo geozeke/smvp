@@ -35,11 +35,12 @@ examples below.
 There are several use cases, but _smvp_ was developed for two primary
 purposes:
 
-1. Configuring `postfix` and `sendmail` was more trouble than I wanted.
-2. I want my cron scripts to email me status information and the
-   contents of various log files. Some of the files contain ANSI escape
-   sequences for terminal colors. The _smvp_ utility converts those ANSI
-   escape sequences into styled HTML, so the emails I get are nicely
+1. Configuring `postfix` and `sendmail` can be more setup than a small
+   script needs.
+2. Cron scripts often need to email status information and the contents
+   of various log files. Some of the files contain ANSI escape sequences
+   for terminal colors. The _smvp_ utility converts those ANSI escape
+   sequences into styled HTML, so the resulting emails are nicely
    formatted. You could set `$MAILTO` in your crontab, but you would not
    get proper handling of ANSI escape sequences, and you would still
    have the problem mentioned in item 1.
