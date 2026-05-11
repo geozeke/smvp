@@ -149,6 +149,75 @@ def test_archived_releases_are_newest_first(tmp_path: Path) -> None:
     assert archive.index("## 0.4.1") < archive.index("## 0.4.0")
 
 
+def test_archived_prereleases_follow_semver_order(tmp_path: Path) -> None:
+    changelog = tmp_path / "CHANGELOG.md"
+    archive_dir = tmp_path / "changelogs"
+    changelog.write_text(
+        """## 0.6.0 (2026-05-11)
+
+## 0.5.0-beta.1 (2026-05-01)
+
+## 0.5.0-rc.2 (2026-05-04)
+
+## 0.5.0 (2026-05-05)
+
+## 0.5.0-beta.2 (2026-05-02)
+
+## 0.5.0-rc.1 (2026-05-03)
+""",
+        encoding="utf-8",
+    )
+
+    archive_changelog.archive_changelog("0.6.0", changelog, archive_dir)
+
+    archive = (archive_dir / "v0.5.x.md").read_text(encoding="utf-8")
+    assert archive.index("## 0.5.0 ") < archive.index("## 0.5.0-rc.2")
+    assert archive.index("## 0.5.0-rc.2") < archive.index("## 0.5.0-rc.1")
+    assert archive.index("## 0.5.0-rc.1") < archive.index("## 0.5.0-beta.2")
+    assert archive.index("## 0.5.0-beta.2") < archive.index("## 0.5.0-beta.1")
+
+
+def test_prerelease_bump_preserves_same_minor_line(tmp_path: Path) -> None:
+    changelog = tmp_path / "CHANGELOG.md"
+    archive_dir = tmp_path / "changelogs"
+    changelog.write_text(
+        """## 0.5.0-beta.1 (2026-05-09)
+
+### Added
+
+- Current prerelease.
+
+## 0.4.2 (2026-05-08)
+
+### Fixed
+
+- Previous minor entry.
+""",
+        encoding="utf-8",
+    )
+
+    changed = archive_changelog.archive_changelog(
+        "v0.5.0-beta.1",
+        changelog,
+        archive_dir,
+    )
+
+    assert changed
+    active = changelog.read_text(encoding="utf-8")
+    assert "## 0.5.0-beta.1" in active
+    assert "## 0.4.2" not in active
+    assert "## 0.4.2" in (archive_dir / "v0.4.x.md").read_text(encoding="utf-8")
+
+
+def test_parse_version_rejects_unsupported_prerelease_labels() -> None:
+    try:
+        archive_changelog.parse_version("0.5.0-alpha.1")
+    except ValueError as exc:
+        assert str(exc) == "Expected semantic version, got: 0.5.0-alpha.1"
+    else:
+        raise AssertionError("Expected unsupported prerelease label to fail")
+
+
 def test_non_release_second_level_headings_stay_in_section(tmp_path: Path) -> None:
     changelog = tmp_path / "CHANGELOG.md"
     archive_dir = tmp_path / "changelogs"

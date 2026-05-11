@@ -59,7 +59,8 @@ extract_notes() {
     if (in_section) {
       exit
     }
-    if ($0 ~ "^## " version "([[:space:]]|$)") {
+    split($0, heading_parts, " ")
+    if (heading_parts[2] == version) {
       in_section = 1
       found = 1
     }

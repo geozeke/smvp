@@ -15,9 +15,26 @@ from dataclasses import dataclass
 from pathlib import Path
 
 
-HEADING_RE = re.compile(r"^##\s+(?P<version>\d+\.\d+\.\d+)(?:\s|$)")
+VERSION_RE = re.compile(
+    r"^v?"
+    r"(?P<major>0|[1-9]\d*)\."
+    r"(?P<minor>0|[1-9]\d*)\."
+    r"(?P<patch>0|[1-9]\d*)"
+    r"(?:-(?P<label>beta|rc)\.(?P<number>0|[1-9]\d*))?$"
+)
+HEADING_RE = re.compile(
+    r"^##\s+"
+    r"(?P<version>"
+    r"(?:0|[1-9]\d*)\."
+    r"(?:0|[1-9]\d*)\."
+    r"(?:0|[1-9]\d*)"
+    r"(?:-(?:beta|rc)\.(?:0|[1-9]\d*))?"
+    r")"
+    r"(?:\s|$)"
+)
 LINK_DEFINITION_RE = re.compile(r"^\[([^\]]+)\]:\s+\S+", re.MULTILINE)
 REFERENCE_RE = re.compile(r"\[([^\]\n]+)\](?:\[([^\]\n]+)\])?")
+PRERELEASE_RANKS = {"beta": 0, "rc": 1, "": 2}
 
 
 @dataclass(frozen=True)
@@ -64,16 +81,44 @@ def parse_version(version: str) -> tuple[int, int, int]:
     Raises
     ------
     ValueError
-        If ``version`` is not a three-part semantic version.
+        If ``version`` is not a supported semantic version.
     """
     normalized = version.removeprefix("v")
-    parts = normalized.split(".")
-    if len(parts) != 3:
+    match = VERSION_RE.match(normalized)
+    if not match:
         raise ValueError(f"Expected semantic version, got: {version}")
-    try:
-        return tuple(int(part) for part in parts)  # type: ignore[return-value]
-    except ValueError as exc:
-        raise ValueError(f"Expected semantic version, got: {version}") from exc
+    return (
+        int(match.group("major")),
+        int(match.group("minor")),
+        int(match.group("patch")),
+    )
+
+
+def section_sort_key(section: ReleaseSection) -> tuple[int, int, int, int, int]:
+    """Return a semantic-version sort key.
+
+    Parameters
+    ----------
+    section
+        Release section to sort.
+
+    Returns
+    -------
+    tuple[int, int, int, int, int]
+        Major, minor, patch, prerelease rank, and prerelease number.
+    """
+    match = VERSION_RE.match(section.version)
+    if not match:
+        raise ValueError(f"Expected semantic version, got: {section.version}")
+    label = match.group("label") or ""
+    number = match.group("number") or "0"
+    return (
+        int(match.group("major")),
+        int(match.group("minor")),
+        int(match.group("patch")),
+        PRERELEASE_RANKS[label],
+        int(number),
+    )
 
 
 def split_changelog(text: str) -> tuple[str, list[ReleaseSection], dict[str, str]]:
@@ -123,22 +168,6 @@ def split_changelog(text: str) -> tuple[str, list[ReleaseSection], dict[str, str
         releases.append(ReleaseSection(match.group("version"), section))
 
     return preamble, releases, link_definitions
-
-
-def section_sort_key(section: ReleaseSection) -> tuple[int, int, int]:
-    """Return a semantic-version sort key.
-
-    Parameters
-    ----------
-    section
-        Release section to sort.
-
-    Returns
-    -------
-    tuple[int, int, int]
-        Major, minor, and patch components.
-    """
-    return parse_version(section.version)
 
 
 def find_used_references(text: str) -> set[str]:
@@ -284,7 +313,9 @@ def archive_changelog(
             )
 
         merged_sections = {section.version: section for section in existing_releases}
-        merged_sections.update({section.version: section for section in archived_releases})
+        merged_sections.update(
+            {section.version: section for section in archived_releases}
+        )
         merged_releases = sorted(
             merged_sections.values(),
             key=section_sort_key,
