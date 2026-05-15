@@ -25,7 +25,7 @@ except ModuleNotFoundError:  # pragma: no cover - fallback for no-dev envs
     Requirement = None
 
 
-COMMIT_SUBJECT = "deps: Dependency Upgrades"
+COMMIT_SUBJECT = "deps: DEPS-See commit msg for list"
 NAME_PATTERN = re.compile(r"^\s*([A-Za-z0-9][A-Za-z0-9._-]*)")
 NORMALIZE_PATTERN = re.compile(r"[-_.]+")
 OUTDATED_TREE_PATTERN = re.compile(
