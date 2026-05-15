@@ -40,6 +40,7 @@ bump version:
     new_version="{{version}}"
     new_version="${new_version#v}"
     git cliff --unreleased --tag "$new_version" --prepend CHANGELOG.md
+    uv run python scripts/archive_changelog.py "$new_version"
     tmp_changelog="$(mktemp)"
     awk '
         NR == 1 { print; prev = $0; next }
@@ -139,12 +140,6 @@ publish-test: build
 
 # --------------------------------------------
 
-# Rebase to the main branch
-rebase:
-    bash ./scripts/rebaseline.sh
-
-# --------------------------------------------
-
 # Reset the project state
 reset: clean
     echo "Resetting project state"
@@ -211,9 +206,4 @@ typecheck:
 
 # Upgrade dependencies
 upgrade: _require_setup
-    #!/usr/bin/env bash
-    if [ -f .init/dev ]; then
-        uv sync --upgrade --all-groups
-    else
-        uv sync --upgrade --no-dev
-    fi
+    bash ./scripts/upgrade_dependencies.sh

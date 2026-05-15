@@ -24,6 +24,7 @@ or HTML file as a multipart email body over SMTP with STARTTLS.
   equivalent.
 - Use strict NumPy-style docstrings for all function, class, and
   module docstrings.
+- Always format new or changed Python code with `ruff format`.
 - When asked to review or modify `.gitignore`, also check
   whether Git global excludes are configured (for example,
   `git config --global core.excludesfile`) and factor that
@@ -52,9 +53,12 @@ or HTML file as a multipart email body over SMTP with STARTTLS.
 ## Release Workflow
 
 - Update code and documentation before preparing a release.
-- Create a release branch, such as `release/v0.4.2`.
+- Create a release branch, such as `release/v0.4.2`,
+  `release/v0.4.3-beta.1`, or `release/v0.4.3-rc.1`.
 - Run `just bump <version>` to update `CHANGELOG.md`,
-  `pyproject.toml`, and `uv.lock`.
+  `pyproject.toml`, and `uv.lock`. Versions may include a leading
+  `v`; beta and release candidate versions must use SemVer
+  prerelease labels such as `0.4.3-beta.1` or `0.4.3-rc.1`.
 - Commit the release changes, open a pull request, and merge it after
   checks pass.
 - Update local `main` with `git pull --ff-only origin main`.
@@ -62,14 +66,32 @@ or HTML file as a multipart email body over SMTP with STARTTLS.
   `just tag-release-latest` when the mutable `latest` tag should also
   move.
 - Pushing a `v...` version tag starts the GitHub Actions release
-  workflow, which creates a GitHub Release from the matching
-  `CHANGELOG.md` section. The workflow uses GitHub Actions'
-  built-in `GITHUB_TOKEN` with `contents: write`.
+  workflow, which creates a GitHub Release from matching notes in
+  `CHANGELOG.md` or the appropriate `changelogs/v<major>.<minor>.x.md`
+  archive. The workflow uses GitHub Actions' built-in `GITHUB_TOKEN`
+  with `contents: write`.
 - The `latest` tag is mutable and must not be treated as an immutable
   release record. Use it only when that version should become the
-  default install target.
+  default install target. Do not move `latest` for beta or release
+  candidate versions unless that prerelease should explicitly become
+  the default install target.
 - PyPI publishing remains a separate manual workflow through
   `just publish-test` and `just publish-production`.
+
+## Dependency Upgrade Workflow
+
+- Run `just upgrade` only from a clean worktree.
+- The command calls `scripts/upgrade_dependencies.sh`, upgrades
+  dependencies, and creates one local `deps: Dependency Upgrades`
+  commit when first-order locked dependency versions changed.
+- The commit body lists each first-order dependency version change as
+  `old -> new`.
+- The command never pushes. Review the local commit before manually
+  pushing it.
+- If no first-order dependency versions changed, no commit is created
+  and dependency files changed only by transitive updates are restored.
+- Use `deps:` as the shared dependency-upgrade changelog prefix.
+- Use `deprecate:` or `deprecated:` for deprecated changelog entries.
 
 ## Validation
 

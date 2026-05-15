@@ -206,3 +206,23 @@ For more details, run:
 ```text
 smvp -h
 ```
+
+## Maintainer Workflow
+
+Run dependency upgrades from a clean worktree:
+
+```text
+just upgrade
+```
+
+The command calls `scripts/upgrade_dependencies.sh`, upgrades
+dependencies, compares only first-order dependencies declared in
+`pyproject.toml`, and creates one local `deps: Dependency Upgrades`
+commit when direct locked versions changed. The commit body lists each
+direct dependency version change as `old -> new`. It does not push;
+review the local commit before pushing manually.
+
+If only transitive locked dependencies changed, no commit is created and
+the dependency files are restored. Changelog generation groups `deps:`
+commits as Dependency Upgrades. Deprecated entries should use
+`deprecate:` or `deprecated:`.
