@@ -1,3 +1,28 @@
+## 0.4.3 (2026-05-15)
+
+### 🛠️ Changes
+
+- Streamline changelogs (420fcac)
+
+### 🗑️ Removed
+
+- Remove "just rebase" recipe (3156ee7)
+
+### 📦 Dependency Upgrades
+
+- Dependency Upgrades (02d9587)
+
+### 📚 Documentation
+
+- Lint README.md (dbdd0e7)
+- Remove first-person voice from README (68bd710)
+
+### ⚙️ Miscellaneous Tasks
+
+- Standardize changelogs (ef9bb33)
+- Change tagging to use proper SemVer (33eeaa4)
+- Streamline dependency updates (022aa18)
+
 ## 0.4.2 (2026-05-08)
 
 ### 🐛 Bug Fixes
