@@ -83,9 +83,10 @@ or HTML file as a multipart email body over SMTP with STARTTLS.
 ## Dependency Upgrade Workflow
 
 - Run `just upgrade` only from a clean worktree.
-- The command calls `scripts/upgrade_dependencies.sh`, upgrades
-  dependencies, and creates one local `deps: Dependency Upgrades`
-  commit when first-order locked dependency versions changed.
+- The command calls `scripts/upgrade_dependencies.sh`, checks for
+  outdated first-order dependencies, upgrades only those packages, and
+  creates one local `deps: Dependency Upgrades` commit when first-order
+  locked dependency versions changed.
 - The commit body lists each first-order dependency version change as
   `old -> new`.
 - The command never pushes. Review the local commit before manually
