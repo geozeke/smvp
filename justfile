@@ -206,9 +206,4 @@ typecheck:
 
 # Upgrade dependencies
 upgrade: _require_setup
-    #!/usr/bin/env bash
-    if [ -f .init/dev ]; then
-        uv sync --upgrade --all-groups
-    else
-        uv sync --upgrade --no-dev
-    fi
+    bash ./scripts/upgrade_dependencies.sh
