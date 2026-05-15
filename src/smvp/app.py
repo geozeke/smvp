@@ -1,9 +1,9 @@
+"""Command-line parser and dispatch logic for smvp."""
+
 import argparse
 import re
 from importlib.metadata import version
 from pathlib import Path
-
-from smvp.utilities import task_runner
 
 __version__ = version("smvp")
 
@@ -125,7 +125,7 @@ def email_type(address: str) -> str:
 # ======================================================================
 
 
-def process_args() -> None:
+def main() -> None:
     """Parse command-line arguments and run the mail task.
 
     Returns
@@ -137,6 +137,7 @@ def process_args() -> None:
     """
     epi = f"Version: {__version__}"
     parser = argparse.ArgumentParser(
+        prog="smvp",
         description=msg,
         epilog=epi,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -187,5 +188,21 @@ def process_args() -> None:
     )
 
     args = parser.parse_args()
+    from smvp.utilities import task_runner
+
     task_runner(args=args)
+    return
+
+
+# ======================================================================
+
+
+def process_args() -> None:
+    """Parse command-line arguments and run the mail task.
+
+    Returns
+    -------
+    None
+    """
+    main()
     return

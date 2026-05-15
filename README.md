@@ -207,6 +207,17 @@ For more details, run:
 smvp -h
 ```
 
+The package also supports Python module execution:
+
+```text
+python -m smvp -h
+```
+
+For maintainers, the installed `smvp` console command is declared in
+`pyproject.toml` and points to `smvp.app:main`. The runnable module
+entry point lives in `src/smvp/__main__.py`, and the real CLI parser and
+dispatch code lives in `src/smvp/app.py`.
+
 ## Maintainer Workflow
 
 Run dependency upgrades from a clean worktree:

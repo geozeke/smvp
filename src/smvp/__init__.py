@@ -1,11 +1,5 @@
-from smvp.app import process_args
+"""Public package interface for smvp."""
 
+from smvp.app import main
 
-def main() -> None:
-    """Run the CLI entry point.
-
-    Returns
-    -------
-    None
-    """
-    process_args()
+__all__ = ["main"]
