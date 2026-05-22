@@ -1,3 +1,9 @@
+## 0.4.4 (2026-05-22)
+
+### ⚙️ Miscellaneous Tasks
+
+- Housekeeping (#55) (6f07d4b)
+
 ## 0.4.3 (2026-05-15)
 
 ### 🛠️ Changes
