@@ -90,7 +90,9 @@ def test_file_is_html_detects_common_cases() -> None:
     assert not utilities.file_is_html("1 < 2 and 3 > 1")
 
 
-def test_validate_environment_requires_all_variables(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_validate_environment_requires_all_variables(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     monkeypatch.setenv("SMVP_USER", "sender@example.com")
     monkeypatch.setenv("SMVP_TOKEN", "token")
     monkeypatch.setenv("SMVP_SERVER", "smtp.example.com")
@@ -249,7 +251,9 @@ def test_task_runner_sends_multipart_message_for_html_input(
     assert "font-size: 12px !important" in html_payload
 
 
-def test_task_runner_plaintext_uses_ansi_converter(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_task_runner_plaintext_uses_ansi_converter(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     monkeypatch.setenv("SMVP_USER", "sender@example.com")
     monkeypatch.setenv("SMVP_TOKEN", "token")
     monkeypatch.setenv("SMVP_SERVER", "smtp.example.com")
@@ -363,7 +367,9 @@ def test_task_runner_forces_html_mode_for_plaintext_input(
     assert "plain text only" in html_payload
 
 
-def test_task_runner_prints_smtp_error(monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]) -> None:
+def test_task_runner_prints_smtp_error(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
     monkeypatch.setenv("SMVP_USER", "sender@example.com")
     monkeypatch.setenv("SMVP_TOKEN", "token")
     monkeypatch.setenv("SMVP_SERVER", "smtp.example.com")

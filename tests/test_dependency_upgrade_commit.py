@@ -110,6 +110,24 @@ def test_first_order_locked_versions_ignore_transitive_packages(
     }
 
 
+def test_outdated_first_order_packages_ignore_transitive_packages() -> None:
+    dependency_names = {"pytest-cov", "rich"}
+    tree_output = """Resolved 48 packages in 3ms
+smvp v0.4.2
+├── rich v14.0.0 (latest: v15.0.0)
+│   └── pygments v2.19.0 (latest: v2.20.0)
+├── pytest-cov v6.2.1 (latest: v7.1.0) (group: dev)
+└── ruff v0.15.12
+"""
+
+    packages = dependency_upgrade_commit.outdated_first_order_packages(
+        dependency_names,
+        tree_output,
+    )
+
+    assert packages == ["rich", "pytest-cov"]
+
+
 def test_render_commit_message_uses_exact_subject_and_version_pairs() -> None:
     message = dependency_upgrade_commit.render_commit_message(
         {
@@ -119,7 +137,7 @@ def test_render_commit_message_uses_exact_subject_and_version_pairs() -> None:
     )
 
     assert message == (
-        "deps: Dependency Upgrades\n"
+        "deps: DEPS-See commit msg for list\n"
         "\n"
         "- pytest: 8.3.5 -> 9.0.3\n"
         "- rich: 14.0.0 -> 15.0.0\n"

@@ -25,9 +25,12 @@ except ModuleNotFoundError:  # pragma: no cover - fallback for no-dev envs
     Requirement = None
 
 
-COMMIT_SUBJECT = "deps: Dependency Upgrades"
+COMMIT_SUBJECT = "deps: DEPS-See commit msg for list"
 NAME_PATTERN = re.compile(r"^\s*([A-Za-z0-9][A-Za-z0-9._-]*)")
 NORMALIZE_PATTERN = re.compile(r"[-_.]+")
+OUTDATED_TREE_PATTERN = re.compile(
+    r"^[\s│]*[├└]── (?P<name>[A-Za-z0-9_.-]+) v\S+ .*latest:"
+)
 
 
 def normalize_package_name(name: str) -> str:
@@ -217,6 +220,41 @@ def render_commit_message(changes: dict[str, tuple[str, str]]) -> str:
     return "\n".join(lines) + "\n"
 
 
+def outdated_first_order_packages(
+    dependency_names: set[str],
+    tree_output: str,
+) -> list[str]:
+    """Read outdated first-order packages from uv tree output.
+
+    Parameters
+    ----------
+    dependency_names : set[str]
+        Normalized first-order dependency names.
+    tree_output : str
+        Output from ``uv tree --outdated --depth=1``.
+
+    Returns
+    -------
+    list[str]
+        Outdated first-order package names for ``uv sync
+        --upgrade-package``.
+    """
+    packages: list[str] = []
+    seen: set[str] = set()
+    for line in tree_output.splitlines():
+        match = OUTDATED_TREE_PATTERN.match(line)
+        if not match:
+            continue
+
+        package_name = normalize_package_name(match.group("name"))
+        if package_name not in dependency_names or package_name in seen:
+            continue
+
+        seen.add(package_name)
+        packages.append(package_name)
+    return packages
+
+
 def snapshot(lock_path: Path) -> str:
     """Render a JSON snapshot of locked versions.
 
@@ -300,6 +338,26 @@ def write_commit_message(args: argparse.Namespace) -> int:
     return 0
 
 
+def write_outdated_packages(args: argparse.Namespace) -> int:
+    """Write outdated first-order packages from uv tree output.
+
+    Parameters
+    ----------
+    args : argparse.Namespace
+        Parsed command-line arguments.
+
+    Returns
+    -------
+    int
+        Process exit code.
+    """
+    dependency_names = first_order_dependency_names(args.pyproject)
+    tree_output = sys.stdin.read()
+    for package_name in outdated_first_order_packages(dependency_names, tree_output):
+        print(package_name)
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     """Build the command-line parser.
 
@@ -340,6 +398,17 @@ def build_parser() -> argparse.ArgumentParser:
     )
     message_parser.add_argument("--output", type=Path, required=True)
     message_parser.set_defaults(func=write_commit_message)
+
+    outdated_parser = subparsers.add_parser(
+        "outdated",
+        help="Print outdated first-order packages from uv tree output.",
+    )
+    outdated_parser.add_argument(
+        "--pyproject",
+        type=Path,
+        default=Path("pyproject.toml"),
+    )
+    outdated_parser.set_defaults(func=write_outdated_packages)
     return parser
 
 

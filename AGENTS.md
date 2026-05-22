@@ -24,7 +24,7 @@ or HTML file as a multipart email body over SMTP with STARTTLS.
   equivalent.
 - Use strict NumPy-style docstrings for all function, class, and
   module docstrings.
-- Always format new or changed Python code with `ruff format`.
+- Always format new or changed Python code with `uv run ruff format .`.
 - When asked to review or modify `.gitignore`, also check
   whether Git global excludes are configured (for example,
   `git config --global core.excludesfile`) and factor that
@@ -39,6 +39,8 @@ or HTML file as a multipart email body over SMTP with STARTTLS.
 
 - `src/smvp/app.py`: CLI argument parsing and input
   validation.
+- `src/smvp/__main__.py`: runnable module entry point for
+  `python -m smvp`.
 - `src/smvp/utilities.py`: environment validation, content
   conversion, MIME assembly, and SMTP delivery.
 - `scripts/`: release and maintenance helpers.
@@ -81,9 +83,10 @@ or HTML file as a multipart email body over SMTP with STARTTLS.
 ## Dependency Upgrade Workflow
 
 - Run `just upgrade` only from a clean worktree.
-- The command calls `scripts/upgrade_dependencies.sh`, upgrades
-  dependencies, and creates one local `deps: Dependency Upgrades`
-  commit when first-order locked dependency versions changed.
+- The command calls `scripts/upgrade_dependencies.sh`, checks for
+  outdated first-order dependencies, upgrades only those packages, and
+  creates one local `deps: Dependency Upgrades` commit when first-order
+  locked dependency versions changed.
 - The commit body lists each first-order dependency version change as
   `old -> new`.
 - The command never pushes. Review the local commit before manually

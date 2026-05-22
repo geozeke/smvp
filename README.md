@@ -207,6 +207,17 @@ For more details, run:
 smvp -h
 ```
 
+The package also supports Python module execution:
+
+```text
+python -m smvp -h
+```
+
+For maintainers, the installed `smvp` console command is declared in
+`pyproject.toml` and points to `smvp.app:main`. The runnable module
+entry point lives in `src/smvp/__main__.py`, and the real CLI parser and
+dispatch code lives in `src/smvp/app.py`.
+
 ## Maintainer Workflow
 
 Run dependency upgrades from a clean worktree:
@@ -215,12 +226,12 @@ Run dependency upgrades from a clean worktree:
 just upgrade
 ```
 
-The command calls `scripts/upgrade_dependencies.sh`, upgrades
-dependencies, compares only first-order dependencies declared in
-`pyproject.toml`, and creates one local `deps: Dependency Upgrades`
-commit when direct locked versions changed. The commit body lists each
-direct dependency version change as `old -> new`. It does not push;
-review the local commit before pushing manually.
+The command calls `scripts/upgrade_dependencies.sh`, checks for outdated
+first-order dependencies declared in `pyproject.toml`, upgrades only
+those packages, and creates one local `deps: Dependency Upgrades` commit
+when direct locked versions changed. The commit body lists each direct
+dependency version change as `old -> new`. It does not push; review the
+local commit before pushing manually.
 
 If only transitive locked dependencies changed, no commit is created and
 the dependency files are restored. Changelog generation groups `deps:`
