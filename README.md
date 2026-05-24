@@ -3,8 +3,7 @@
 [![PyPI version](https://img.shields.io/pypi/v/smvp)](https://pypi.org/project/smvp/)
 [![Python versions](https://img.shields.io/pypi/pyversions/smvp)](https://pypi.org/project/smvp/)
 [![License](https://img.shields.io/pypi/l/smvp)](https://github.com/geozeke/smvp/blob/main/LICENSE)
-[![Status](https://img.shields.io/badge/status-beta-blue)](https://pypi.org/project/smvp/)
-[![PyPI downloads](https://img.shields.io/pypi/dm/smvp)](https://pypi.org/project/smvp/)
+[![Status](https://img.shields.io/badge/status-stable-brightgreen)](https://pypi.org/project/smvp/)
 
 <br>
 
@@ -206,34 +205,3 @@ For more details, run:
 ```text
 smvp -h
 ```
-
-The package also supports Python module execution:
-
-```text
-python -m smvp -h
-```
-
-For maintainers, the installed `smvp` console command is declared in
-`pyproject.toml` and points to `smvp.app:main`. The runnable module
-entry point lives in `src/smvp/__main__.py`, and the real CLI parser and
-dispatch code lives in `src/smvp/app.py`.
-
-## Maintainer Workflow
-
-Run dependency upgrades from a clean worktree:
-
-```text
-just upgrade
-```
-
-The command calls `scripts/upgrade_dependencies.sh`, checks for outdated
-first-order dependencies declared in `pyproject.toml`, upgrades only
-those packages, and creates one local `deps: Dependency Upgrades` commit
-when direct locked versions changed. The commit body lists each direct
-dependency version change as `old -> new`. It does not push; review the
-local commit before pushing manually.
-
-If only transitive locked dependencies changed, no commit is created and
-the dependency files are restored. Changelog generation groups `deps:`
-commits as Dependency Upgrades. Deprecated entries should use
-`deprecate:` or `deprecated:`.
