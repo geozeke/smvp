@@ -1,3 +1,15 @@
+## 0.4.5 (2026-05-24)
+
+### 📚 Documentation
+
+- Remove maintainer notes (282b9d6)
+- Remove the downloads badge (425dd52)
+
+### ⚙️ Miscellaneous Tasks
+
+- Move project out of beta status (9990b90)
+- Prevent latest tagging of beta builds (5a43a35)
+
 ## 0.4.4 (2026-05-22)
 
 ### ⚙️ Miscellaneous Tasks
