@@ -79,7 +79,7 @@ clean:
 
 # Run tests with coverage reporting
 coverage:
-    uv run pytest --tb=short --cov --cov-report=term-missing --cov-report=html
+    uv run pytest --tb=short --cov=src --cov-report=term-missing --cov-report=html
 
 # --------------------------------------------
 
