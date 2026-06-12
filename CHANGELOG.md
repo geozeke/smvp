@@ -1,3 +1,18 @@
+## 0.4.6 (2026-06-12)
+
+### 🛠️ Changes
+
+- Re-shape tooling (41b2b2f)
+
+### 📦 Dependency Upgrades
+
+- DEPS-See commit msg for list (4ca7e9c)
+- DEPS-See commit msg for list (cf5e502)
+
+### ⚙️ Miscellaneous Tasks
+
+- Limit code coverage to just sources (64b545f)
+
 ## 0.4.5 (2026-05-24)
 
 ### 📚 Documentation
