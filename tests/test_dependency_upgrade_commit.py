@@ -111,8 +111,9 @@ def test_first_order_locked_versions_ignore_transitive_packages(
 
 
 def test_outdated_first_order_packages_ignore_transitive_packages() -> None:
-    dependency_names = {"pytest-cov", "rich"}
+    dependency_names = {"coverage", "pytest-cov", "rich"}
     tree_output = """Resolved 48 packages in 3ms
+coverage[toml] v7.10.6 (group: dev) (latest: v7.11.3)
 smvp v0.4.2
 ├── rich v14.0.0 (latest: v15.0.0)
 │   └── pygments v2.19.0 (latest: v2.20.0)
@@ -125,7 +126,7 @@ smvp v0.4.2
         tree_output,
     )
 
-    assert packages == ["rich", "pytest-cov"]
+    assert packages == ["coverage", "rich", "pytest-cov"]
 
 
 def test_render_commit_message_uses_exact_subject_and_version_pairs() -> None:

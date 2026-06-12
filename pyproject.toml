@@ -51,9 +51,9 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "coverage[toml]>=7.6.1",
     "mypy>=1.14.1",
     "pytest>=8.3.5",
-    "pytest-cov>=6.2.1",
     "ruff>=0.8.6",
     "types-beautifulsoup4>=4.12.0.20241020",
 ]
@@ -68,7 +68,24 @@ requires = ["uv-build>=0.10,<0.12"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
-exclude = [".gitignore", "uv.lock"]
+source-include = [
+    "CHANGELOG.md",
+    "changelogs/**",
+    "justfile",
+    "scripts/**",
+    "tests/**",
+]
+source-exclude = [
+    ".gitignore",
+    ".mypy_cache",
+    "uv.lock",
+]
 
 [tool.ruff.lint.isort]
 force-single-line = true
+
+[tool.coverage.run]
+omit = ["tests/*"]
+
+[tool.coverage.report]
+exclude_also = ["if __name__ == \"__main__\":"]

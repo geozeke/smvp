@@ -58,7 +58,10 @@ def run_release_script(
     )
 
 
-@pytest.mark.parametrize("version", ["0.4.5-beta.1", "0.4.5-rc.1"])
+@pytest.mark.parametrize(
+    "version",
+    ["0.4.5-alpha.1", "0.4.5-beta.1", "0.4.5-rc.1"],
+)
 def test_latest_refuses_prerelease_before_git(
     tmp_path: Path,
     version: str,

@@ -17,6 +17,8 @@ or HTML file as a multipart email body over SMTP with STARTTLS.
   `src/smvp/` first.
 - Use `rg` for searches and `just` or `uv` for common
   project tasks when needed.
+- Use project-local `UV_CACHE_DIR=.uv-cache` for `uv` workflows when
+  practical.
 - Prefer `pathlib.Path` objects over raw path strings where
   practical.
 - Prefer truthiness checks like `if value:` and `if not value:` over
@@ -24,7 +26,8 @@ or HTML file as a multipart email body over SMTP with STARTTLS.
   equivalent.
 - Use strict NumPy-style docstrings for all function, class, and
   module docstrings.
-- Always format new or changed Python code with `uv run ruff format .`.
+- Always format new or changed Python code with `uv run ruff format .`
+  or `just format`.
 - When asked to review or modify `.gitignore`, also check
   whether Git global excludes are configured (for example,
   `git config --global core.excludesfile`) and factor that
@@ -101,6 +104,8 @@ or HTML file as a multipart email body over SMTP with STARTTLS.
 - For syntax checks, prefer
   `python3 -m py_compile src/smvp/*.py`.
 - Unit tests live in `tests/` and run with `uv run pytest`.
+- Common validation tasks are `just lint`, `just test`,
+  `just typecheck`, and `just build`.
 - If dependencies are available, use the existing `uv`/`just`
   workflow instead of inventing a new one.
 

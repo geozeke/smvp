@@ -14,9 +14,9 @@ import sys
 from pathlib import Path
 from typing import Any
 
-try:
+if sys.version_info >= (3, 11):
     import tomllib
-except ModuleNotFoundError:  # pragma: no cover - exercised on Python 3.10
+else:
     import tomli as tomllib
 
 try:
@@ -29,7 +29,8 @@ COMMIT_SUBJECT = "deps: DEPS-See commit msg for list"
 NAME_PATTERN = re.compile(r"^\s*([A-Za-z0-9][A-Za-z0-9._-]*)")
 NORMALIZE_PATTERN = re.compile(r"[-_.]+")
 OUTDATED_TREE_PATTERN = re.compile(
-    r"^[\s│]*[├└]── (?P<name>[A-Za-z0-9_.-]+) v\S+ .*latest:"
+    r"^[\s│]*(?:[├└]── )?(?P<name>[A-Za-z0-9_.-]+)"
+    r"(?:\[[^\]]+\])? v\S+ .*latest:"
 )
 
 
