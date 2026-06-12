@@ -4,12 +4,14 @@ project_name := "smvp"
 # Show help
 default: help
 
+# --------------------------------------------
+
 # Open a generated HTML report in the default browser
 _display_webpage web_path:
     #!/usr/bin/env python3
     import webbrowser
     from pathlib import Path
-    p = Path(".").resolve()/"{{web_path}}"
+    p = Path(".").resolve() / "{{web_path}}"
     if not p.exists():
         raise SystemExit(f"File not found: {p}")
     url = f"file://{p}"
@@ -17,6 +19,7 @@ _display_webpage web_path:
     webbrowser.open(url, new=2)
 
 # --------------------------------------------
+
 # Require initial setup to be complete
 _require_setup:
     #!/usr/bin/env bash
@@ -29,6 +32,8 @@ _require_setup:
 
 # Build package for publishing
 build:
+    #!/usr/bin/env bash
+    export UV_CACHE_DIR="${UV_CACHE_DIR:-.uv-cache}"
     rm -rf dist
     uv build
 
@@ -37,6 +42,7 @@ build:
 # Bump the project version and generate changelog
 bump version:
     #!/usr/bin/env bash
+    export UV_CACHE_DIR="${UV_CACHE_DIR:-.uv-cache}"
     new_version="{{version}}"
     new_version="${new_version#v}"
     git cliff --unreleased --tag "$new_version" --prepend CHANGELOG.md
@@ -67,19 +73,30 @@ bump version:
 clean:
     echo "Cleaning python runtime and build artifacts"
     rm -rf build dist .*cache htmlcov
+    rm -rf site cover coverage.xml .coverage .coverage.*
+    rm -rf .tox .nox .hypothesis .pybuilder .pytype .pyre
+    rm -rf .release-notes.md
+    rm -rf develop-eggs downloads eggs parts sdist var wheels
+    rm -rf share/python-wheels target
     find . -type d -name __pycache__ -exec rm -rf {} \; -prune
     find . -type d -name .ipynb_checkpoints -exec rm -rf {} \; -prune
     find . -type d -name .pytest_cache -exec rm -rf {} \; -prune
     find . -type d -name .eggs -exec rm -rf {} \; -prune
     find . -type d -name '*.egg-info' -exec rm -rf {} \; -prune
+    find . -type f -name .DS_Store -delete
+    find . -type f -name '._*' -delete
     find . -type f -name '*.egg' -delete
     find . -type f -name '*.pyc' -delete
     find . -type f -name '*.pyo' -delete
     find . -type f -name '*.coverage' -delete
 
+# --------------------------------------------
+
 # Run tests with coverage reporting
 coverage:
-    uv run pytest --tb=short --cov=src --cov-report=term-missing --cov-report=html
+    UV_CACHE_DIR="${UV_CACHE_DIR:-.uv-cache}" uv run coverage run -m pytest --tb=short
+    UV_CACHE_DIR="${UV_CACHE_DIR:-.uv-cache}" uv run coverage report -m
+    UV_CACHE_DIR="${UV_CACHE_DIR:-.uv-cache}" uv run coverage html
 
 # --------------------------------------------
 
@@ -92,9 +109,17 @@ coverage-open: coverage
 # Provision development dependencies
 dev: _require_setup
     #!/usr/bin/env bash
+    export UV_CACHE_DIR="${UV_CACHE_DIR:-.uv-cache}"
     export UV_PYTHON_PREFERENCE=only-managed
     uv sync --all-groups --frozen
     touch .init/dev
+
+# --------------------------------------------
+
+# Format Python files and apply fixable Ruff lint rules
+format:
+    UV_CACHE_DIR="${UV_CACHE_DIR:-.uv-cache}" uv run ruff check --fix .
+    UV_CACHE_DIR="${UV_CACHE_DIR:-.uv-cache}" uv run ruff format .
 
 # --------------------------------------------
 
@@ -106,13 +131,15 @@ help:
 
 # Run lint checks
 lint:
-    uv run ruff check .
+    UV_CACHE_DIR="${UV_CACHE_DIR:-.uv-cache}" uv run ruff check .
+    UV_CACHE_DIR="${UV_CACHE_DIR:-.uv-cache}" uv run ruff format --check .
 
 # --------------------------------------------
 
 # Publish package to pypi.org for production
 publish-production: build
     #!/usr/bin/env bash
+    export UV_CACHE_DIR="${UV_CACHE_DIR:-.uv-cache}"
     if [ ! -f "$HOME/.secrets" ]; then
         echo 'Missing "$HOME/.secrets"'
         exit 1
@@ -128,6 +155,7 @@ publish-production: build
 # Publish package to test.pypi.org for testing
 publish-test: build
     #!/usr/bin/env bash
+    export UV_CACHE_DIR="${UV_CACHE_DIR:-.uv-cache}"
     if [ ! -f "$HOME/.secrets" ]; then
         echo 'Missing "$HOME/.secrets"'
         exit 1
@@ -155,8 +183,17 @@ setup:
             echo "{{project_name}} requires uv. See README for instructions."
             exit 1
         fi
+        if ! command -v git >/dev/null 2>&1; then
+            echo "{{project_name}} requires git. See README for instructions."
+            exit 1
+        fi
+        if ! command -v git-cliff >/dev/null 2>&1; then
+            echo "{{project_name}} requires git-cliff. See README for instructions."
+            exit 1
+        fi
         mkdir -p scratch .init
         touch .init/setup
+        export UV_CACHE_DIR="${UV_CACHE_DIR:-.uv-cache}"
         export UV_PYTHON_PREFERENCE=only-managed
         uv sync --frozen --no-dev
     else
@@ -169,9 +206,10 @@ setup:
 
 # --------------------------------------------
 
-# Sync dependencies with the lockfile (frozen)
+# Sync dependencies with the lockfile
 sync: _require_setup
     #!/usr/bin/env bash
+    export UV_CACHE_DIR="${UV_CACHE_DIR:-.uv-cache}"
     if [ -f .init/dev ]; then
         uv sync --all-groups
     else
@@ -194,13 +232,13 @@ tag-release-latest:
 
 # Run pytest with --tb=short option
 test:
-    uv run pytest --tb=short
+    UV_CACHE_DIR="${UV_CACHE_DIR:-.uv-cache}" uv run pytest --tb=short
 
 # --------------------------------------------
 
 # Run static type checks
 typecheck:
-    uv run mypy src
+    UV_CACHE_DIR="${UV_CACHE_DIR:-.uv-cache}" uv run mypy src
 
 # --------------------------------------------
 

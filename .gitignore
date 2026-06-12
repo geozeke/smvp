@@ -52,6 +52,7 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 cover/
+.release-notes.md
 
 # Translations
 *.mo
