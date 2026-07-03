@@ -1,3 +1,14 @@
+## 0.4.7 (2026-07-03)
+
+### 🗑️ Removed
+
+- Remove "dev" recipe from justfile (3a3930f)
+
+### 📦 Dependency Upgrades
+
+- DEPS-See commit msg for list (a9776b5)
+- DEPS-See commit msg for list (0d325ae)
+
 ## 0.4.6 (2026-06-12)
 
 ### 🛠️ Changes
