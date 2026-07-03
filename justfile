@@ -106,16 +106,6 @@ coverage-open: coverage
 
 # --------------------------------------------
 
-# Provision development dependencies
-dev: _require_setup
-    #!/usr/bin/env bash
-    export UV_CACHE_DIR="${UV_CACHE_DIR:-.uv-cache}"
-    export UV_PYTHON_PREFERENCE=only-managed
-    uv sync --all-groups --frozen
-    touch .init/dev
-
-# --------------------------------------------
-
 # Format Python files and apply fixable Ruff lint rules
 format:
     UV_CACHE_DIR="${UV_CACHE_DIR:-.uv-cache}" uv run ruff check --fix .
@@ -195,7 +185,7 @@ setup:
         touch .init/setup
         export UV_CACHE_DIR="${UV_CACHE_DIR:-.uv-cache}"
         export UV_PYTHON_PREFERENCE=only-managed
-        uv sync --frozen --no-dev
+        uv sync --frozen --all-groups
     else
         echo "Initial setup is already complete. If you are having issues, run:"
         echo
@@ -210,11 +200,7 @@ setup:
 sync: _require_setup
     #!/usr/bin/env bash
     export UV_CACHE_DIR="${UV_CACHE_DIR:-.uv-cache}"
-    if [ -f .init/dev ]; then
-        uv sync --all-groups
-    else
-        uv sync --no-dev
-    fi
+    uv sync --all-groups
 
 # --------------------------------------------
 
