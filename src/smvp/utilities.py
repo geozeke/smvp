@@ -42,7 +42,6 @@ def print_docstring(msg: str) -> None:
             break
     formatted_docstring = "\n".join([line[spaces:] for line in lines])
     print(formatted_docstring)
-    return
 
 
 # ======================================================================
@@ -217,12 +216,11 @@ def task_runner(args: argparse.Namespace) -> None:
             msg=message.as_string(),
         )
         print("Message successfully sent.")
-    except Exception as e:
-        print(e)
+    except Exception as error:  # noqa: BLE001
+        print(error)
     finally:
         if server:
             server.quit()
-    return
 
 
 # ======================================================================
