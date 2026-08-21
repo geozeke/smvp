@@ -11,7 +11,13 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
 def main() -> None:
-    """Extract release notes for a tag into an output Markdown file."""
+    """Extract release notes for a tag into an output Markdown file.
+
+    Raises
+    ------
+    ValueError
+        If the requested release notes are unavailable or invalid.
+    """
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("tag")
     parser.add_argument("output", type=Path)

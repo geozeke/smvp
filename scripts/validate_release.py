@@ -14,7 +14,13 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
 def main() -> None:
-    """Validate one release tag and optionally write GitHub outputs."""
+    """Validate one release tag and optionally write GitHub outputs.
+
+    Raises
+    ------
+    ValueError
+        If the tag, project metadata, or changelog is invalid.
+    """
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("tag")
     parser.add_argument("--github-output", type=Path)

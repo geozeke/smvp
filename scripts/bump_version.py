@@ -17,12 +17,24 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
 def run(*args: str) -> None:
-    """Run a release command from the project root."""
+    """Run a release command from the project root.
+
+    Parameters
+    ----------
+    *args
+        Command and arguments to execute.
+    """
     subprocess.run(args, cwd=PROJECT_ROOT, check=True)
 
 
 def main() -> None:
-    """Generate and validate the requested release version."""
+    """Generate and validate the requested release version.
+
+    Raises
+    ------
+    SystemExit
+        If release preparation prerequisites are not satisfied.
+    """
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("version")
     args = parser.parse_args()

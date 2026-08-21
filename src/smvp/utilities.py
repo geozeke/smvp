@@ -146,8 +146,8 @@ def task_runner(args: argparse.Namespace) -> None:
     except UnicodeDecodeError:
         msg = f"""
         Unable to process: {getattr(args.file, "name", args.file)}
-        smvp can only process textfiles (including those with ANSI
-        escape sequences) or html files. No email sent.
+        smvp can only process text files (including those with ANSI
+        escape sequences) or HTML files. No email was sent.
         """
         print_docstring(msg=msg)
         sys.exit(1)
@@ -178,20 +178,17 @@ def task_runner(args: argparse.Namespace) -> None:
     soup = BeautifulSoup(html_text, "lxml")
     plain_text = soup.get_text().strip()
 
-    # Gmail strips custom css, so we need to apply inline styles with
+    # Gmail strips custom CSS, so apply inline styles with
     # (!important) to the body tag.
     body_tag = soup.find("body")
     if isinstance(body_tag, Tag):
         body_tag["style"] = new_style
 
-    # Also apply inline styles with (!important) to .ansi2html-content
-    # tags
+    # Also apply inline styles with (!important) to .ansi2html-content tags.
     ansi_content_tags = soup.find_all(class_="ansi2html-content")
     for tag in ansi_content_tags:
         if isinstance(tag, Tag):
             tag["style"] = new_style
-
-    # ! Debug code goes here when testing.
 
     # Package both parts into a MIME multipart message.
     message = MIMEMultipart("alternative")

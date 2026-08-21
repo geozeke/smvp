@@ -23,19 +23,18 @@ input type or force it to be handled as plain text or HTML.
 
 ## Compatibility
 
-The `smvp` runtime is supported on Windows and Linux.
+The `smvp` runtime is supported on Windows, Linux, and macOS.
 
-Project tooling remains Linux-only. That includes the `just` recipes,
-the Bash scripts in `scripts/`, the release workflow, and the `cron`
-examples below.
+Local project tooling supports Linux and macOS. The GitHub release
+workflow runs on Linux; the `cron` examples below are Linux-specific.
 
 ## Use Case
 
 There are several use cases, but _smvp_ was developed for two primary
 purposes:
 
-1. Configuring `postfix` and `sendmail` can be more setup than a small
-   script needs.
+1. Configuring `postfix` and `sendmail` can require more setup than a
+   small script needs.
 2. Cron scripts often need to email status information and the contents
    of various log files. Some of the files contain ANSI escape sequences
    for terminal colors. The _smvp_ utility converts those ANSI escape
@@ -149,9 +148,9 @@ including `100px`, from the following font families:
 ```
 
 > **Note:** Not every font will render properly on every device. When in
-> doubt, fonts like: "monospace", "sans-serif", "fantasy", and "serif"
-> are pretty safe. You may just have to try a few options to land on the
-> right one for your use case.
+> doubt, fonts such as "monospace", "sans-serif", "fantasy", and
+> "serif" are generally safe. You may need to try a few options to find
+> the right one for your use case.
 
 ## Content Type
 
@@ -205,3 +204,17 @@ For more details, run:
 ```text
 smvp -h
 ```
+
+## Development
+
+Local development requires `uv`, `just`, Git, and
+[Git Cliff](https://git-cliff.org/). After installing those tools, run:
+
+```text
+just setup
+just check
+```
+
+Use `just changelog` to preview user-facing changes. Release preparation
+uses `just bump <version>` followed by `just tag-release` from an
+up-to-date `main` branch.
