@@ -191,7 +191,6 @@ def main() -> None:
     from smvp.utilities import task_runner
 
     task_runner(args=args)
-    return
 
 
 # ======================================================================
@@ -205,4 +204,3 @@ def process_args() -> None:
     None
     """
     main()
-    return

@@ -14,7 +14,6 @@ import re
 from dataclasses import dataclass
 from pathlib import Path
 
-
 VERSION_RE = re.compile(
     r"^v?"
     r"(?P<major>0|[1-9]\d*)\."

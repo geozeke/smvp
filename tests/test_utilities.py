@@ -1,8 +1,9 @@
 import argparse
 import io
-from pathlib import Path
 from email import message_from_string
 from email.message import Message
+from pathlib import Path
+from typing import ClassVar
 from typing import cast
 
 import pytest
@@ -19,7 +20,7 @@ class DummySMTP:
         self.sent: tuple[str, str, str] | None = None
         self.quit_called = False
 
-    def starttls(self, context) -> None:  # noqa: ANN001
+    def starttls(self, context) -> None:
         self.started_tls = True
 
     def login(self, user: str, token: str) -> None:
@@ -35,10 +36,10 @@ class DummySMTP:
 class BrokenTextFile:
     name = "broken.txt"
 
-    def __enter__(self) -> "BrokenTextFile":
+    def __enter__(self):
         return self
 
-    def __exit__(self, exc_type, exc, tb) -> None:  # noqa: ANN001
+    def __exit__(self, exc_type, exc, tb) -> None:
         return None
 
     def read(self) -> str:
@@ -259,7 +260,7 @@ def test_task_runner_plaintext_uses_ansi_converter(
     monkeypatch.setenv("SMVP_SERVER", "smtp.example.com")
 
     class DummyConverter:
-        instances: list["DummyConverter"] = []
+        instances: ClassVar[list["DummyConverter"]] = []
 
         def __init__(self, dark_bg: bool) -> None:
             self.dark_bg = dark_bg
@@ -309,7 +310,7 @@ def test_task_runner_forces_text_mode_for_html_like_input(
     monkeypatch.setenv("SMVP_SERVER", "smtp.example.com")
 
     class DummyConverter:
-        instances: list["DummyConverter"] = []
+        instances: ClassVar[list["DummyConverter"]] = []
 
         def __init__(self, dark_bg: bool) -> None:
             self.dark_bg = dark_bg
