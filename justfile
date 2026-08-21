@@ -69,6 +69,17 @@ bump version:
 
 # --------------------------------------------
 
+# Preview user-facing changes since the latest release
+changelog:
+    #!/usr/bin/env bash
+    if ! command -v git-cliff >/dev/null 2>&1; then
+        echo "{{project_name}} requires git-cliff. See README for instructions." >&2
+        exit 1
+    fi
+    git-cliff --unreleased
+
+# --------------------------------------------
+
 # Clean python runtime and build artifacts
 clean:
     echo "Cleaning python runtime and build artifacts"
