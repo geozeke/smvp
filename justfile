@@ -126,6 +126,11 @@ lint:
 
 # --------------------------------------------
 
+# Run the complete local quality-check suite
+check: lint typecheck test
+
+# --------------------------------------------
+
 # Publish package to pypi.org for production
 publish-production: build
     #!/usr/bin/env bash
