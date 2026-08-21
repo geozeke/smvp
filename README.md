@@ -218,3 +218,7 @@ just check
 Use `just changelog` to preview user-facing changes. Release preparation
 uses `just bump <version>` followed by `just tag-release` from an
 up-to-date `main` branch.
+
+Pull-request titles use Conventional Commits. Accepted types are `feat`,
+`change`, `deprecate`, `remove`, `fix`, `security`, `perf`, `deploy`,
+`docs`, `revert`, `build`, `chore`, `ci`, `refactor`, `style`, and `test`.

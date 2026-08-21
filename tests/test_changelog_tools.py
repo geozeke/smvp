@@ -12,6 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from scripts.changelog_tools import extract_release_notes
 from scripts.changelog_tools import parse_version
 from scripts.changelog_tools import validate_changelog_collection
+from scripts.changelog_tools import validate_commit_title
 
 
 def test_parse_version_orders_prereleases_before_stable() -> None:
@@ -27,6 +28,25 @@ def test_parse_version_orders_prereleases_before_stable() -> None:
         versions[2],
         versions[0],
     ]
+
+
+@pytest.mark.parametrize(
+    "title",
+    ("feat: add command", "fix(cli): reject empty input", "build(deps): update ruff"),
+)
+def test_validate_commit_title_accepts_documented_types(title: str) -> None:
+    """Accept documented Conventional Commit titles."""
+    validate_commit_title(title)
+
+
+@pytest.mark.parametrize(
+    "title",
+    ("Add command", "deps: update ruff", "doc: update readme", "fix(): empty scope"),
+)
+def test_validate_commit_title_rejects_legacy_or_malformed_titles(title: str) -> None:
+    """Reject legacy or malformed Conventional Commit titles."""
+    with pytest.raises(ValueError, match="Conventional Commit"):
+        validate_commit_title(title)
 
 
 def test_extract_and_validate_archived_release_notes(tmp_path: Path) -> None:
