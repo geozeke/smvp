@@ -40,7 +40,17 @@ GROUPS = (
 
 @dataclass(frozen=True)
 class Version:
-    """Represent an smvp semantic release version."""
+    """Represent an smvp semantic release version.
+
+    Parameters
+    ----------
+    text
+        Canonical version text without a leading ``v``.
+    major, minor, patch
+        Numeric semantic-version components.
+    prerelease
+        Prerelease rank and number, or ``None`` for a stable version.
+    """
 
     text: str
     major: int
@@ -49,7 +59,13 @@ class Version:
     prerelease: tuple[int, int] | None
 
     def sort_key(self) -> tuple[int, int, int, int, int, int]:
-        """Return a key that orders stable releases after prereleases."""
+        """Return a key that orders stable releases after prereleases.
+
+        Returns
+        -------
+        tuple[int, int, int, int, int, int]
+            Sortable semantic-version components.
+        """
         if self.prerelease is None:
             return self.major, self.minor, self.patch, 1, 0, 0
         return self.major, self.minor, self.patch, 0, *self.prerelease
@@ -57,19 +73,49 @@ class Version:
 
 @dataclass(frozen=True)
 class Section:
-    """Represent one second-level changelog section."""
+    """Represent one second-level changelog section.
+
+    Parameters
+    ----------
+    label
+        ``Unreleased`` or a canonical release version.
+    text
+        Complete Markdown content for the section.
+    """
 
     label: str
     text: str
 
     @property
     def version(self) -> Version | None:
-        """Return the parsed release version, if this is not Unreleased."""
+        """Return the parsed release version, if this is not Unreleased.
+
+        Returns
+        -------
+        Version | None
+            Parsed release version, or ``None`` for Unreleased.
+        """
         return None if self.label == "Unreleased" else parse_version(self.label)
 
 
 def parse_version(text: str) -> Version:
-    """Parse a supported smvp SemVer version without a leading ``v``."""
+    """Parse a supported smvp SemVer version without a leading ``v``.
+
+    Parameters
+    ----------
+    text
+        Version in stable, beta, or release-candidate form.
+
+    Returns
+    -------
+    Version
+        Parsed semantic release version.
+
+    Raises
+    ------
+    ValueError
+        If the version is not supported by smvp's release workflow.
+    """
     match = VERSION_RE.fullmatch(text.removeprefix("v"))
     if not match:
         raise ValueError(f"Expected X.Y.Z, X.Y.Z-beta.N, or X.Y.Z-rc.N: {text}")
@@ -86,7 +132,18 @@ def parse_version(text: str) -> Version:
 
 
 def split_changelog(text: str) -> tuple[str, list[Section]]:
-    """Split changelog Markdown into its preamble and release sections."""
+    """Split changelog Markdown into its preamble and release sections.
+
+    Parameters
+    ----------
+    text
+        Full changelog Markdown.
+
+    Returns
+    -------
+    tuple[str, list[Section]]
+        Preamble text and ordered release sections.
+    """
     lines = text.splitlines()
     headings = [index for index, line in enumerate(lines) if HEADING_RE.fullmatch(line)]
     if not headings:
@@ -103,13 +160,36 @@ def split_changelog(text: str) -> tuple[str, list[Section]]:
 
 
 def format_changelog(preamble: str, sections: list[Section]) -> str:
-    """Return normalized changelog Markdown with a terminal newline."""
+    """Return normalized changelog Markdown with a terminal newline.
+
+    Parameters
+    ----------
+    preamble
+        Text preceding the first release section.
+    sections
+        Ordered release sections to render.
+
+    Returns
+    -------
+    str
+        Normalized Markdown ending in one newline.
+    """
     parts = [preamble.strip(), *(section.text.strip() for section in sections)]
     return "\n\n".join(part for part in parts if part).strip() + "\n"
 
 
 def archive_changelog(version: str, changelog_path: Path, archive_dir: Path) -> None:
-    """Archive releases outside the target version's minor release line."""
+    """Archive releases outside the target version's minor release line.
+
+    Parameters
+    ----------
+    version
+        Target release version.
+    changelog_path
+        Active changelog file.
+    archive_dir
+        Directory containing archived minor-version changelogs.
+    """
     target = parse_version(version)
     preamble, sections = split_changelog(changelog_path.read_text(encoding="utf-8"))
     active: list[Section] = []
@@ -148,7 +228,27 @@ def archive_changelog(version: str, changelog_path: Path, archive_dir: Path) -> 
 
 
 def extract_release_notes(tag: str, changelog_path: Path, archive_dir: Path) -> str:
-    """Return one release section without its heading."""
+    """Return one release section without its heading.
+
+    Parameters
+    ----------
+    tag
+        Release tag with a leading ``v``.
+    changelog_path
+        Active changelog file.
+    archive_dir
+        Directory containing archived minor-version changelogs.
+
+    Returns
+    -------
+    str
+        Release notes without the release heading.
+
+    Raises
+    ------
+    ValueError
+        If exactly one populated release section cannot be found.
+    """
     version = parse_version(tag)
     candidates = [
         changelog_path,
@@ -172,7 +272,22 @@ def extract_release_notes(tag: str, changelog_path: Path, archive_dir: Path) -> 
 def validate_changelog_collection(
     changelog_path: Path, archive_dir: Path, expected: str
 ) -> None:
-    """Validate the active and archived changelog collection."""
+    """Validate the active and archived changelog collection.
+
+    Parameters
+    ----------
+    changelog_path
+        Active changelog file.
+    archive_dir
+        Directory containing archived minor-version changelogs.
+    expected
+        Release version that must occur exactly once.
+
+    Raises
+    ------
+    ValueError
+        If formatting, ordering, categories, or release presence is invalid.
+    """
     paths = [changelog_path, *sorted(archive_dir.glob("v*.x.md"))]
     seen: set[str] = set()
     for path in paths:
@@ -207,7 +322,25 @@ def validate_changelog_collection(
 
 
 def validate_project_version(project_root: Path, expected: str = "") -> str:
-    """Require synchronized project and lockfile versions for a release."""
+    """Require synchronized project and lockfile versions for a release.
+
+    Parameters
+    ----------
+    project_root
+        Repository root containing project metadata.
+    expected
+        Optional expected release version.
+
+    Returns
+    -------
+    str
+        Synchronized project version.
+
+    Raises
+    ------
+    ValueError
+        If project metadata and lockfile versions do not agree.
+    """
     with (project_root / "pyproject.toml").open("rb") as handle:
         project_version = tomllib.load(handle)["project"]["version"]
     with (project_root / "uv.lock").open("rb") as handle:

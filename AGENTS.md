@@ -99,7 +99,7 @@ or HTML file as a multipart email body over SMTP with STARTTLS.
 - For syntax checks, prefer
   `python3 -m py_compile src/smvp/*.py`.
 - Unit tests live in `tests/` and run with `uv run pytest`.
-- Common validation tasks are `just lint`, `just test`,
+- Common validation tasks are `just check`, `just lint`, `just test`,
   `just typecheck`, and `just build`.
 - If dependencies are available, use the existing `uv`/`just`
   workflow instead of inventing a new one.
@@ -107,5 +107,5 @@ or HTML file as a multipart email body over SMTP with STARTTLS.
 ## Notes
 
 - Treat SMTP credentials and any local secrets as sensitive.
-- Runtime support targets Windows and Linux; repo tooling remains
-  Linux-only.
+- Runtime support targets Windows, Linux, and macOS. Local repository
+  tooling supports Linux and macOS; GitHub workflows run on Linux.

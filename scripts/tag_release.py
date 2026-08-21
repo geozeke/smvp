@@ -13,14 +13,31 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
 def git(*args: str) -> str:
-    """Run Git from the project root and return stripped standard output."""
+    """Run Git from the project root and return stripped standard output.
+
+    Parameters
+    ----------
+    *args
+        Git arguments to execute.
+
+    Returns
+    -------
+    str
+        Command standard output without surrounding whitespace.
+    """
     return subprocess.run(
         ("git", *args), cwd=PROJECT_ROOT, check=True, text=True, capture_output=True
     ).stdout.strip()
 
 
 def main() -> None:
-    """Validate release state, create the annotated tag, and push it."""
+    """Validate release state, create the annotated tag, and push it.
+
+    Raises
+    ------
+    SystemExit
+        If the branch, worktree, metadata, or tag state is invalid.
+    """
     if git("branch", "--show-current") != "main":
         raise SystemExit("Release tags can only be created from main")
     if git("status", "--porcelain=v1", "--untracked-files=all"):
