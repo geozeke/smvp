@@ -36,6 +36,11 @@ GROUPS = (
     "Dependencies",
     "Reverted",
 )
+COMMIT_TITLE_RE = re.compile(
+    r"^(?P<type>feat|change|deprecate|remove|fix|security|perf|deploy|docs|"
+    r"build|chore|ci|refactor|style|test|revert)"
+    r"(?:\([a-z0-9][a-z0-9._/-]*\))?(?:!)?: [^\s].*$"
+)
 
 
 @dataclass(frozen=True)
@@ -129,6 +134,26 @@ def parse_version(text: str) -> Version:
         int(match.group("patch")),
         prerelease,
     )
+
+
+def validate_commit_title(title: str) -> None:
+    """Validate a project Conventional Commit title.
+
+    Parameters
+    ----------
+    title
+        Pull-request title to validate.
+
+    Raises
+    ------
+    ValueError
+        If ``title`` does not use a supported Conventional Commit type.
+    """
+    if not COMMIT_TITLE_RE.fullmatch(title):
+        raise ValueError(
+            "Expected '<type>(optional-scope): description' using a documented "
+            "Conventional Commit type"
+        )
 
 
 def split_changelog(text: str) -> tuple[str, list[Section]]:
