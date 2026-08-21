@@ -41,31 +41,7 @@ build:
 
 # Bump the project version and generate changelog
 bump version:
-    #!/usr/bin/env bash
-    export UV_CACHE_DIR="${UV_CACHE_DIR:-.uv-cache}"
-    new_version="{{version}}"
-    new_version="${new_version#v}"
-    git cliff --unreleased --tag "$new_version" --prepend CHANGELOG.md
-    uv run python scripts/archive_changelog.py "$new_version"
-    tmp_changelog="$(mktemp)"
-    awk '
-        NR == 1 { print; prev = $0; next }
-        /^## / && prev !~ /^[[:space:]]*$/ { print "" }
-        { print; prev = $0 }
-    ' CHANGELOG.md > "$tmp_changelog"
-    mv "$tmp_changelog" CHANGELOG.md
-    tmp_file="$(mktemp)"
-    awk -v version="$new_version" '
-        BEGIN { replaced = 0 }
-        /^version = "/ && !replaced {
-            print "version = \"" version "\""
-            replaced = 1
-            next
-        }
-        { print }
-    ' pyproject.toml > "$tmp_file"
-    mv "$tmp_file" pyproject.toml
-    just sync
+    UV_CACHE_DIR="${UV_CACHE_DIR:-.uv-cache}" uv run python -m scripts.bump_version "{{version}}"
 
 # --------------------------------------------
 
@@ -142,38 +118,6 @@ check: lint typecheck test
 
 # --------------------------------------------
 
-# Publish package to pypi.org for production
-publish-production: build
-    #!/usr/bin/env bash
-    export UV_CACHE_DIR="${UV_CACHE_DIR:-.uv-cache}"
-    if [ ! -f "$HOME/.secrets" ]; then
-        echo 'Missing "$HOME/.secrets"'
-        exit 1
-    fi
-    set -a
-    . "$HOME/.secrets"
-    set +a
-    : "${PYPI_PROD:?Missing PYPI_PROD in $HOME/.secrets}"
-    uv publish --publish-url https://upload.pypi.org/legacy/ -t "$PYPI_PROD"
-
-# --------------------------------------------
-
-# Publish package to test.pypi.org for testing
-publish-test: build
-    #!/usr/bin/env bash
-    export UV_CACHE_DIR="${UV_CACHE_DIR:-.uv-cache}"
-    if [ ! -f "$HOME/.secrets" ]; then
-        echo 'Missing "$HOME/.secrets"'
-        exit 1
-    fi
-    set -a
-    . "$HOME/.secrets"
-    set +a
-    : "${PYPI_TEST:?Missing PYPI_TEST in $HOME/.secrets}"
-    uv publish --publish-url https://test.pypi.org/legacy/ -t "$PYPI_TEST"
-
-# --------------------------------------------
-
 # Reset the project state
 reset: clean
     echo "Resetting project state"
@@ -222,13 +166,7 @@ sync: _require_setup
 
 # Generate release tag
 tag-release:
-    bash ./scripts/release_tags.sh
-
-# --------------------------------------------
-
-# Generate release tag and update latest
-tag-release-latest:
-    bash ./scripts/release_tags.sh --latest
+    UV_CACHE_DIR="${UV_CACHE_DIR:-.uv-cache}" uv run python -m scripts.tag_release
 
 # --------------------------------------------
 

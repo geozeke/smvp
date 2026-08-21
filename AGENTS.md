@@ -60,28 +60,23 @@ or HTML file as a multipart email body over SMTP with STARTTLS.
 - Update code and documentation before preparing a release.
 - Create a release branch, such as `release/v0.4.2`,
   `release/v0.4.3-beta.1`, or `release/v0.4.3-rc.1`.
-- Run `just bump <version>` to update `CHANGELOG.md`,
-  `pyproject.toml`, and `uv.lock`. Versions may include a leading
-  `v`; beta and release candidate versions must use SemVer
-  prerelease labels such as `0.4.3-beta.1` or `0.4.3-rc.1`.
+- Run `just bump <version>` to validate and update `CHANGELOG.md`,
+  archived changelogs, `pyproject.toml`, and `uv.lock`. Versions may
+  include a leading `v`; beta and release candidate versions must use
+  SemVer prerelease labels such as `0.4.3-beta.1` or `0.4.3-rc.1`.
 - Commit the release changes, open a pull request, and merge it after
   checks pass.
 - Update local `main` with `git pull --ff-only origin main`.
-- Run `just tag-release` for only the version tag, or
-  `just tag-release-latest` when the mutable `latest` tag should also
-  move.
+- Run `just tag-release` to validate and push the annotated version
+  tag from an up-to-date local `main` branch.
 - Pushing a `v...` version tag starts the GitHub Actions release
-  workflow, which creates a GitHub Release from matching notes in
-  `CHANGELOG.md` or the appropriate `changelogs/v<major>.<minor>.x.md`
-  archive. The workflow uses GitHub Actions' built-in `GITHUB_TOKEN`
-  with `contents: write`.
-- The `latest` tag is mutable and must not be treated as an immutable
-  release record. Use it only when that version should become the
-  default install target. Do not move `latest` for beta or release
-  candidate versions unless that prerelease should explicitly become
-  the default install target.
-- PyPI publishing remains a separate manual workflow through
-  `just publish-test` and `just publish-production`.
+  workflow. It validates notes, runs `just check`, builds and smoke
+  tests distributions, publishes beta/RC releases to TestPyPI and
+  stable releases to PyPI through GitHub OIDC trusted publishing, and
+  creates the matching GitHub Release.
+- The mutable `latest` tag moves only after a stable release succeeds.
+  It must not be treated as an immutable release record; prereleases
+  never move it.
 
 ## Dependency Upgrade Workflow
 

@@ -3,28 +3,142 @@ name: Release
 on:
   push:
     tags:
-      - 'v[0-9]*'
+      - "v*.*.*"
 
 permissions:
-  contents: write
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
 
 jobs:
-  release:
-    name: Create GitHub Release
+  build:
+    name: Validate and build release
     runs-on: ubuntu-latest
-
+    timeout-minutes: 25
+    outputs:
+      prerelease: ${{ steps.metadata.outputs.prerelease }}
+      version: ${{ steps.metadata.outputs.version }}
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Install uv
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          version: "0.11.29"
+      - uses: extractions/setup-just@v4
+      - name: Sync locked dependencies
+        run: uv sync --locked --all-groups
+      - name: Validate release metadata and notes
+        id: metadata
+        run: >-
+          uv run python -m scripts.validate_release
+          "$GITHUB_REF_NAME" --github-output "$GITHUB_OUTPUT"
+      - name: Run release quality checks
+        run: just check
+      - name: Build distributions
+        run: |
+          uv build --sdist --no-sources
+          uv build --wheel --no-sources
+      - name: Smoke-test wheel
+        run: >-
+          uv run --isolated --no-project --no-cache --with dist/*.whl
+          -- python tests/package_smoke.py
+      - name: Smoke-test source distribution
+        run: >-
+          uv run --isolated --no-project --no-cache --with dist/*.tar.gz
+          -- python tests/package_smoke.py
       - name: Extract release notes
-        run: sh ./scripts/extract_release_notes.sh "$GITHUB_REF_NAME" .release-notes.md
+        run: >-
+          uv run python -m scripts.extract_release_notes
+          "$GITHUB_REF_NAME" .release-notes.md
+      - name: Store release artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: python-package-distributions
+          path: |
+            dist/
+            .release-notes.md
+          if-no-files-found: error
+          include-hidden-files: true
 
-      - name: Create GitHub Release
+  publish-prerelease:
+    name: Publish prerelease to TestPyPI
+    if: needs.build.outputs.prerelease == 'true'
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: testpypi
+      url: https://test.pypi.org/p/smvp
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: python-package-distributions
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+          skip-existing: true
+
+  publish-stable:
+    name: Publish stable release to PyPI
+    if: needs.build.outputs.prerelease == 'false'
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: pypi
+      url: https://pypi.org/p/smvp
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: python-package-distributions
+      - uses: pypa/gh-action-pypi-publish@release/v1
+
+  github-release:
+    name: Publish GitHub release
+    needs:
+      - build
+      - publish-prerelease
+      - publish-stable
+    if: always() && needs.build.result == 'success' && (needs.publish-prerelease.result == 'success' || needs.publish-stable.result == 'success')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v8
+        with:
+          name: python-package-distributions
+      - name: Create or update GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: >
-          gh release create "$GITHUB_REF_NAME"
-          --verify-tag
-          --title "Release $GITHUB_REF_NAME"
-          --notes-file .release-notes.md
+        run: |
+          title="smvp $GITHUB_REF_NAME"
+          options=()
+          if [ "${{ needs.build.outputs.prerelease }}" = true ]; then
+            options+=(--prerelease)
+          fi
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            gh release edit "$GITHUB_REF_NAME" --title "$title" --notes-file .release-notes.md "${options[@]}"
+            gh release upload "$GITHUB_REF_NAME" dist/* --clobber
+          else
+            gh release create "$GITHUB_REF_NAME" dist/* --title "$title" --notes-file .release-notes.md --verify-tag "${options[@]}"
+          fi
+      - name: Update stable installation tag
+        if: needs.build.outputs.prerelease == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git tag -f latest "$GITHUB_SHA"
+          git push -f origin refs/tags/latest
