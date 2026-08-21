@@ -3,6 +3,26 @@
 All notable changes to smvp are documented here. The format is based
 on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.4.8] - 2026-08-21
+
+[Compare with 0.4.7](https://github.com/geozeke/smvp/compare/v0.4.7...v0.4.8)
+
+### Deployment & Operations
+
+- Upgrade changelog/release workflow (#66) ([c7c9b7a](https://github.com/geozeke/smvp/commit/c7c9b7a0050b7eec8e70dd8df969e55eb121fd76))
+
+### Documentation
+
+- Conduct documentation audit ([675dbd8](https://github.com/geozeke/smvp/commit/675dbd89ecab9db8b01b2af0e2788387a02cf199))
+
+### Dependencies
+
+- DEPS-See commit msg for list ([90a086e](https://github.com/geozeke/smvp/commit/90a086e2ea59a6ecb656792dc41d4cf3af382c40))
+- *(deps-dev)* Update uv-build requirement ([9ab495c](https://github.com/geozeke/smvp/commit/9ab495c42eb73ae9e1d3341d7220f63605ead2e3))
+- *(deps-dev)* Bump mypy ([9802aaa](https://github.com/geozeke/smvp/commit/9802aaaa1fa13b8c9d9e05b213199f348968ef2a))
+- *(deps)* Bump actions/checkout from 4 to 7 ([7ecba4b](https://github.com/geozeke/smvp/commit/7ecba4be9d70783578eec583e00fbb60c097d2e9))
+- *(deps)* Bump actions/setup-python from 5 to 7 ([9842c92](https://github.com/geozeke/smvp/commit/9842c92f358469e36f790f50744f7cd50ea1f0c0))
+
 ## [0.4.7] - 2026-07-03
 
 [Compare with 0.4.6](https://github.com/geozeke/smvp/compare/v0.4.6...v0.4.7)
