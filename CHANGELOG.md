@@ -3,6 +3,18 @@
 All notable changes to smvp are documented here. The format is based
 on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.4.9] - 2026-08-26
+
+[Compare with 0.4.8](https://github.com/geozeke/smvp/compare/v0.4.8...v0.4.9)
+
+### Security
+
+- Bump soupsieve from 2.8.3 to 2.9.2 ([e41a8aa](https://github.com/geozeke/smvp/commit/e41a8aad3943b70c4cae2069f13737380dfe26a6))
+
+### Deployment & Operations
+
+- Add additional checks to PR merge pipeline ([5c8d8aa](https://github.com/geozeke/smvp/commit/5c8d8aa22d806855ed915ffa8cccae09e7b0719a))
+
 ## [0.4.8] - 2026-08-21
 
 [Compare with 0.4.7](https://github.com/geozeke/smvp/compare/v0.4.7...v0.4.8)
