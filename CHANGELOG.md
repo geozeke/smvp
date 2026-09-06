@@ -3,6 +3,16 @@
 All notable changes to smvp are documented here. The format is based
 on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.4.10] - 2026-09-06
+
+[Compare with 0.4.9](https://github.com/geozeke/smvp/compare/v0.4.9...v0.4.10)
+
+### Dependencies
+
+- *(deps)* Bump astral-sh/setup-uv from 9.0.0 to 10.0.1 ([7d1cedb](https://github.com/geozeke/smvp/commit/7d1cedb284fe2903bfaa6c136c44625c74cddb63))
+- *(deps)* Bump lxml in the python-dependencies group ([d3b0e99](https://github.com/geozeke/smvp/commit/d3b0e99f439960a045f34719700a75531d35d75d))
+- *(deps)* Bump the python-dependencies group with 2 updates ([4c1271c](https://github.com/geozeke/smvp/commit/4c1271c2a429adf002639a3106df7f063e1ac436))
+
 ## [0.4.9] - 2026-08-26
 
 [Compare with 0.4.8](https://github.com/geozeke/smvp/compare/v0.4.8...v0.4.9)
