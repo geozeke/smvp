@@ -612,7 +612,7 @@ wheels = [
 
 [[package]]
 name = "smvp"
-version = "0.4.9"
+version = "0.4.10"
 source = { editable = "." }
 dependencies = [
     { name = "ansi2html" },
