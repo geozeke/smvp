@@ -3,6 +3,14 @@
 All notable changes to smvp are documented here. The format is based
 on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.4.11] - 2026-09-12
+
+[Compare with 0.4.10](https://github.com/geozeke/smvp/compare/v0.4.10...v0.4.11)
+
+### Dependencies
+
+- *(deps)* Bump the python-dependencies group with 3 updates ([3c825e1](https://github.com/geozeke/smvp/commit/3c825e13fc972eace3902b4ee490c1dd7c0686d0))
+
 ## [0.4.10] - 2026-09-06
 
 [Compare with 0.4.9](https://github.com/geozeke/smvp/compare/v0.4.9...v0.4.10)
