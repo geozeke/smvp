@@ -3,10 +3,11 @@
 from __future__ import annotations
 
 import re
+import sys
 
-try:
+if sys.version_info >= (3, 11):
     import tomllib
-except ModuleNotFoundError:
+else:
     import tomli as tomllib
 from dataclasses import dataclass
 from pathlib import Path
@@ -231,7 +232,7 @@ def archive_changelog(version: str, changelog_path: Path, archive_dir: Path) -> 
     archive_dir.mkdir(parents=True, exist_ok=True)
     for (major, minor), moved in archived.items():
         path = archive_dir / f"v{major}.{minor}.x.md"
-        existing = (
+        existing: list[Section] = (
             split_changelog(path.read_text(encoding="utf-8"))[1]
             if path.exists()
             else []
@@ -241,7 +242,7 @@ def archive_changelog(version: str, changelog_path: Path, archive_dir: Path) -> 
         }
         ordered = sorted(
             merged.values(),
-            key=lambda section: section.version.sort_key(),
+            key=lambda section: parse_version(section.label).sort_key(),
             reverse=True,
         )
         archive_preamble = (
@@ -326,7 +327,8 @@ def validate_changelog_collection(
         if parsed != sorted(parsed, key=Version.sort_key, reverse=True):
             raise ValueError(f"{path} is not newest first")
         for section, version in zip(sections, parsed, strict=True):
-            if not HEADING_RE.fullmatch(section.text.splitlines()[0]).group("date"):
+            heading_match = HEADING_RE.fullmatch(section.text.splitlines()[0])
+            if heading_match is None or not heading_match.group("date"):
                 raise ValueError(f"{section.label} is missing a release date")
             if section.label in seen:
                 raise ValueError(f"Duplicate changelog section: {section.label}")
