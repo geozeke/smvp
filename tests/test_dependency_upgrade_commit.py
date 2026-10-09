@@ -21,7 +21,7 @@ def write_pyproject(path: Path) -> None:
 name = "example"
 dependencies = [
     "Rich>=14.0.0",
-    "my_package[extra]>=1.0 ; python_version >= '3.10'",
+    "my_package[extra]>=1.0 ; python_version >= '3.11'",
 ]
 
 [dependency-groups]

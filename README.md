@@ -23,7 +23,8 @@ input type or force it to be handled as plain text or HTML.
 
 ## Compatibility
 
-The `smvp` runtime is supported on Windows, Linux, and macOS.
+The `smvp` runtime requires Python 3.11 or newer and is supported on
+Windows, Linux, and macOS.
 
 Local project tooling supports Linux and macOS. The GitHub release
 workflow runs on Linux; the `cron` examples below are Linux-specific.
