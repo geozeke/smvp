@@ -11,8 +11,8 @@ or HTML file as a multipart email body over SMTP with STARTTLS.
 - Use snake case for variable names (all words lowercase).
 - Do not traverse or modify `.venv/`.
 - Do not traverse cache or generated-state directories such as
-  `.pytest_cache/`, `.mypy_cache/`, `.ruff_cache/`, `__pycache__/`,
-  or `.cache/` unless the task explicitly requires it.
+  `.pytest_cache/`, `.ruff_cache/`, `__pycache__/`, or `.cache/` unless
+  the task explicitly requires it.
 - Prefer reading `README.md`, `pyproject.toml`, and files under
   `src/smvp/` first.
 - Use `rg` for searches and `just` or `uv` for common
@@ -101,6 +101,8 @@ or HTML file as a multipart email body over SMTP with STARTTLS.
 - Unit tests live in `tests/` and run with `uv run pytest`.
 - Common validation tasks are `just check`, `just lint`, `just test`,
   `just typecheck`, and `just build`.
+- After Python changes, run `just typecheck`, correct every Pyrefly
+  diagnostic, and rerun it until it passes before handoff.
 - If dependencies are available, use the existing `uv`/`just`
   workflow instead of inventing a new one.
 
