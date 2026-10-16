@@ -62,7 +62,7 @@ smvp = "smvp.app:main"
 smvp = { workspace = true }
 
 [build-system]
-requires = ["uv-build>=0.10,<0.13"]
+requires = ["uv-build>=0.10,<0.14"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
