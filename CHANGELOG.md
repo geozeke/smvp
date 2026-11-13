@@ -3,6 +3,27 @@
 All notable changes to smvp are documented here. The format is based
 on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.4.13] - 2026-11-13
+
+[Compare with 0.4.12](https://github.com/geozeke/smvp/compare/v0.4.12...v0.4.13)
+
+### Deployment & Operations
+
+- Remove version tag from pyrefly tooling ([d5c9243](https://github.com/geozeke/smvp/commit/d5c92433dbfdb94865d003e7261cd5a43492c301))
+
+### Dependencies
+
+- *(deps-dev)* Bump ruff ([2035ae2](https://github.com/geozeke/smvp/commit/2035ae26d525d2b23de591ec60ca0a0f3ac5b0a4))
+- *(deps-dev)* Update uv-build requirement ([9b662c7](https://github.com/geozeke/smvp/commit/9b662c7fa920a518f2f944b331f1fc7d03621f7c))
+- *(deps)* Bump astral-sh/setup-uv from 10.2.0 to 10.3.0 ([3eb2a1f](https://github.com/geozeke/smvp/commit/3eb2a1fa383160b83eb53388dc3cf3c42e1cb29a))
+- *(deps-dev)* Bump the python-dependencies group with 2 updates ([c23352d](https://github.com/geozeke/smvp/commit/c23352d9ca88366cb8cc3b57a7e40edb6fbafac0))
+- *(deps-dev)* Bump ruff ([5aedf47](https://github.com/geozeke/smvp/commit/5aedf47d441672094edda93a03bbc0152c4408e3))
+- *(deps)* Bump astral-sh/setup-uv from 10.3.0 to 10.3.2 ([e3cf225](https://github.com/geozeke/smvp/commit/e3cf225f0a83d0df9e29370ea7606094a51b10de))
+- *(deps-dev)* Bump pytest ([4f037bc](https://github.com/geozeke/smvp/commit/4f037bcfd9547fe0b69d35bb22c85b8e0239af3f))
+- *(deps)* Bump astral-sh/setup-uv from 10.3.2 to 10.3.3 ([6293cad](https://github.com/geozeke/smvp/commit/6293cad809b97bb46e9527e0d61d7c29b37860dd))
+- *(deps-dev)* Bump the python-dependencies group with 2 updates ([d9836b6](https://github.com/geozeke/smvp/commit/d9836b60db1716c8cb9d35c4ad60772fabfbf8ba))
+- *(deps)* Bump soupsieve from 2.9.2 to 4.0 ([851a88e](https://github.com/geozeke/smvp/commit/851a88e16a28bf010dc6980a566c74f4f68d23ad))
+
 ## [0.4.12] - 2026-10-09
 
 [Compare with 0.4.11](https://github.com/geozeke/smvp/compare/v0.4.11...v0.4.12)
